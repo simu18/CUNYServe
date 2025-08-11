@@ -1,0 +1,126 @@
+<!-- public/navbar.html (Final Version with Corrected "Get Involved" Dropdown) -->
+<nav class="bg-[#00539B]" x-data="{ isMobileMenuOpen: false }">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Left Side: Logo and Main Nav Links -->
+      <div class="flex items-center">
+        <a href="/index.html" class="text-white font-bold text-xl">CUNYServe</a>
+        <!-- Desktop Nav Links -->
+        <div class="hidden md:block">
+          <div class="ml-10 flex items-baseline space-x-4">
+            <!-- THESE ARE THE MAIN NAV ITEMS -->
+            <a href="/events.html"
+              class="text-gray-300 hover:bg-[#003A70] hover:text-white px-3 py-2 rounded-md text-sm font-medium">Events</a>
+
+            <!-- "Get Involved" Dropdown (CORRECTED) -->
+            <div x-data="{ dropdownOpen: false }" class="relative">
+              <button @click="dropdownOpen = !dropdownOpen"
+                class="text-gray-300 hover:bg-[#003A70] hover:text-white px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">
+                <span>Get Involved</span>
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              <div x-show="dropdownOpen" @click.away="dropdownOpen = false"
+                class="absolute z-10 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+                style="display: none;">
+                <a href="/volunteer-projects.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Find
+                  a Volunteer Project</a>
+                <a href="/team-leader.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Become a
+                  Team Leader</a>
+              </div>
+            </div>
+
+            <a href="/pre-med.html"
+              class="text-gray-300 hover:bg-[#003A70] hover:text-white px-3 py-2 rounded-md text-sm font-medium">Pre-Med</a>
+
+            <!-- "About" Dropdown -->
+            <div x-data="{ dropdownOpen: false }" class="relative">
+              <button @click="dropdownOpen = !dropdownOpen"
+                class="text-gray-300 hover:bg-[#003A70] hover:text-white px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">
+                <span>About</span>
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              <div x-show="dropdownOpen" @click.away="dropdownOpen = false"
+                class="absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+                style="display: none;">
+                <a href="/about.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Our Mission</a>
+                <a href="/team.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Our Team</a>
+              </div>
+            </div>
+
+            <a href="/faq.html"
+              class="text-gray-300 hover:bg-[#003A70] hover:text-white px-3 py-2 rounded-md text-sm font-medium">FAQ</a>
+            <a href="/donate.html"
+              class="text-gray-300 hover:bg-[#003A70] hover:text-white px-3 py-2 rounded-md text-sm font-medium">Donate
+              Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side: Dynamic User Section (Desktop) -->
+      <div class="hidden md:block">
+        <div id="nav-user-section" class="flex items-center ml-4 md:ml-6">
+          <a href="/login.html"
+            class="bg-white text-[#00539B] px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-200">Login</a>
+        </div>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="-mr-2 flex md:hidden">
+        <button @click="isMobileMenuOpen = !isMobileMenuOpen" type="button"
+          class="bg-[#00539B] inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-[#003A70] focus:outline-none">
+          <span class="sr-only">Open main menu</span>
+          <svg :class="{'hidden': isMobileMenuOpen, 'block': !isMobileMenuOpen }" class="h-6 w-6" stroke="currentColor"
+            fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg :class="{'hidden': !isMobileMenuOpen, 'block': isMobileMenuOpen }" class="h-6 w-6" stroke="currentColor"
+            fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu, show/hide based on menu state. -->
+  <div :class="{'block': isMobileMenuOpen, 'hidden': !isMobileMenuOpen}" class="md:hidden">
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      <a href="/events.html"
+        class="text-gray-300 hover:bg-[#003A70] hover:text-white block px-3 py-2 rounded-md text-base font-medium">Events</a>
+      <!-- Mobile "Get Involved" Section -->
+      <h3 class="px-3 pt-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Get Involved</h3>
+      <a href="/volunteer-projects.html"
+        class="text-gray-300 hover:bg-[#003A70] hover:text-white block px-3 py-2 rounded-md text-base font-medium">Find
+        a Volunteer Project</a>
+      <a href="/team-leader.html"
+        class="text-gray-300 hover:bg-[#003A70] hover:text-white block px-3 py-2 rounded-md text-base font-medium">Become
+        a Team Leader</a>
+      <!-- Other Links -->
+      <a href="/pre-med.html"
+        class="text-gray-300 hover:bg-[#003A70] hover:text-white block px-3 py-2 rounded-md text-base font-medium">Pre-Med</a>
+      <h3 class="px-3 pt-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">About</h3>
+      <a href="/about.html"
+        class="text-gray-300 hover:bg-[#003A70] hover:text-white block px-3 py-2 rounded-md text-base font-medium">Our
+        Mission</a>
+      <a href="/team.html"
+        class="text-gray-300 hover:bg-[#003A70] hover:text-white block px-3 py-2 rounded-md text-base font-medium">Our
+        Team</a>
+      <a href="/faq.html"
+        class="text-gray-300 hover:bg-[#003A70] hover:text-white block px-3 py-2 rounded-md text-base font-medium">FAQ</a>
+      <a href="/donate.html"
+        class="text-gray-300 hover:bg-[#003A70] hover:text-white block px-3 py-2 rounded-md text-base font-medium">Donate
+        Now</a>
+    </div>
+    <!-- Dynamic User Section (Mobile) -->
+    <div id="nav-user-section-mobile" class="pt-4 pb-3 border-t border-gray-700">
+      <div class="px-2">
+        <a href="/login.html"
+          class="block w-full text-left bg-white text-[#00539B] px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-200">Login</a>
+      </div>
+    </div>
+  </div>
+</nav>

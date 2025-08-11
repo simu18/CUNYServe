@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About the Website | CUNYServe</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="font-sans text-gray-800 bg-white">
+
+  <!-- Navbar -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- Hero Banner -->
+  <section class="bg-[#00539B] text-white py-16 text-center">
+    <h1 class="text-4xl font-bold mb-3">About the Website</h1>
+    <p class="text-lg max-w-3xl mx-auto">Learn what inspired CUNYServe, how it connects students to civic engagement,
+      and why your voice matters in shaping NYC's future.</p>
+  </section>
+
+  <!-- Main Content -->
+  <section class="max-w-6xl mx-auto px-6 py-16 space-y-16">
+
+    <!-- What is CUNYServe? -->
+    <div>
+      <h2 class="text-2xl font-bold text-[#00539B] mb-4">What is CUNYServe?</h2>
+      <p class="text-gray-700 leading-relaxed">
+        CUNYServe is a platform created by students to inspire action, service, and leadership across the CUNY system.
+        It was built with a simple mission: make it easier for students to engage in meaningful civic and volunteer work
+        that benefits New York City's communities.
+      </p>
+    </div>
+
+    <!-- Why Civic Engagement? -->
+    <div>
+      <h2 class="text-2xl font-bold text-[#00539B] mb-4">Why Civic Engagement?</h2>
+      <p class="text-gray-700 leading-relaxed">
+        Civic engagement is more than just volunteering — it's about being an active participant in shaping a better
+        society. Whether you’re helping your neighborhood, supporting a cause you care about, or learning how
+        institutions work, civic action builds stronger communities and deeper understanding. CUNYServe helps students
+        become change-makers, one opportunity at a time.
+      </p>
+    </div>
+
+    <!-- What We Offer -->
+    <div>
+      <h2 class="text-2xl font-bold text-[#00539B] mb-4">What We Offer</h2>
+      <ul class="list-disc pl-6 space-y-2 text-gray-700">
+        <li>A growing hub of real volunteer <strong>events</strong> and <strong>long-term projects</strong> available to
+          CUNY students and NYC residents.</li>
+        <li>Clear distinction between <strong>Events</strong> (one-time, short-term opportunities) and
+          <strong>Projects</strong> (recurring or ongoing commitments that build deeper skills and impact).</li>
+        <li>Specialized pages for different interest areas, including <strong>healthcare pathways</strong> for pre-med
+          and nursing students.</li>
+        <li>A place to explore, lead, and grow through service—whether you want to help out once or make a semester-long
+          impact.</li>
+      </ul>
+    </div>
+
+    <!-- Our Vision -->
+    <div>
+      <h2 class="text-2xl font-bold text-[#00539B] mb-4">Student-Built, Community-Driven</h2>
+      <p class="text-gray-700 leading-relaxed">
+        CUNYServe is a student-led civic initiative born out of passion for community service, digital access, and youth
+        empowerment. We believe students are not just learners, but leaders. Our goal is to make community engagement
+        more visible, approachable, and inclusive across all CUNY campuses and neighborhoods.
+      </p>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="bg-blue-100 border-l-4 border-[#00539B] p-6 rounded shadow">
+      <h3 class="text-xl font-semibold text-[#00539B] mb-2">Get Involved Today</h3>
+      <p class="text-gray-700 mb-4">You don’t have to wait to make a difference. Whether you sign up for a one-time
+        cleanup or commit to tutoring weekly, your time and energy matter. Explore our platform and be part of something
+        bigger.</p>
+      <a href="volunteer-projects.html"
+        class="inline-block bg-[#00539B] text-white px-6 py-3 rounded hover:bg-blue-700 transition">Find a Volunteer
+        Opportunity</a>
+    </div>
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 py-8 mt-10">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm px-4">
+      <p>&copy; 2025 CUNYServe. All rights reserved.</p>
+      <div class="space-x-4 mt-4 md:mt-0">
+        <a href="#" class="hover:text-white">Privacy</a>
+        <a href="#" class="hover:text-white">Terms</a>
+        <a href="#" class="hover:text-white">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- NEW: Script loading order (Alpine.js → inject navbar → load dynamic navbar JS) -->
+  <script src="//unpkg.com/alpinejs" defer></script>
+  <script>
+    async function loadNavbar() {
+      try {
+        const response = await fetch('/navbar.html');
+        const data = await response.text();
+        document.getElementById('navbar-placeholder').innerHTML = data;
+
+        // Load the dynamic navbar behavior AFTER HTML is injected
+        const dynamicScript = document.createElement('script');
+        dynamicScript.src = '/scripts/navbar-dynamic.js';
+        document.body.appendChild(dynamicScript);
+      } catch (error) {
+        console.error('Failed to load navbar:', error);
+      }
+    }
+    loadNavbar();
+  </script>
+
+</body>
+
+</html>

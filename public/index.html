@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- The new, correct head section with Tailwind CSS -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CUNYServe | Civic Engagement for CUNY Students</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="font-sans text-gray-800">
+
+  <!-- Navbar placeholder: Our script will inject the navbar HTML here -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- === Your original homepage content === -->
+
+  <!-- Hero Section -->
+  <section class="bg-cover bg-center h-[500px] flex items-center justify-center text-white"
+    style="background-image: url('https://images.unsplash.com/photo-1573496789518-85c38e9fd0c3');">
+    <div class="bg-black bg-opacity-50 p-8 rounded-lg text-center max-w-2xl">
+      <h2 class="text-4xl font-bold mb-4">Empowering CUNY Students to Make a Difference</h2>
+      <p class="mb-6 text-lg">Connecting students with civic engagement opportunities across all campuses.</p>
+      <div class="space-x-4">
+        <a href="events.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded">Find Opportunities</a>
+        <a href="#pages" class="border border-white px-6 py-2 rounded hover:bg-white hover:text-black">Explore the
+          Site</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Purpose Section -->
+  <section class="bg-white py-16">
+    <div class="max-w-3xl mx-auto text-center px-6">
+      <h3 class="text-3xl font-bold text-[#00539B] mb-4">Our Purpose</h3>
+      <p class="text-lg text-gray-700 leading-relaxed">
+        CUNYServe is a student-powered movement to connect all 25 CUNY campuses through civic engagement, volunteerism,
+        and meaningful community service.
+        We aim to make it easier for CUNY students to discover, join, and lead service opportunities that make a real
+        impact — both on campus and across New York City.
+      </p>
+    </div>
+  </section>
+
+  <!-- Explore the Site Section -->
+  <section id="pages" class="py-20 bg-gray-50">
+    <div class="max-w-6xl mx-auto text-center">
+      <h3 class="text-3xl font-bold text-[#00539B] mb-10">Explore the Site</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 text-left">
+
+        <!-- Events -->
+        <div class="bg-white p-6 rounded shadow hover:shadow-lg border-t-4 border-[#00539B] transition">
+          <h4 class="text-xl font-semibold mb-2">Events</h4>
+          <p>Browse upcoming CUNY and NYC-wide volunteer opportunities based on your campus, interest, or availability.
+          </p>
+        </div>
+
+        <!-- Get Involved -->
+        <div class="bg-white p-6 rounded shadow hover:shadow-lg border-t-4 border-[#00539B] transition">
+          <h4 class="text-xl font-semibold mb-2">Get Involved</h4>
+          <p>Find projects, become a team leader, or help support our mission by donating or organizing events.</p>
+        </div>
+
+        <!-- Pre-Med -->
+        <div class="bg-white p-6 rounded shadow hover:shadow-lg border-t-4 border-[#00539B] transition">
+          <h4 class="text-xl font-semibold mb-2">Pre-Med</h4>
+          <p>Resources and guidance for health-focused students seeking service hours in clinical or medical settings.
+          </p>
+        </div>
+
+        <!-- About -->
+        <div class="bg-white p-6 rounded shadow hover:shadow-lg border-t-4 border-[#00539B] transition">
+          <h4 class="text-xl font-semibold mb-2">About</h4>
+          <p>Learn who we are and meet the student team leading this civic movement across the CUNY system.</p>
+        </div>
+
+        <!-- FAQ -->
+        <div class="bg-white p-6 rounded shadow hover:shadow-lg border-t-4 border-[#00539B] transition">
+          <h4 class="text-xl font-semibold mb-2">FAQ</h4>
+          <p>Get answers to common questions and read or submit real stories from fellow students and volunteers.</p>
+        </div>
+
+        <!-- Donate Now -->
+        <div class="bg-white p-6 rounded shadow hover:shadow-lg border-t-4 border-[#00539B] transition">
+          <h4 class="text-xl font-semibold mb-2">Donate Now</h4>
+          <p>Support community-based organizations and nonprofits through our trusted list of donation partners.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Signup -->
+  <section class="py-12 bg-white">
+    <div class="max-w-3xl mx-auto text-center">
+      <h4 class="text-2xl font-bold text-[#00539B] mb-4">Stay Connected</h4>
+      <p class="mb-6">Subscribe to hear about the latest opportunities and community stories.</p>
+      <form class="flex flex-col sm:flex-row gap-4 justify-center">
+        <input type="email" placeholder="Enter your email" class="px-4 py-2 border rounded w-full sm:w-auto">
+        <button class="bg-blue-700 text-white px-6 py-2 rounded hover:bg-blue-800">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 py-8">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm px-4">
+      <p>&copy; 2025 CUNYServe. All rights reserved.</p>
+      <div class="space-x-4 mt-4 md:mt-0">
+        <a href="#" class="hover:text-white">Privacy</a>
+        <a href="#" class="hover:text-white">Terms</a>
+        <a href="#" class="hover:text-white">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- The new, correct script loader block at the very bottom -->
+  <script src="//unpkg.com/alpinejs" defer></script>
+  <script>
+    async function initializePage() {
+      try {
+        const response = await fetch('/navbar.html');
+        const html = await response.text();
+        document.getElementById('navbar-placeholder').innerHTML = html;
+
+        // Load dynamic navbar behavior after injection
+        const dynamicScript = document.createElement('script');
+        dynamicScript.src = '/scripts/navbar-dynamic.js';
+        document.body.appendChild(dynamicScript);
+      } catch (error) {
+        console.error('Failed to load navbar:', error);
+      }
+    }
+    document.addEventListener('DOMContentLoaded', initializePage);
+  </script>
+</body>
+
+</html>

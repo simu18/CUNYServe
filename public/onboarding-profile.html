@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Step 3: Profile | CUNYServe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="font-sans text-gray-800 bg-gray-100">
+
+    <!-- Navbar placeholder -->
+    <div id="navbar-placeholder"></div>
+
+    <main class="max-w-4xl mx-auto py-10 px-4">
+        <!-- Progress Header -->
+        <header class="mb-10">
+            <h1 class="text-3xl font-bold text-center mb-4 text-[#00539B]">Volunteer Onboarding</h1>
+            <div class="flex justify-between items-center text-center">
+                <div class="step-item flex-1">
+                    <div class="text-sm font-bold text-green-600">Step 1: Account</div>
+                    <div class="text-2xl text-green-600">✅</div>
+                </div>
+                <div class="flex-1 border-t-2 border-green-500 mx-4"></div>
+                <div class="step-item flex-1">
+                    <div class="text-sm font-bold text-green-600">Step 2: Orientation</div>
+                    <div class="text-2xl text-green-600">✅</div>
+                </div>
+                <div class="flex-1 border-t-2 border-gray-300 mx-4"></div>
+                <div class="step-item flex-1">
+                    <div class="text-sm font-bold text-[#00539B]">Step 3: Profile</div>
+                    <div class="text-2xl">◻️</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Profile Form -->
+        <form id="profile-form" class="bg-white p-8 rounded-lg shadow-md space-y-8">
+
+            <!-- Section 1: Basic Matching -->
+            <section>
+                <h2 class="text-2xl font-semibold border-b pb-2 mb-4">1. Matching Preferences</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="campus" class="block font-medium">Your CUNY Campus</label>
+                        <input type="text" id="campus" class="w-full mt-1 p-2 border rounded bg-gray-100" readonly>
+                    </div>
+                    <div>
+                        <label for="graduation_year" class="block font-medium">Expected Graduation Year</label>
+                        <input type="number" id="graduation_year" placeholder="e.g., 2026"
+                            class="w-full mt-1 p-2 border rounded">
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label class="block font-medium">Preferred Opportunity Types</label>
+                    <div class="grid grid-cols-2 gap-2 mt-2">
+                        <label><input type="checkbox" name="opportunity_types" value="One-Time"> One-Time</label>
+                        <label><input type="checkbox" name="opportunity_types" value="Ongoing"> Ongoing</label>
+                        <label><input type="checkbox" name="opportunity_types" value="Remote/Virtual">
+                            Remote/Virtual</label>
+                        <label><input type="checkbox" name="opportunity_types" value="On-Site"> On-Site</label>
+                    </div>
+                    <p class="form-error-msg" data-for="opportunity_types"></p>
+                </div>
+            </section>
+
+            <!-- Section 2: Causes & Skills -->
+            <section>
+                <h2 class="text-2xl font-semibold border-b pb-2 mb-4">2. Causes & Skills</h2>
+                <div>
+                    <label class="block font-medium">Causes you're passionate about (select up to 5)</label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
+                        <label><input type="checkbox" name="causes" value="Education & Tutoring"> Education &
+                            Tutoring</label>
+                        <label><input type="checkbox" name="causes" value="Environmental"> Environmental</label>
+                        <label><input type="checkbox" name="causes" value="Healthcare"> Healthcare</label>
+                        <label><input type="checkbox" name="causes" value="Food Security"> Food Security</label>
+                        <label><input type="checkbox" name="causes" value="Advocacy"> Advocacy</label>
+                        <label><input type="checkbox" name="causes" value="Animals"> Animals</label>
+                    </div>
+                    <p class="form-error-msg" data-for="causes"></p>
+                </div>
+                <div class="mt-6">
+                    <label for="skills" class="block font-medium">Your Skills (comma separated)</label>
+                    <input type="text" id="skills" placeholder="e.g., Event Planning, Spanish, Data Entry"
+                        class="w-full mt-1 p-2 border rounded">
+                </div>
+            </section>
+
+            <!-- Section 3: About You -->
+            <section>
+                <h2 class="text-2xl font-semibold border-b pb-2 mb-4">3. About You</h2>
+                <div>
+                    <label for="bio" class="block font-medium">Short Bio</label>
+                    <textarea id="bio" rows="4"
+                        placeholder="Tell us a little about yourself and why you want to volunteer."
+                        class="w-full mt-1 p-2 border rounded"></textarea>
+                </div>
+            </section>
+
+            <!-- Form Submission -->
+            <div class="flex justify-end pt-4 border-t">
+                <button type="submit"
+                    class="bg-green-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-green-700 transition-colors">
+                    Complete Profile & View Dashboard
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <!-- Script loading section -->
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script>
+        async function initializePage() {
+            const navbarPlaceholder = document.getElementById('navbar-placeholder');
+            if (navbarPlaceholder) {
+                const response = await fetch('/navbar.html');
+                navbarPlaceholder.innerHTML = await response.text();
+                const script = document.createElement('script');
+                script.src = '/scripts/navbar-dynamic.js';
+                document.body.appendChild(script);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+    <script src="/scripts/onboarding-profile.js"></script>
+
+</body>
+
+</html>

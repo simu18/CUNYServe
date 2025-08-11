@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find a Volunteer Project | CUNYServe</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="font-sans text-gray-800">
+
+  <!-- ✅ Navbar Placeholder -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- Hero Section -->
+  <section class="bg-[#00539B] text-white py-16 text-center">
+    <h1 class="text-4xl font-bold mb-2">Find a Volunteer Project</h1>
+    <p class="text-lg">Browse and filter opportunities available across all CUNY campuses and NYC communities.</p>
+  </section>
+
+  <!-- Filters -->
+  <section class="bg-white py-10">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
+        <input id="keywordInput" type="text" placeholder="Search by keyword..."
+          class="w-full md:w-1/3 px-4 py-2 border border-gray-300 rounded" />
+        <select id="campusFilter" class="w-full md:w-1/4 px-4 py-2 border border-gray-300 rounded">
+          <option value="">All Campuses</option>
+          <option value="City College">City College</option>
+          <option value="Hunter College">Hunter College</option>
+          <option value="Baruch College">Baruch College</option>
+          <option value="Brooklyn College">Brooklyn College</option>
+          <option value="Queens College">Queens College</option>
+        </select>
+        <select id="typeFilter" class="w-full md:w-1/4 px-4 py-2 border border-gray-300 rounded">
+          <option value="">All Types</option>
+          <option value="In-person">In-person</option>
+          <option value="Remote">Remote</option>
+          <option value="Hybrid">Hybrid</option>
+        </select>
+      </div>
+      <p id="projectCount" class="mt-4 text-sm text-gray-600"></p>
+    </div>
+  </section>
+
+  <!-- Projects Grid -->
+  <section class="bg-gray-50 py-12">
+    <div id="projectGrid" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
+      <!-- Project 1 -->
+      <div class="project-card bg-white p-6 rounded-lg shadow hover:shadow-lg border-t-4 border-[#00539B]"
+        data-campus="Baruch College" data-type="Hybrid">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-xl font-semibold">Tech Mentorship for Teens</h3>
+          <button onclick="toggleBookmark(this, 'Tech Mentorship for Teens')"
+            class="text-gray-400 hover:text-red-500 text-lg">&#10084;</button>
+        </div>
+        <p class="text-gray-700 mb-3">Mentor high school students in coding and digital skills through workshops and 1:1
+          sessions.</p>
+        <div class="flex flex-wrap gap-2 text-sm mb-4">
+          <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">🧑‍💻 Hybrid</span>
+          <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full">🎓 Baruch College</span>
+        </div>
+        <button onclick="openModal(
+            'Tech Mentorship for Teens',
+            'CodeLink NYC',
+            'Volunteer mentors will run coding workshops and support underserved NYC high school students exploring tech careers. Training provided.',
+            'https://codelinknyc.org/orientation',
+            'Sat, Sept 14, 2025 | 12PM – 2PM',
+            '2025-09-14',
+            'Baruch College Library + Zoom',
+            'https://www.google.com/maps?q=Baruch+College+Library,+NYC&output=embed',
+            'Meet at Baruch Library. Virtual links provided 24hrs before each session.',
+            'Must attend 1 in-person session per month. Commitment: 6 weeks. Training + support provided.',
+            'CodeLink NYC supports underrepresented youth in building tech skills. Learn more at www.codelinknyc.org'
+          )" class="text-[#00539B] hover:underline text-sm font-medium mt-3">View Details</button>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="project-card bg-white p-6 rounded-lg shadow hover:shadow-lg border-t-4 border-[#00539B]"
+        data-campus="Queens College" data-type="In-person">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-xl font-semibold">Community Garden Restoration</h3>
+          <button onclick="toggleBookmark(this, 'Community Garden Restoration')"
+            class="text-gray-400 hover:text-red-500 text-lg">&#10084;</button>
+        </div>
+        <p class="text-gray-700 mb-3">Help clean, plant, and restore a local garden space used by families and seniors
+          in Queens.</p>
+        <div class="flex flex-wrap gap-2 text-sm mb-4">
+          <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">📍 In-person</span>
+          <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full">🎓 Queens College</span>
+        </div>
+        <button onclick="openModal(
+            'Community Garden Restoration',
+            'Greenspace Queens',
+            'Join students and neighbors to revitalize a shared garden. Activities include weeding, planting, and repainting benches and signs.',
+            'https://greenspacequeens.org/orientation',
+            'Sun, Sept 22, 2025 | 10AM – 1PM',
+            '2025-09-22',
+            'Green Path Garden, 85-19 Main St, Queens, NY 11367',
+            'https://www.google.com/maps?q=85-19+Main+St,+Queens,+NY&output=embed',
+            'Take the Q44 bus to Main St & 85th Ave. Meet at the garden gate at 9:50AM.',
+            'Wear clothes you can get dirty. Gloves and tools provided. Rain date: Sept 29.',
+            'Greenspace Queens promotes urban gardening and food justice. Visit greenspacequeens.org for more.'
+          )" class="text-[#00539B] hover:underline text-sm font-medium mt-3">View Details</button>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="project-card bg-white p-6 rounded-lg shadow hover:shadow-lg border-t-4 border-[#00539B]"
+        data-campus="Hunter College" data-type="Remote">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-xl font-semibold">Digital Storytelling for Immigrants</h3>
+          <button onclick="toggleBookmark(this, 'Digital Storytelling for Immigrants')"
+            class="text-gray-400 hover:text-red-500 text-lg">&#10084;</button>
+        </div>
+        <p class="text-gray-700 mb-3">Help immigrants share their journeys by editing video/audio stories and assisting
+          with basic digital tools.</p>
+        <div class="flex flex-wrap gap-2 text-sm mb-4">
+          <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full">🖥️ Remote</span>
+          <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full">🎓 Hunter College</span>
+        </div>
+        <button onclick="openModal(
+            'Digital Storytelling for Immigrants',
+            'Voices Without Borders',
+            'Work remotely with immigrants to capture and edit their personal migration stories using simple tools like Canva, Audacity, or WeVideo.',
+            'https://voiceswithoutborders.org/orientation',
+            'Flexible | 3–5 hours/week',
+            '',
+            'Remote via Zoom + Shared Docs',
+            'https://www.google.com/maps?q=Hunter+College,+New+York&output=embed',
+            'Orientation via Zoom. Support team available for tech help.',
+            'Must commit to 1 story project (2–3 weeks). Basic editing skills a plus, but not required.',
+            'Voices Without Borders helps immigrant voices reach the world. Learn more at voiceswithoutborders.org'
+          )" class="text-[#00539B] hover:underline text-sm font-medium mt-3">View Details</button>
+      </div>
+
+      <!-- Example Project -->
+      <div class="project-card bg-white p-6 rounded-lg shadow hover:shadow-lg border-t-4 border-[#00539B]"
+        data-campus="City College" data-type="In-person">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-xl font-semibold">Rescue Good Food</h3>
+          <button onclick="toggleBookmark(this, 'Rescue Good Food')"
+            class="text-gray-400 hover:text-red-500 text-lg">&#10084;</button>
+        </div>
+        <p class="text-gray-700 mb-3">Rescue food from Union Square bakery and deliver it to a local shelter.</p>
+        <div class="flex flex-wrap gap-2 text-sm mb-4">
+          <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">📍 In-person</span>
+          <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full">🎓 City College</span>
+        </div>
+        <button onclick="openModal(
+            'Rescue Good Food from Becoming Waste',
+            'Rescuing Leftover Cuisine',
+            'Rescue food before it’s tossed in the trash. Transport treasures from a Union Square bakery to a local organization.',
+            'https://www.newyorkcares.org/orientation',
+            'Sat Aug 9, 2025 | 8:15PM - 9PM',
+            '2025-08-09',
+            'Breads Bakery, 18 E 16th St, New York, NY 10003',
+            'https://www.google.com/maps?q=18+E+16th+St,+New+York,+NY+10003&output=embed',
+            'From Union Square station, head west on 16th Street. You will see the location on your left in the middle of the block.',
+            'Must walk ~1 mile, stand for 1 hour, and carry 10–20 lbs. Drop-off is at 56 2nd Ave, 2nd floor, NY 10003.',
+            'Rescuing Leftover Cuisine helps reduce food waste by delivering excess food to shelters. www.rescuingleftovercuisine.org'
+          )" class="text-[#00539B] hover:underline text-sm font-medium mt-3">View Details</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Enhanced Project Modal -->
+  <div id="projectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-lg w-[95%] max-w-5xl p-8 shadow-lg relative overflow-y-auto max-h-[90vh]">
+      <button onclick="closeModal()"
+        class="absolute top-3 right-4 text-2xl font-bold text-gray-500 hover:text-black">&times;</button>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Left -->
+        <div>
+          <h2 id="modalTitle" class="text-3xl font-bold mb-1"></h2>
+          <p id="modalPartner" class="text-gray-600 mb-4 text-sm"></p>
+          <p id="modalDescription" class="text-gray-700 mb-4"></p>
+          <!-- Button Row -->
+          <div class="flex flex-wrap gap-3 mb-6">
+            <a id="modalOrientation" href="#" target="_blank"
+              class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm">Orientation</a>
+            <button onclick="toggleBookmark(this, currentProject.title)"
+              class="border border-red-600 text-red-600 px-4 py-2 rounded text-sm hover:bg-red-50">♥ Save for
+              later</button>
+            <button id="add-to-calendar-btn"
+              class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm">+ Add to my Calendar</button>
+          </div>
+          <div class="mb-4">
+            <h4 class="font-semibold text-gray-800 mb-1">Activity Site Info</h4>
+            <p id="modalDirections" class="text-sm text-gray-600 mb-2"></p>
+            <p id="modalLogistics" class="text-sm text-gray-600"></p>
+          </div>
+          <div class="mt-4">
+            <h4 class="font-semibold text-gray-800 mb-1">Partner</h4>
+            <p id="modalPartnerInfo" class="text-sm text-gray-600"></p>
+          </div>
+        </div>
+        <!-- Right -->
+        <div class="bg-gray-100 rounded-lg p-4">
+          <h4 class="font-semibold text-lg text-gray-800 mb-2">📍 Time & Location</h4>
+          <p id="modalDateTime" class="text-sm text-gray-700 mb-1"></p>
+          <p id="modalAddress" class="text-sm text-gray-700 mb-2"></p>
+          <iframe id="modalMap" src="" class="w-full h-56 rounded" style="border:0;" allowfullscreen
+            loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 py-8 mt-10">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm px-4">
+      <p>&copy; 2025 CUNYServe. All rights reserved.</p>
+      <div class="space-x-4 mt-4 md:mt-0">
+        <a href="#" class="hover:text-white">Privacy</a>
+        <a href="#" class="hover:text-white">Terms</a>
+        <a href="#" class="hover:text-white">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ✅ Page Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Filters
+      const keywordInput = document.getElementById("keywordInput");
+      const campusFilter = document.getElementById("campusFilter");
+      const typeFilter = document.getElementById("typeFilter");
+      const cards = document.querySelectorAll(".project-card");
+      const countDisplay = document.getElementById("projectCount");
+
+      function filterProjects() {
+        const keyword = keywordInput.value.toLowerCase();
+        const campus = campusFilter.value;
+        const type = typeFilter.value;
+        let count = 0;
+
+        cards.forEach(card => {
+          const text = card.innerText.toLowerCase();
+          const cardCampus = card.dataset.campus;
+          const cardType = card.dataset.type;
+
+          const matchesKeyword = text.includes(keyword);
+          const matchesCampus = !campus || cardCampus === campus;
+          const matchesType = !type || cardType === type;
+
+          const visible = matchesKeyword && matchesCampus && matchesType;
+          card.style.display = visible ? 'block' : 'none';
+          if (visible) count++;
+        });
+
+        countDisplay.textContent = `Showing ${count} volunteer project${count !== 1 ? 's' : ''}`;
+      }
+
+      keywordInput.addEventListener("input", filterProjects);
+      campusFilter.addEventListener("change", filterProjects);
+      typeFilter.addEventListener("change", filterProjects);
+      filterProjects();
+
+      // --- UPDATED Modal functions with dateISO ---
+      window.currentProject = {};
+
+      window.openModal = function (title, partner, description, orientationLink, dateTime, dateISO, address, mapURL, directions, logistics, partnerInfo) {
+        // Store EVERYTHING, including dateISO
+        window.currentProject = { title, partner, description, orientationLink, dateTime, dateISO, address, mapURL, directions, logistics, partnerInfo };
+
+        document.getElementById("modalTitle").textContent = title;
+        document.getElementById("modalPartner").textContent = partner;
+        document.getElementById("modalDescription").textContent = description;
+        document.getElementById("modalOrientation").href = orientationLink;
+        document.getElementById("modalDateTime").textContent = dateTime;
+        document.getElementById("modalAddress").textContent = address;
+        document.getElementById("modalMap").src = mapURL;
+        document.getElementById("modalDirections").textContent = directions;
+        document.getElementById("modalLogistics").textContent = logistics;
+        document.getElementById("modalPartnerInfo").textContent = partnerInfo;
+        document.getElementById("projectModal").classList.remove("hidden");
+      }
+
+      window.closeModal = function () {
+        document.getElementById("projectModal").classList.add("hidden");
+      }
+
+      window.toggleBookmark = function (el, title) {
+        el.classList.toggle("text-red-500");
+        const saved = JSON.parse(localStorage.getItem("bookmarkedProjects") || "[]");
+        if (el.classList.contains("text-red-500")) {
+          if (!saved.includes(title)) saved.push(title);
+        } else {
+          const index = saved.indexOf(title);
+          if (index > -1) saved.splice(index, 1);
+        }
+        localStorage.setItem("bookmarkedProjects", JSON.stringify(saved));
+      }
+    });
+  </script>
+
+  <!-- Navbar loader + dynamic behavior -->
+  <script src="//unpkg.com/alpinejs" defer></script>
+  <script>
+    async function initializePage() {
+      try {
+        const ph = document.getElementById('navbar-placeholder');
+        if (ph) {
+          const res = await fetch('/navbar.html');
+          ph.innerHTML = await res.text();
+          const script = document.createElement('script');
+          script.src = '/scripts/navbar-dynamic.js';
+          document.body.appendChild(script);
+        }
+      } catch (e) {
+        console.error('Failed to load navbar:', e);
+      }
+    }
+    document.addEventListener('DOMContentLoaded', initializePage);
+  </script>
+
+  <!-- Page-specific logic (e.g., Add to Calendar uses currentProject.dateISO) -->
+  <script src="/scripts/project-page.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Events | CUNYServe</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="font-sans text-gray-800 bg-gray-100">
+
+  <!-- Shared Navbar -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- Hero Section -->
+  <section class="bg-[#0056b3] text-white text-center py-10 px-4">
+    <h2 class="text-3xl font-bold mb-2">Upcoming Volunteer Events</h2>
+    <p class="text-lg">Explore civic engagement opportunities across all CUNY campuses and NYC.</p>
+  </section>
+
+  <!-- Filter Section -->
+  <div class="flex flex-wrap justify-center gap-4 my-6 px-4">
+    <select id="campusFilter" class="p-2 rounded border">
+      <option value="All">All Campuses</option>
+      <option value="Baruch College">Baruch College</option>
+      <option value="Queens College">Queens College</option>
+      <option value="City College">City College</option>
+      <option value="Hunter College">Hunter College</option>
+      <option value="Brooklyn College">Brooklyn College</option>
+      <option value="Non-CUNY">Non-CUNY</option>
+    </select>
+    <select id="typeFilter" class="p-2 rounded border">
+      <option value="All">All Types</option>
+      <option value="Clean-Up">Clean-Up</option>
+      <option value="Tutoring">Tutoring</option>
+      <option value="Food Pantry">Food Pantry</option>
+      <option value="Donation Drive">Donation Drive</option>
+      <option value="Registration Drive">Registration Drive</option>
+      <option value="Mentorship">Mentorship</option>
+    </select>
+    <select id="formatFilter" class="p-2 rounded border">
+      <option value="All">All Formats</option>
+      <option value="In-Person">In-Person</option>
+      <option value="Virtual">Virtual</option>
+    </select>
+  </div>
+
+  <!-- Events Grid -->
+  <div id="eventGrid" class="flex flex-wrap justify-center gap-6 px-4 pb-10"></div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white text-center py-4 mt-8">
+    <p>© 2025 CUNYServe. All rights reserved.</p>
+    <div class="mt-2">
+      <a href="#" class="mx-2 hover:underline">Privacy</a>
+      <a href="#" class="mx-2 hover:underline">Terms</a>
+      <a href="#" class="mx-2 hover:underline">Contact</a>
+    </div>
+  </footer>
+
+  <!-- NEW: Script loading order -->
+  <!-- 1) Alpine.js -->
+  <script src="//unpkg.com/alpinejs" defer></script>
+
+  <!-- 2) Inject navbar, then load dynamic navbar behavior -->
+  <script>
+    async function loadNavbar() {
+      try {
+        const response = await fetch('/navbar.html');
+        const data = await response.text();
+        document.getElementById('navbar-placeholder').innerHTML = data;
+
+        const script = document.createElement('script');
+        script.src = '/scripts/navbar-dynamic.js';
+        document.body.appendChild(script);
+      } catch (error) {
+        console.error('Failed to load navbar:', error);
+      }
+    }
+    loadNavbar();
+  </script>
+
+  <!-- 3) Events Script -->
+  <script>
+    const events = [
+      {
+        title: "Baruch Food Pantry Drive",
+        campus: "Baruch College",
+        type: "Food Pantry",
+        format: "In-Person",
+        info: "Aug 18",
+        desc: "Collect and distribute food to students facing food insecurity on campus."
+      },
+      {
+        title: "Tutoring for NYC Youth",
+        campus: "Queens College",
+        type: "Tutoring",
+        format: "Virtual",
+        info: "Aug 15",
+        desc: "Offer academic support to underserved students from the comfort of your home."
+      },
+      {
+        title: "Queens Park Clean-Up",
+        campus: "Queens College",
+        type: "Clean-Up",
+        format: "In-Person",
+        info: "Aug 20",
+        desc: "Help restore a local park and build a cleaner community together."
+      },
+      {
+        title: "Brooklyn Shelter Donation Drive",
+        campus: "Non-CUNY",
+        type: "Donation Drive",
+        format: "In-Person",
+        info: "Aug 22",
+        desc: "Drop off clothing, blankets, and toiletries to support local shelters."
+      },
+      {
+        title: "Voter Registration Campaign",
+        campus: "Hunter College",
+        type: "Registration Drive",
+        format: "In-Person",
+        info: "Aug 25",
+        desc: "Assist students with voter registration during back-to-school season."
+      },
+      {
+        title: "SAT Mentorship Program",
+        campus: "City College",
+        type: "Mentorship",
+        format: "Virtual",
+        info: "Aug 30",
+        desc: "Mentor high school juniors and seniors in SAT prep and college readiness."
+      }
+    ];
+
+    const eventGrid = document.getElementById("eventGrid");
+
+    function renderEvents() {
+      const campus = document.getElementById("campusFilter").value;
+      const type = document.getElementById("typeFilter").value;
+      const format = document.getElementById("formatFilter").value;
+
+      eventGrid.innerHTML = "";
+
+      const filtered = events.filter(e =>
+        (campus === "All" || e.campus === campus) &&
+        (type === "All" || e.type === type) &&
+        (format === "All" || e.format === format)
+      );
+
+      if (filtered.length === 0) {
+        eventGrid.innerHTML = "<div class='text-center text-gray-500 italic'>No events match your filters.</div>";
+        return;
+      }
+
+      filtered.forEach(e => {
+        const card = document.createElement("div");
+        card.className = "bg-white rounded-lg p-4 shadow w-full max-w-sm";
+        card.innerHTML = `
+          <h3 class="text-xl font-semibold text-[#0056b3] mb-2">${e.title}</h3>
+          <p class="text-sm text-gray-700 mb-1"><strong>${e.info}</strong> · ${e.campus} · ${e.format}</p>
+          <p class="text-gray-600">${e.desc}</p>
+        `;
+        eventGrid.appendChild(card);
+      });
+    }
+
+    document.getElementById("campusFilter").addEventListener("change", renderEvents);
+    document.getElementById("typeFilter").addEventListener("change", renderEvents);
+    document.getElementById("formatFilter").addEventListener("change", renderEvents);
+
+    renderEvents();
+  </script>
+</body>
+
+</html>

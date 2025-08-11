@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Step 2: Orientation | CUNYServe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="font-sans text-gray-800 bg-gray-100">
+
+    <!-- Navbar placeholder -->
+    <div id="navbar-placeholder"></div>
+
+    <main class="max-w-4xl mx-auto py-10 px-4">
+        <!-- Progress Header -->
+        <header class="mb-10">
+            <h1 class="text-3xl font-bold text-center mb-4 text-[#00539B]">Volunteer Onboarding</h1>
+            <div class="flex justify-between items-center text-center">
+                <div class="step-item flex-1">
+                    <div class="text-sm font-bold text-green-600">Step 1: Account</div>
+                    <div class="text-2xl text-green-600">✅</div>
+                </div>
+                <div class="flex-1 border-t-2 border-gray-300 mx-4"></div>
+                <div class="step-item flex-1">
+                    <div class="text-sm font-bold text-[#00539B]">Step 2: Orientation</div>
+                    <div class="text-2xl">◻️</div>
+                </div>
+                <div class="flex-1 border-t-2 border-gray-300 mx-4"></div>
+                <div class="step-item flex-1">
+                    <div class="text-sm font-bold text-gray-500">Step 3: Profile</div>
+                    <div class="text-2xl">◻️</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Orientation Form -->
+        <form id="orientation-form" class="bg-white p-8 rounded-lg shadow-md space-y-8">
+
+            <!-- Section 1: Orientation Content -->
+            <section>
+                <h2 class="text-2xl font-semibold border-b pb-2 mb-4">1. Watch Orientation</h2>
+                <div class="bg-gray-200 w-full h-64 flex items-center justify-center rounded">
+                    <p class="text-gray-500">[Orientation Video Placeholder]</p>
+                </div>
+                <!-- In a real scenario, JS would track video progress. For now, we'll use a checkbox. -->
+                <div class="mt-4">
+                    <label class="flex items-center">
+                        <input type="checkbox" id="orientation_viewed" class="form-checkbox h-5 w-5 text-blue-600">
+                        <span class="ml-2">I have watched/read the orientation material.</span>
+                    </label>
+                    <p class="form-error-msg" data-for="orientation_viewed"></p>
+                </div>
+            </section>
+
+            <!-- Section 2: Acknowledgements -->
+            <section>
+                <h2 class="text-2xl font-semibold border-b pb-2 mb-4">2. Acknowledgements & Consent</h2>
+                <div class="space-y-4">
+                    <label class="flex items-center"><input type="checkbox" id="agree_code_of_conduct"
+                            class="form-checkbox"> <span class="ml-2">I agree to the Volunteer Code of
+                            Conduct.</span></label>
+                    <p class="form-error-msg" data-for="agree_code_of_conduct"></p>
+                    <label class="flex items-center"><input type="checkbox" id="agree_attendance_policy"
+                            class="form-checkbox"> <span class="ml-2">I will notify the organizer if I can't attend an
+                            event I've signed up for.</span></label>
+                    <p class="form-error-msg" data-for="agree_attendance_policy"></p>
+                    <label class="flex items-center"><input type="checkbox" id="age_confirm_18_plus"
+                            class="form-checkbox"> <span class="ml-2">I am 18 years of age or older.</span></label>
+                    <p class="form-error-msg" data-for="age_confirm_18_plus"></p>
+
+                    <!-- Conditional Guardian Fields -->
+                    <div id="guardian-fields" class="hidden pl-6 border-l-4 border-yellow-400 py-4 space-y-4">
+                        <p class="font-semibold text-yellow-800">Since you are under 18, please provide guardian
+                            information:</p>
+                        <div>
+                            <label for="guardian_name" class="block font-medium">Guardian Full Name</label>
+                            <input type="text" id="guardian_name" class="w-full mt-1 p-2 border rounded">
+                            <p class="form-error-msg" data-for="guardian_name"></p>
+                        </div>
+                        <div>
+                            <label for="guardian_phone" class="block font-medium">Guardian Phone Number</label>
+                            <input type="tel" id="guardian_phone" class="w-full mt-1 p-2 border rounded">
+                            <p class="form-error-msg" data-for="guardian_phone"></p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="font-medium mb-2">May we use photos/videos of you in promotional materials?</p>
+                        <label class="mr-4"><input type="radio" name="media_consent" value="yes"> Yes</label>
+                        <label><input type="radio" name="media_consent" value="no"> No</label>
+                    </div>
+                    <div>
+                        <p class="font-medium mb-2">Communication Preferences</p>
+                        <label class="flex items-center"><input type="checkbox" id="comms_consent_email"
+                                class="form-checkbox"> <span class="ml-2">Receive emails about new opportunities and
+                                news.</span></label>
+                        <label class="flex items-center"><input type="checkbox" id="comms_consent_sms"
+                                class="form-checkbox"> <span class="ml-2">Receive SMS alerts for event reminders
+                                (carrier rates may apply).</span></label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Emergency Contact -->
+            <section>
+                <h2 class="text-2xl font-semibold border-b pb-2 mb-4">3. Emergency Contact</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="emergency_name" class="block font-medium">Full Name</label>
+                        <input type="text" id="emergency_name" class="w-full mt-1 p-2 border rounded">
+                        <p class="form-error-msg" data-for="emergency_name"></p>
+                    </div>
+                    <div>
+                        <label for="emergency_relationship" class="block font-medium">Relationship</label>
+                        <input type="text" id="emergency_relationship" class="w-full mt-1 p-2 border rounded">
+                        <p class="form-error-msg" data-for="emergency_relationship"></p>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="emergency_phone" class="block font-medium">Phone Number</label>
+                        <input type="tel" id="emergency_phone" class="w-full mt-1 p-2 border rounded">
+                        <p class="form-error-msg" data-for="emergency_phone"></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Form Submission -->
+            <div class="flex justify-end pt-4 border-t">
+                <button type="submit"
+                    class="bg-[#00539B] text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition-colors">
+                    Save & Continue to Profile
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <!-- Script loading section (same as other pages) -->
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script>
+        async function initializePage() {
+            const navbarPlaceholder = document.getElementById('navbar-placeholder');
+            if (!navbarPlaceholder) return;
+            try {
+                const response = await fetch('/navbar.html');
+                const navbarHtml = await response.text();
+                navbarPlaceholder.innerHTML = navbarHtml;
+                const dynamicScript = document.createElement('script');
+                dynamicScript.src = '/scripts/navbar-dynamic.js';
+                document.body.appendChild(dynamicScript);
+            } catch (error) { console.error('Failed to initialize page components:', error); }
+        }
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+    <!-- Page-specific script -->
+    <script src="/scripts/onboarding-orientation.js"></script>
+
+</body>
+
+</html>

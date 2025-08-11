@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Your Profile | CUNYServe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="max-w-4xl mx-auto py-10 px-4">
+        <h1 class="text-3xl font-bold text-center mb-8 text-[#00539B]">Edit Your Volunteer Profile</h1>
+
+        <form id="edit-profile-form" class="bg-white p-8 rounded-lg shadow-md space-y-12">
+
+            <!-- Section 1: Photo & Bio -->
+            <fieldset>
+                <legend class="text-2xl font-semibold border-b pb-2 mb-6 w-full">Public Profile</legend>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                    <div class="text-center">
+                        <img id="profile_photo_preview" src="/uploads/default-avatar.png" alt="Profile Picture"
+                            class="w-32 h-32 rounded-full mx-auto mb-2 object-cover">
+                        <input type="file" id="profile_photo" class="text-sm">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="bio" class="block font-medium">Short Bio</label>
+                        <textarea id="bio" rows="5" placeholder="Tell us about yourself..."
+                            class="w-full mt-1 p-2 border rounded"></textarea>
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Section 2: Matching Preferences -->
+            <fieldset>
+                <legend class="text-2xl font-semibold border-b pb-2 mb-6 w-full">Matching Preferences</legend>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                    <div>
+                        <label class="block font-medium">Preferred Boroughs</label>
+                        <div class="grid grid-cols-2 gap-2 mt-2">
+                            <label><input type="checkbox" name="boroughs_preferred" value="Bronx"> Bronx</label>
+                            <label><input type="checkbox" name="boroughs_preferred" value="Brooklyn"> Brooklyn</label>
+                            <label><input type="checkbox" name="boroughs_preferred" value="Manhattan"> Manhattan</label>
+                            <label><input type="checkbox" name="boroughs_preferred" value="Queens"> Queens</label>
+                            <label><input type="checkbox" name="boroughs_preferred" value="Staten Island"> Staten
+                                Island</label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-medium">Preferred Opportunity Types</label>
+                        <div class="grid grid-cols-2 gap-2 mt-2">
+                            <label><input type="checkbox" name="opportunity_types" value="One-Time"> One-Time</label>
+                            <label><input type="checkbox" name="opportunity_types" value="Ongoing"> Ongoing</label>
+                            <label><input type="checkbox" name="opportunity_types" value="Remote/Virtual">
+                                Remote/Virtual</label>
+                            <label><input type="checkbox" name="opportunity_types" value="On-Site"> On-Site</label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Section 3: Causes & Skills -->
+            <fieldset>
+                <legend class="text-2xl font-semibold border-b pb-2 mb-6 w-full">Causes & Skills</legend>
+                <div>
+                    <label class="block font-medium">Causes You Care About</label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
+                        <label><input type="checkbox" name="causes" value="Education & Tutoring"> Education &
+                            Tutoring</label>
+                        <label><input type="checkbox" name="causes" value="Environmental"> Environmental</label>
+                        <label><input type="checkbox" name="causes" value="Healthcare"> Healthcare</label>
+                        <label><input type="checkbox" name="causes" value="Food Security"> Food Security</label>
+                        <label><input type="checkbox" name="causes" value="Advocacy"> Advocacy</label>
+                        <label><input type="checkbox" name="causes" value="Animals"> Animals</label>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <label for="skills" class="block font-medium">Your Skills (comma separated)</label>
+                    <input type="text" id="skills" class="w-full mt-1 p-2 border rounded"
+                        placeholder="e.g., Public Speaking, Spanish, CPR">
+                </div>
+            </fieldset>
+
+            <!-- Section 4: Academic & Logistics -->
+            <fieldset>
+                <legend class="text-2xl font-semibold border-b pb-2 mb-6 w-full">Academic & Logistics</legend>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="major_program" class="block font-medium">Major / Program</label>
+                        <input type="text" id="major_program" class="w-full mt-1 p-2 border rounded">
+                    </div>
+                    <div>
+                        <label for="graduation_year" class="block font-medium">Expected Graduation Year</label>
+                        <input type="number" id="graduation_year" placeholder="e.g., 2026"
+                            class="w-full mt-1 p-2 border rounded">
+                    </div>
+                    <div>
+                        <label for="transport_mode" class="block font-medium">Primary Mode of Transport</label>
+                        <select id="transport_mode" class="w-full mt-1 p-2 border rounded">
+                            <option value="">Select an option</option>
+                            <option value="Public Transit">Public Transit</option>
+                            <option value="Car">Car</option>
+                            <option value="Bike">Bike</option>
+                            <option value="None">None</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="shirt_size" class="block font-medium">T-Shirt Size (Optional)</label>
+                        <select id="shirt_size" class="w-full mt-1 p-2 border rounded">
+                            <option value="">Select a size</option>
+                            <option value="XS">XS</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Section 5: Emergency Contact & Consent -->
+            <fieldset>
+                <legend class="text-2xl font-semibold border-b pb-2 mb-6 w-full">Emergency Contact & Consent</legend>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="emergency_name" class="block font-medium">Emergency Contact Name</label>
+                        <input type="text" id="emergency_name" class="w-full mt-1 p-2 border rounded">
+                    </div>
+                    <div>
+                        <label for="emergency_relationship" class="block font-medium">Relationship</label>
+                        <input type="text" id="emergency_relationship" class="w-full mt-1 p-2 border rounded">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="emergency_phone" class="block font-medium">Emergency Phone</label>
+                        <input type="tel" id="emergency_phone" class="w-full mt-1 p-2 border rounded">
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <p class="font-medium mb-2">Communication Preferences</p>
+                    <label class="flex items-center"><input type="checkbox" id="comms_consent_email"> <span
+                            class="ml-2">Receive emails about new opportunities and news.</span></label>
+                    <label class="flex items-center"><input type="checkbox" id="comms_consent_sms"> <span
+                            class="ml-2">Receive SMS alerts for event reminders.</span></label>
+                </div>
+            </fieldset>
+
+            <!-- Submission Button -->
+            <div class="flex justify-end pt-6 border-t">
+                <button type="submit"
+                    class="bg-green-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-green-700 transition-colors">Save
+                    All Changes</button>
+            </div>
+        </form>
+    </main>
+
+    <!-- Script loader -->
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script>
+        async function initializePage() {
+            const navbarPlaceholder = document.getElementById('navbar-placeholder');
+            if (navbarPlaceholder) {
+                const response = await fetch('/navbar.html');
+                navbarPlaceholder.innerHTML = await response.text();
+                const script = document.createElement('script');
+                script.src = '/scripts/navbar-dynamic.js';
+                document.body.appendChild(script);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+    <script src="/scripts/profile-edit.js"></script>
+
+</body>
+
+</html>

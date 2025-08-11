@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Become a Team Leader | CUNYServe</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+</head>
+
+<body class="font-sans text-gray-800">
+
+  <!-- Navbar -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- Hero Section -->
+  <section class="bg-[#00539B] text-white py-16 text-center">
+    <h1 class="text-4xl font-bold mb-2">Become a Team Leader</h1>
+    <p class="text-lg">Lead change. Inspire others. Make your mark through service.</p>
+  </section>
+
+  <!-- Why Lead -->
+  <section class="bg-white py-12 px-4">
+    <div class="max-w-5xl mx-auto text-center">
+      <h2 class="text-2xl font-bold text-[#00539B] mb-4">Why Become a Team Leader?</h2>
+      <p class="text-gray-700 mb-10 text-lg leading-relaxed">
+        Team Leaders are the heart of CUNYServe. You’ll organize volunteer projects, rally students, and bring real
+        change to your community — while gaining leadership skills that last a lifetime.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+        <div class="bg-gray-100 p-6 rounded-lg shadow-sm">
+          <h3 class="font-semibold text-[#00539B] text-lg mb-2">🎓 Build Your Resume</h3>
+          <p>Gain experience in leadership, planning, and outreach — all valuable for future careers.</p>
+        </div>
+        <div class="bg-gray-100 p-6 rounded-lg shadow-sm">
+          <h3 class="font-semibold text-[#00539B] text-lg mb-2">🤝 Inspire Your Peers</h3>
+          <p>Motivate other students to get involved and make service a part of CUNY culture.</p>
+        </div>
+        <div class="bg-gray-100 p-6 rounded-lg shadow-sm">
+          <h3 class="font-semibold text-[#00539B] text-lg mb-2">🌎 Create Lasting Impact</h3>
+          <p>Lead meaningful projects that directly help NYC communities in need.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="bg-gray-50 py-12 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-2xl font-bold text-[#00539B] mb-6">How to Get Started</h2>
+      <ol class="text-left space-y-4 text-lg text-gray-700">
+        <li><strong>1.</strong> Fill out a short interest form (linked below).</li>
+        <li><strong>2.</strong> Attend a 30-minute virtual training session.</li>
+        <li><strong>3.</strong> Propose your own volunteer idea or choose one from our list.</li>
+        <li><strong>4.</strong> Lead your project with support from the CUNYServe team.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="bg-white py-12 px-4">
+    <div class="max-w-2xl mx-auto text-center">
+      <h2 class="text-xl font-semibold text-[#00539B] mb-4">Ready to Lead?</h2>
+      <p class="text-gray-700 mb-6">Fill out our interest form and a team member will reach out to guide you through the
+        next steps.</p>
+      <a href="https://example.com/team-leader-form" target="_blank"
+        class="bg-[#00539B] text-white px-6 py-3 rounded-full hover:bg-blue-800 transition">Apply to Be a Team
+        Leader</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 py-8 mt-10">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm px-4">
+      <p>&copy; 2025 CUNYServe. All rights reserved.</p>
+      <div class="space-x-4 mt-4 md:mt-0">
+        <a href="#" class="hover:text-white">Privacy</a>
+        <a href="#" class="hover:text-white">Terms</a>
+        <a href="#" class="hover:text-white">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- NEW: Script loading order -->
+  <!-- 1) Alpine.js -->
+  <script src="//unpkg.com/alpinejs" defer></script>
+
+  <!-- 2) Inject navbar, then load dynamic navbar behavior -->
+  <script>
+    async function loadNavbar() {
+      try {
+        const response = await fetch('/navbar.html');
+        const data = await response.text();
+        document.getElementById('navbar-placeholder').innerHTML = data;
+
+        const dynamicScript = document.createElement('script');
+        dynamicScript.src = '/scripts/navbar-dynamic.js';
+        document.body.appendChild(dynamicScript);
+      } catch (error) {
+        console.error('Failed to load navbar:', error);
+      }
+    }
+    loadNavbar();
+  </script>
+
+</body>
+
+</html>

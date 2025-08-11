@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account | CUNYServe</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800 font-sans">
+  <!-- Navbar -->
+  <!-- At the bottom of EVERY .html file -->
+  
+  <div id="navbar-placeholder"></div>
+  
+  <!-- 1. Alpine.js for dropdowns and other UI interactivity -->
+  <script src="//unpkg.com/alpinejs" defer></script>
+  
+  <!-- 2. The script to fetch and inject the navbar HTML -->
+  <script>
+    // This script now loads the navbar and THEN our dynamic script
+    async function loadNavbar() {
+      try {
+        const response = await fetch('/navbar.html');
+        const data = await response.text();
+        document.getElementById('navbar-placeholder').innerHTML = data;
+
+        // Now that the navbar HTML is loaded, load the dynamic script
+        const dynamicScript = document.createElement('script');
+        dynamicScript.src = '/scripts/navbar-dynamic.js';
+        document.body.appendChild(dynamicScript);
+
+      } catch (error) {
+        console.error('Failed to load navbar:', error);
+      }
+    }
+    loadNavbar();
+  </script>
+
+  <!-- Steps Section -->
+  <section class="bg-white py-12 px-4">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-3xl font-bold text-[#00539B] mb-4">
+        Join CUNY students making a difference — in just 3 easy steps.
+      </h2>
+      <p class="text-gray-600 mb-10">
+        To build a trusted and impactful volunteer network, all members complete these steps. After this, you're ready
+        to start giving back anywhere, anytime.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-left">
+        <div class="bg-gray-50 p-6 rounded shadow">
+          <h3 class="text-5xl font-bold text-[#00539B] mb-2">01</h3>
+          <p class="text-lg font-semibold mb-1">Sign up with your CUNY email</p>
+          <p class="text-sm text-gray-600">(You’re on this step)</p>
+        </div>
+        <div class="bg-gray-50 p-6 rounded shadow">
+          <h3 class="text-5xl font-bold text-[#00539B] mb-2">02</h3>
+          <p class="text-lg font-semibold mb-1">Complete a short orientation</p>
+          <p class="text-sm text-gray-600">Takes just 10–15 minutes</p>
+        </div>
+        <div class="bg-gray-50 p-6 rounded shadow">
+          <h3 class="text-5xl font-bold text-[#00539B] mb-2">03</h3>
+          <p class="text-lg font-semibold mb-1">Set up your volunteer profile</p>
+          <p class="text-sm text-gray-600">Include your interests & availability</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Signup Form -->
+  <div class="flex justify-center items-center py-16 px-4">
+    <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+      <h2 class="text-2xl font-bold mb-6 text-center text-[#00539B]">Create an Account</h2>
+
+      <form id="signup-form" novalidate>
+        <!-- Full Name -->
+        <div class="mb-4">
+          <label for="name" class="block mb-1 font-medium">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="Your Name" autocomplete="name" required
+            class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#00539B]" />
+        </div>
+
+        <!-- Email -->
+        <div class="mb-4">
+          <label for="email" class="block mb-1 font-medium">CUNY Email</label>
+          <input type="email" id="email" name="email" placeholder="you@cuny.edu" autocomplete="email" required
+            class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#00539B]" />
+        </div>
+
+        <!-- Password -->
+        <div class="mb-4">
+          <label for="password" class="block mb-1 font-medium">Password</label>
+          <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="new-password"
+            minlength="8" required
+            class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#00539B]" />
+          <p class="text-xs text-gray-500 mt-1">Minimum 8 characters.</p>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="mb-4">
+          <label for="confirmPassword" class="block mb-1 font-medium">Confirm Password</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter password"
+            autocomplete="new-password" required
+            class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#00539B]" />
+          <p id="passwordError" class="text-sm text-red-600 mt-1 hidden">Passwords do not match.</p>
+        </div>
+
+        <!-- Campus -->
+        <div class="mb-4">
+          <label for="campus" class="block mb-1 font-medium">Which CUNY campus are you from?</label>
+          <select id="campus" name="campus" required
+            class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#00539B]">
+            <option disabled selected value="">Select your campus</option>
+            <option>Baruch College</option>
+            <option>Brooklyn College</option>
+            <option>Borough of Manhattan Community College (BMCC)</option>
+            <option>Bronx Community College</option>
+            <option>City College of New York (CCNY)</option>
+            <option>College of Staten Island</option>
+            <option>CUNY School of Law</option>
+            <option>Guttman Community College</option>
+            <option>Hostos Community College</option>
+            <option>Hunter College</option>
+            <option>John Jay College of Criminal Justice</option>
+            <option>Kingsborough Community College</option>
+            <option>LaGuardia Community College</option>
+            <option>Lehman College</option>
+            <option>Medgar Evers College</option>
+            <option>New York City College of Technology</option>
+            <option>Queens College</option>
+            <option>Queensborough Community College</option>
+            <option>York College</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <!-- Other Campus -->
+        <div class="mb-4 hidden" id="otherCampusDiv">
+          <label for="otherCampus" class="block mb-1 font-medium">Please specify your campus</label>
+          <input type="text" id="otherCampus" name="otherCampus" placeholder="Your Campus Name"
+            class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#00539B]" />
+        </div>
+
+        <!-- Interests -->
+        <div class="mb-4">
+          <label for="interests" class="block mb-1 font-medium">What causes interest you most?</label>
+          <select id="interests" name="interests" multiple
+            class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#00539B]">
+            <option>Education & Tutoring</option>
+            <option>Environmental Projects</option>
+            <option>Healthcare & Wellness</option>
+            <option>Food Drives & Hunger Relief</option>
+            <option>Voter Registration & Advocacy</option>
+            <option>Community Clean-Ups</option>
+            <option>Nonprofit Support</option>
+          </select>
+          <p class="text-sm text-gray-500 mt-1">Hold Ctrl (or Command) to select multiple.</p>
+        </div>
+
+        <!-- Availability -->
+        <div class="mb-4">
+          <label class="block mb-1 font-medium">When are you usually available?</label>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="inline-flex items-center">
+              <input type="checkbox" name="availability" value="weekdays_day" class="mr-2" /> Weekdays (Day)
+            </label>
+            <label class="inline-flex items-center">
+              <input type="checkbox" name="availability" value="weekdays_evening" class="mr-2" /> Weekdays (Evening)
+            </label>
+            <label class="inline-flex items-center">
+              <input type="checkbox" name="availability" value="weekends" class="mr-2" /> Weekends
+            </label>
+            <label class="inline-flex items-center">
+              <input type="checkbox" name="availability" value="remote" class="mr-2" /> Remote/Flexible
+            </label>
+          </div>
+        </div>
+
+        <!-- Bio -->
+        <div class="mb-4">
+          <label for="bio" class="block mb-1 font-medium">Why do you want to volunteer?</label>
+          <textarea id="bio" name="bio" rows="3" placeholder="Share a bit about your goals or background..."
+            class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#00539B]"></textarea>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="w-full bg-[#00539B] text-white py-2 rounded hover:bg-blue-700">
+          Sign Up
+        </button>
+      </form>
+
+      <p class="text-sm mt-4 text-center">
+        Already have an account?
+        <a href="login.html" class="text-[#00539B] hover:underline">Log in</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="scripts/auth.js"></script>
+  <script>
+    // Load navbar HTML, then attach shared navbar.js
+    fetch("navbar.html")
+      .then((res) => res.text())
+      .then((data) => {
+        document.getElementById("navbar-placeholder").innerHTML = data;
+        const script = document.createElement("script");
+        script.src = "navbar.js";
+        document.body.appendChild(script);
+      });
+
+    // Form helpers
+    const campusSelect = document.getElementById("campus");
+    const otherCampusDiv = document.getElementById("otherCampusDiv");
+    const otherCampusInput = document.getElementById("otherCampus");
+    const form = document.getElementById("signup-form");
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirmPassword");
+    const passwordError = document.getElementById("passwordError");
+
+    function toggleOtherCampus() {
+      const isOther = campusSelect.value === "Other";
+      otherCampusDiv.classList.toggle("hidden", !isOther);
+      otherCampusInput.required = isOther;
+      if (!isOther) otherCampusInput.value = "";
+    }
+
+    campusSelect.addEventListener("change", toggleOtherCampus);
+    document.addEventListener("DOMContentLoaded", toggleOtherCampus);
+
+    function checkPasswordsMatch() {
+      const match = password.value === confirmPassword.value;
+      passwordError.classList.toggle("hidden", match);
+      confirmPassword.setCustomValidity(match ? "" : "Passwords do not match");
+    }
+
+    password.addEventListener("input", checkPasswordsMatch);
+    confirmPassword.addEventListener("input", checkPasswordsMatch);
+
+    // Prevent default submit if client-side invalid; js/auth.js should handle actual submission
+    form.addEventListener("submit", (e) => {
+      checkPasswordsMatch();
+      if (!form.checkValidity()) {
+        e.preventDefault();
+        form.reportValidity();
+      }
+      // Else, let js/auth.js intercept/handle via its own listener if attached.
+    });
+  </script>
+</body>
+
+</html>
