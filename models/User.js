@@ -12,7 +12,17 @@ const UserSchema = new mongoose.Schema({
     causes_interests: { type: [String], default: [] },
     availability_basic: { type: [String], default: [] },
     motivation: { type: String, default: '' },
-    
+    isVerified: { // <-- NEW
+        type: Boolean,
+        default: false
+    },
+    emailVerificationToken: String, // <-- NEW
+    emailVerificationExpires: Date, // <-- NEW
+
+    passwordResetToken: String,      // <-- NEW
+    passwordResetExpires: Date,      // <-- NEW
+
+
     // --- NEW FIELD FOR ONBOARDING ---
     onboardingStatus: {
         type: String,

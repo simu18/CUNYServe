@@ -1,167 +1,185 @@
-// public/js/auth.js
+// public/scripts/auth.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    const signupForm = document.getElementById('signup-form');
-    const loginForm = document.getElementById('login-form');
-  
-    // Helper: safely get element value
-    const val = (id) => (document.getElementById(id)?.value ?? '').trim();
-  
-    // Helper: show an error either inline (if slot exists) or via alert
-    function showError(message, slotId) {
-      const slot = slotId ? document.getElementById(slotId) : null;
-      if (slot) {
-        slot.textContent = message || 'Something went wrong.';
-        slot.classList.remove('hidden');
-      } else {
-        alert(message || 'Something went wrong.');
+  // ====== SIGNUP FORM ======
+  const signupForm = document.getElementById('signup-form');
+  if (signupForm) {
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name')?.value;
+      const email = document.getElementById('email')?.value;
+      const password = document.getElementById('password')?.value;
+      const campus = document.getElementById('campus')?.value;
+      const errorEl = document.getElementById('signupError');
+
+      try {
+        const res = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password, campus })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          // Show message or redirect to a "check your email" page if you like
+          alert('Signup successful! Please verify your email before logging in.');
+          window.location.href = '/login.html';
+        } else {
+          if (errorEl) {
+            errorEl.textContent = data.msg || 'Signup failed.';
+            errorEl.classList.remove('hidden');
+          } else {
+            alert(data.msg || 'Signup failed.');
+          }
+        }
+      } catch (err) {
+        if (errorEl) {
+          errorEl.textContent = 'An error occurred. Please try again.';
+          errorEl.classList.remove('hidden');
+        } else {
+          alert('An error occurred. Please try again.');
+        }
       }
-    }
-  
-    // Helper: button state toggle
-    function setSubmitting(form, isSubmitting, submittingText) {
-      const btn = form.querySelector('button[type="submit"]');
-      if (!btn) return () => {};
-      const original = btn.textContent;
-      btn.disabled = isSubmitting;
-      btn.textContent = isSubmitting ? (submittingText || 'Please wait…') : original;
-      return () => {
-        btn.disabled = false;
-        btn.textContent = original;
-      };
-    }
-  
-    // -------------------------
-    // SIGNUP
-    // -------------------------
-    if (signupForm) {
-      signupForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-  
-        const name = val('name');
-        const email = val('email');
-        const password = val('password');
-        const confirmPassword = val('confirmPassword');
-        const campusSelected = val('campus');
-        const otherCampus = val('otherCampus');
-  
-        // Build extras if present in the DOM
-        const interestsSelect = document.getElementById('interests');
-        const interests = interestsSelect
-          ? Array.from(interestsSelect.selectedOptions).map((o) => o.value)
-          : [];
-  
-        const availability = Array.from(
-          document.querySelectorAll('input[name="availability"]:checked')
-        ).map((cb) => cb.value);
-  
-        const bio = val('bio');
-  
-        // Client-side checks
-        if (password !== confirmPassword) {
-          return showError('Passwords do not match.');
-        }
-        if (!campusSelected) {
-          return showError('Please select your campus.');
-        }
-        if (campusSelected === 'Other' && !otherCampus) {
-          return showError('Please specify your campus in the "Other" field.');
-        }
-  
-        const campus = campusSelected === 'Other' ? otherCampus : campusSelected;
-  
-        const userData = {
-          name,
-          email,
-          password,
-          campus,
-          // Optional additional profile fields
-          // (your backend maps these to new names if needed)
-          interests,
-          availability,
-          bio,
-        };
-  
-        const restore = setSubmitting(signupForm, true, 'Signing up…');
-  
-        try {
-          const response = await fetch('/api/auth/signup', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userData),
-            credentials: 'include',
-          });
-  
-          let payload = {};
-          try { payload = await response.json(); } catch (_) {}
-  
-          if (response.ok) {
-            alert(payload.msg || 'Signup successful! Redirecting to login…');
-            window.location.href = '/login.html';
+    });
+  }
+
+  // ====== LOGIN FORM ======
+  const loginForm = document.getElementById('login-form');
+  if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email')?.value;
+      const password = document.getElementById('password')?.value;
+      const loginError = document.getElementById('loginError');
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          window.location.href = '/dashboard.html';
+        } else {
+          const msg = data.msg || 'Login failed.';
+          if (loginError) {
+            loginError.textContent = msg;
+            loginError.classList.remove('hidden');
           } else {
-            showError(payload.msg || 'Signup failed. Please try again.');
+            alert(msg);
           }
-        } catch (err) {
-          console.error('Signup error:', err);
-          showError('An error occurred during signup. Please try again.');
-        } finally {
-          restore();
         }
-      });
-    }
-  
-    // -------------------------
-    // LOGIN (with onboarding redirect)
-    // -------------------------
-    if (loginForm) {
-      const errorSlotId = 'loginError'; // present in your updated login.html
-  
-      loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-  
-        // Hide previous error if visible
-        const slot = document.getElementById(errorSlotId);
-        if (slot) slot.classList.add('hidden');
-  
-        const email = val('email');
-        const password = val('password');
-  
-        const restore = setSubmitting(loginForm, true, 'Logging in…');
-  
-        try {
-          const response = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
-            credentials: 'include',
-          });
-  
-          // Parse once for both success/error paths
-          let payload = {};
-          try { payload = await response.json(); } catch (_) {}
-  
-          if (response.ok) {
-            // NEW: redirect based on onboarding status
-            const user = payload || {};
-            const status =
-              (user.onboardingStatus || user.onboarding_status || '').toLowerCase();
-  
-            if (status === 'profile_complete') {
-              window.location.href = '/dashboard.html';
-            } else {
-              // Not finished onboarding -> send to orientation start
-              window.location.href = '/onboarding-orientation.html';
-            }
+      } catch (err) {
+        if (loginError) {
+          loginError.textContent = 'An error occurred. Please try again.';
+          loginError.classList.remove('hidden');
+        } else {
+          alert('An error occurred. Please try again.');
+        }
+      }
+    });
+  }
+
+  // ====== FORGOT PASSWORD FORM ======
+  const forgotPasswordForm = document.getElementById('forgot-password-form');
+  if (forgotPasswordForm) {
+    forgotPasswordForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email')?.value;
+      const messageContainer = document.getElementById('message-container');
+
+      try {
+        const res = await fetch('/api/auth/forgotpassword', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+
+        if (messageContainer) {
+          messageContainer.innerHTML = `<div class="bg-green-100 text-green-700 p-4 rounded">${data.msg}</div>`;
+          messageContainer.classList.remove('hidden');
+        } else {
+          alert(data.msg);
+        }
+        forgotPasswordForm.reset();
+      } catch (err) {
+        if (messageContainer) {
+          messageContainer.innerHTML = `<div class="bg-red-100 text-red-700 p-4 rounded">An error occurred. Please try again.</div>`;
+          messageContainer.classList.remove('hidden');
+        } else {
+          alert('An error occurred. Please try again.');
+        }
+      }
+    });
+  }
+
+  // ====== RESET PASSWORD FORM ======
+  const resetPasswordForm = document.getElementById('reset-password-form');
+  if (resetPasswordForm) {
+    resetPasswordForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const password = document.getElementById('password')?.value;
+      const confirmPassword = document.getElementById('confirmPassword')?.value;
+      const messageContainer = document.getElementById('message-container');
+
+      if (password !== confirmPassword) {
+        if (messageContainer) {
+          messageContainer.innerHTML = `<div class="bg-red-100 text-red-700 p-4 rounded">Passwords do not match.</div>`;
+          messageContainer.classList.remove('hidden');
+        } else {
+          alert('Passwords do not match.');
+        }
+        return;
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('token');
+      if (!token) {
+        if (messageContainer) {
+          messageContainer.innerHTML = `<div class="bg-red-100 text-red-700 p-4 rounded">Invalid or missing reset token.</div>`;
+          messageContainer.classList.remove('hidden');
+        } else {
+          alert('Invalid or missing reset token.');
+        }
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/auth/resetpassword/${token}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          if (messageContainer) {
+            messageContainer.innerHTML = `<div class="bg-green-100 text-green-700 p-4 rounded">${data.msg}</div>`;
+            messageContainer.classList.remove('hidden');
           } else {
-            showError(payload?.msg || 'Login failed. Please check your credentials.', errorSlotId);
+            alert(data.msg);
           }
-        } catch (err) {
-          console.error('Login error:', err);
-          showError('An error occurred during login. Please try again.', errorSlotId);
-        } finally {
-          restore();
+          resetPasswordForm.style.display = 'none';
+          setTimeout(() => { window.location.href = '/login.html'; }, 3000);
+        } else {
+          if (messageContainer) {
+            messageContainer.innerHTML = `<div class="bg-red-100 text-red-700 p-4 rounded">${data.msg}</div>`;
+            messageContainer.classList.remove('hidden');
+          } else {
+            alert(data.msg);
+          }
         }
-      });
-    }
-  });
-  
+      } catch (err) {
+        if (messageContainer) {
+          messageContainer.innerHTML = `<div class="bg-red-100 text-red-700 p-4 rounded">An error occurred. Please try again.</div>`;
+          messageContainer.classList.remove('hidden');
+        } else {
+          alert('An error occurred. Please try again.');
+        }
+      }
+    });
+  }
+});

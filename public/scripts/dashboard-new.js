@@ -1,3 +1,5 @@
+// public/scripts/dashboard-new.js (Final Version with Full CRUD + eventDataTransform fix)
+
 document.addEventListener('DOMContentLoaded', async () => {
   // --- DOM Elements ---
   const calendarEl = document.getElementById('calendar');
@@ -22,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const cancelEventBtn = document.getElementById('cancel-event-btn');
   const deleteEventBtn = document.getElementById('delete-event-btn');
 
-  // --- State Check & Data Population (now uses /api/profile/all) ---
+  // --- Initial Data Fetch and Population ---
   let currentUser = null;
   let userProfile = null;
 
@@ -32,9 +34,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       window.location.href = '/login.html';
       return;
     }
-
     const allData = await res.json();
-    currentUser = allData.user;
+    currentUser = allData.user || {};
     userProfile = allData.profile || {};
 
     // Welcome
@@ -50,7 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       sidebarName.textContent = currentUser?.name || 'User';
     }
 
-    // Sidebar details (enhanced)
+    // Sidebar details
     if (sidebarDetails) {
       let detailsHtml = `
         <div class="mb-4">
@@ -63,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
       `;
 
-      if (userProfile.bio) {
+      if (userProfile?.bio) {
         detailsHtml += `
           <div class="mb-4">
             <div class="font-semibold text-gray-800">Bio</div>
@@ -72,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         `;
       }
 
-      if (Array.isArray(userProfile.skills) && userProfile.skills.length > 0) {
+      if (Array.isArray(userProfile?.skills) && userProfile.skills.length > 0) {
         detailsHtml += `
           <div class="mb-4">
             <div class="font-semibold text-gray-800">Skills</div>
@@ -88,7 +89,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         `;
       }
 
-      if (Array.isArray(userProfile.causes) && userProfile.causes.length > 0) {
+      if (Array.isArray(userProfile?.causes) && userProfile.causes.length > 0) {
         detailsHtml += `
           <div class="mb-4">
             <div class="font-semibold text-gray-800">Causes</div>
@@ -137,21 +138,59 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // --- Modal Control Functions (must be defined BEFORE calendar) ---
-  const openModal = (data = {}) => {
-    if (!eventForm) return;
+  // --- Guards ---
+  if (!calendarEl || typeof FullCalendar === 'undefined') {
+    console.error('Calendar cannot be initialized: element or FullCalendar missing.');
+    return;
+  }
+  if (!eventModal || !eventForm) {
+    console.error('Event modal or form not found.');
+    return;
+  }
 
+  // Util: Date -> "YYYY-MM-DDTHH:MM" in local time (for datetime-local inputs)
+  const toLocalISOString = (date) => {
+    if (!date) return '';
+    const d = new Date(date);
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().slice(0, 16);
+  };
+
+  // --- Modal Control ---
+  const openModal = (data = {}) => {
     eventForm.reset();
-    modalTitle.textContent = data.id ? 'Edit Schedule' : '+ Add Schedule';
-    eventIdInput.value = data.id || '';
-    eventTitleInput.value = data.title || '';
-    eventStartInput.value = data.startStr ? data.startStr.slice(0, 16) : '';
-    eventEndInput.value = data.endStr ? data.endStr.slice(0, 16) : '';
-    eventLocationInput.value = data.extendedProps?.location || '';
-    eventDescriptionInput.value = data.extendedProps?.description || '';
+
+    // Normalize data: accept either a raw object or FullCalendar EventApi
+    const isEventApi = typeof data.getProp === 'function'; // EventApi has getProp
+    const normalized = isEventApi
+      ? {
+          id: data.id,
+          title: data.title,
+          start: data.start,
+          end: data.end,
+          extendedProps: data.extendedProps || {},
+        }
+      : {
+          id: data.id || data._id || '',
+          title: data.title || '',
+          start: data.start || data.startStr || '',
+          end: data.end || data.endStr || '',
+          extendedProps: data.extendedProps || {
+            location: data.location,
+            description: data.description,
+          },
+        };
+
+    modalTitle.textContent = normalized.id ? 'Edit Schedule' : '+ Add Schedule';
+    eventIdInput.value = normalized.id || '';
+    eventTitleInput.value = normalized.title || '';
+    eventStartInput.value = toLocalISOString(normalized.start);
+    eventEndInput.value = toLocalISOString(normalized.end);
+    eventLocationInput.value = normalized.extendedProps?.location || '';
+    eventDescriptionInput.value = normalized.extendedProps?.description || '';
 
     if (deleteEventBtn) {
-      deleteEventBtn.classList.toggle('hidden', !data.id);
+      deleteEventBtn.classList.toggle('hidden', !normalized.id);
     }
 
     eventModal.classList.remove('hidden');
@@ -163,12 +202,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     eventModal.classList.remove('flex');
   };
 
-  // --- FullCalendar Initialization ---
-  if (!calendarEl || typeof FullCalendar === 'undefined') {
-    console.error('Calendar cannot be initialized: element or FullCalendar missing.');
-    return;
-  }
-
+  // --- FullCalendar Initialization (Corrected Version) ---
   const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
     headerToolbar: {
@@ -182,82 +216,90 @@ document.addEventListener('DOMContentLoaded', async () => {
         click: () => openModal(),
       },
     },
-    events: '/api/events',
+
+    // Fetch events from API with failure handler
+    events: {
+      url: '/api/events',
+      failure: function () {
+        alert('There was an error while fetching events!');
+      },
+    },
+
+    // === CRITICAL FIX: map MongoDB shape to FullCalendar ===
+    eventDataTransform: function (eventInfo) {
+      return {
+        id: eventInfo._id, // map _id -> id
+        title: eventInfo.title,
+        start: eventInfo.start,
+        end: eventInfo.end,
+        extendedProps: {
+          location: eventInfo.location,
+          description: eventInfo.description,
+        },
+      };
+    },
+
     editable: true,
     selectable: true,
 
     dateClick: (info) => {
-      openModal({ startStr: info.dateStr + 'T12:00' });
+      // Open modal pre-filled with the clicked date
+      openModal({ start: info.date, end: info.date });
     },
 
     eventClick: (info) => {
-      const startISO = info.event.start ? new Date(info.event.start).toISOString() : '';
-      const endISO = info.event.end
-        ? new Date(info.event.end).toISOString()
-        : startISO || new Date().toISOString();
-
-      const eventData = {
-        id: info.event.id,
-        title: info.event.title,
-        startStr: startISO,
-        endStr: endISO,
-        extendedProps: {
-          location: info.event.extendedProps.location,
-          description: info.event.extendedProps.description,
-        },
-      };
-      openModal(eventData);
+      // info.event.id now correctly contains MongoDB _id
+      openModal(info.event);
     },
   });
 
   calendar.render();
 
-  // --- Form Submission Logic ---
-  if (eventForm) {
-    eventForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+  // --- Create/Update ---
+  eventForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-      const eventData = {
-        title: eventTitleInput.value,
-        start: eventStartInput.value,
-        end: eventEndInput.value,
-        location: eventLocationInput.value,
-        description: eventDescriptionInput.value,
-      };
+    const eventData = {
+      title: eventTitleInput.value,
+      start: eventStartInput.value, // "YYYY-MM-DDTHH:MM"
+      end: eventEndInput.value || null,
+      location: eventLocationInput.value,
+      description: eventDescriptionInput.value,
+    };
 
-      const eventId = eventIdInput.value;
-      const isEditing = !!eventId;
-      const url = isEditing ? `/api/events/${eventId}` : '/api/events';
-      const method = isEditing ? 'PUT' : 'POST';
+    const eventId = eventIdInput.value;
+    const isEditing = !!eventId;
+    const url = isEditing ? `/api/events/${encodeURIComponent(eventId)}` : '/api/events';
+    const method = isEditing ? 'PUT' : 'POST';
 
-      try {
-        const res = await fetch(url, {
-          method,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(eventData),
-        });
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(eventData),
+      });
 
-        if (res.ok) {
-          closeModal();
-          calendar.refetchEvents();
-        } else {
-          alert('Error: Could not save event.');
-        }
-      } catch (error) {
-        console.error('Failed to save event:', error);
+      if (res.ok) {
+        closeModal();
+        calendar.refetchEvents(); // refresh from server
+      } else {
+        alert('Error: Could not save event.');
       }
-    });
-  }
+    } catch (error) {
+      console.error('Failed to save event:', error);
+      alert('Network error while saving the event.');
+    }
+  });
 
-  // --- Delete Button Logic ---
+  // --- Delete ---
   if (deleteEventBtn) {
     deleteEventBtn.addEventListener('click', async () => {
       const eventId = eventIdInput.value;
       if (!eventId) return;
 
-      if (confirm('Are you sure you want to delete this event?')) {
+      if (confirm('Are you sure you want to delete this event? This cannot be undone.')) {
         try {
-          const res = await fetch(`/api/events/${eventId}`, { method: 'DELETE' });
+          const res = await fetch(`/api/events/${encodeURIComponent(eventId)}`, { method: 'DELETE' });
           if (res.ok) {
             closeModal();
             calendar.refetchEvents();
@@ -266,12 +308,13 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
         } catch (error) {
           console.error('Delete error:', error);
+          alert('Network error while deleting the event.');
         }
       }
     });
   }
 
-  // --- Modal Cancel Button ---
+  // --- Cancel ---
   if (cancelEventBtn) {
     cancelEventBtn.addEventListener('click', closeModal);
   }
