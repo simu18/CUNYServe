@@ -1,40 +1,62 @@
-// models/Event.js
+// models/Event.js (Merged & Enhanced)
 
 const mongoose = require('mongoose');
 
 const EventSchema = new mongoose.Schema({
-    // This creates a direct link to a document in the 'User' collection.
-    // It's essential for ensuring users can only see and manage their own events.
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+    // --- Core Details ---
+    title: { 
+        type: String, 
+        required: true, 
+        trim: true 
     },
-    title: {
-        type: String,
-        required: true,
-        trim: true
+    description: { 
+        type: String, 
+        trim: true,
+        required: function() {
+            // Keep old logic: description optional for private events,
+            // required for public events
+            return this.isPublic;
+        }
     },
-    start: {
-        type: Date,
-        required: true
+    start: { 
+        type: Date, 
+        required: true 
     },
-    end: {
-        type: Date,
-        required: true
+    end: { 
+        type: Date, 
+        required: true 
     },
-    location: {
-        type: String,
-        trim: true
+    location: { 
+        type: String, 
+        trim: true 
     },
-    description: {
-        type: String,
-        trim: true
+
+    // --- New Fields for Public Events ---
+    partnerName: { type: String }, // e.g., "Rescuing Leftover Cuisine"
+    address: { type: String },
+    mapURL: { type: String },
+    sourceUrl: { type: String },
+
+    // Indicates if this is a user's private calendar entry or a public event
+    isPublic: { type: Boolean, default: false },
+
+    // If it's a private user event, this is the user it belongs to
+    userId: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User' 
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
+
+    // If it was created from a scraped event, this links back to the source
+    scrapedEventId: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'ScrapedEvent' 
+    },
+
+    // For legacy compatibility — still have a createdAt timestamp
+    createdAt: { 
+        type: Date, 
+        default: Date.now 
     }
-});
+}, { timestamps: true }); // Adds createdAt & updatedAt automatically
 
 module.exports = mongoose.model('Event', EventSchema);

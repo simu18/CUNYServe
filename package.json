@@ -23,7 +23,11 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.1",
     "multer": "^2.0.2",
-    "nodemailer": "^7.0.5"
+    "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.5",
+    "puppeteer-core": "^24.16.2",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
   },
   "description": ""
 }
