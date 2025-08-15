@@ -6,115 +6,558 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pre-Med & Health Pathways | CUNYServe</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f7ff',
+              100: '#e1effe',
+              200: '#bcdbfe',
+              300: '#7fbfff',
+              400: '#3b9bff',
+              500: '#0d79ff',
+              600: '#005ae6',
+              700: '#0046ba',
+              800: '#003d92',
+              900: '#003479',
+            },
+            secondary: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              200: '#ddd6fe',
+              300: '#c4b5fd',
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95',
+            }
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'float-reverse': 'float-reverse 6s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-20px)' },
+            },
+            'float-reverse': {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(20px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .gradient-text {
+      background: linear-gradient(90deg, #5789b5 0%, #82beff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .card-hover {
+      transition: all 0.3s ease;
+      transform: translateY(0);
+    }
+
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .pulse-dot {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(0, 83, 155, 0.7);
+      }
+
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(0, 83, 155, 0);
+      }
+
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(0, 83, 155, 0);
+      }
+    }
+  </style>
 </head>
 
-<body class="font-sans text-gray-800">
+<body class="font-sans text-gray-800 bg-gray-50">
 
   <!-- Navbar Placeholder -->
   <div id="navbar-placeholder"></div>
 
   <!-- Hero Section -->
-  <section class="bg-[#00539B] text-white py-16 text-center">
-    <h1 class="text-4xl font-bold mb-4">Pre-Med & Health Pathways</h1>
-    <p class="text-lg max-w-3xl mx-auto px-4">
-      Explore opportunities designed for pre-med, nursing, and healthcare students seeking hands-on volunteer experience
-      in hospitals, clinics, and community health programs.
-    </p>
+  <section
+    class="relative overflow-hidden bg-gradient-to-r from-primary-700 to-primary-500 text-white py-20 md:py-28 text-center">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-0 left-1/4 w-32 h-32 rounded-full bg-white mix-blend-overlay animate-float"></div>
+      <div class="absolute top-1/3 right-1/4 w-24 h-24 rounded-full bg-white mix-blend-overlay animate-float-reverse">
+      </div>
+      <div class="absolute bottom-0 left-1/2 w-40 h-40 rounded-full bg-white mix-blend-overlay animate-float"></div>
+    </div>
+    <div class="max-w-6xl mx-auto px-4 relative z-10">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6 animate__animated animate__fadeInDown">
+        <span class="gradient-text bg-clip-text text-transparent">Pre-Med & Health Pathways</span>
+      </h1>
+      <p class="text-lg md:text-xl max-w-3xl mx-auto px-4 animate__animated animate__fadeIn animate__delay-1s">
+        Launch your healthcare career with hands-on experience in hospitals, clinics, and community health programs.
+      </p>
+      <div class="mt-8 animate__animated animate__fadeIn animate__delay-2s">
+        <a href="#opportunities"
+          class="inline-flex items-center px-6 py-3 bg-white text-primary-700 font-medium rounded-full hover:bg-gray-100 transition duration-300 shadow-lg">
+          Explore Opportunities
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+              d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+              clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="py-12 bg-white">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div class="p-6">
+          <div class="text-4xl font-bold text-primary-600 mb-2">85%</div>
+          <div class="text-gray-600">Medical school acceptance rate for students with healthcare volunteering</div>
+        </div>
+        <div class="p-6">
+          <div class="text-4xl font-bold text-primary-600 mb-2">200+</div>
+          <div class="text-gray-600">Clinical hours gained through our partner programs</div>
+        </div>
+        <div class="p-6">
+          <div class="text-4xl font-bold text-primary-600 mb-2">30</div>
+          <div class="text-gray-600">Partner healthcare institutions</div>
+        </div>
+        <div class="p-6">
+          <div class="text-4xl font-bold text-primary-600 mb-2">100%</div>
+          <div class="text-gray-600">Of volunteers report increased confidence in patient care</div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Why Volunteer Section -->
-  <section class="bg-blue-50 py-12">
-    <div class="max-w-6xl mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold text-[#00539B] mb-6">Why Volunteer in Healthcare?</h2>
-      <p class="text-lg mb-8 max-w-3xl mx-auto text-gray-700">
-        Volunteering in healthcare isn’t just about checking off hours — it’s a way to develop empathy, gain real-world
-        clinical exposure, strengthen your medical school application, and make a difference in your community.
-      </p>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white border-l-4 border-[#00539B] p-6 rounded-lg shadow">
-          <h3 class="text-xl font-semibold text-[#00539B] mb-2">🏥 Real Experience</h3>
-          <p>Get clinical exposure by assisting in hospitals and shadowing professionals.</p>
+  <section class="py-16 bg-gradient-to-br from-primary-50 to-white">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-16">
+        <span class="inline-block px-3 py-1 text-sm font-semibold text-primary-700 bg-primary-100 rounded-full mb-4">WHY
+          VOLUNTEER?</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Transform Your Healthcare Journey</h2>
+        <p class="text-lg max-w-3xl mx-auto text-gray-600">
+          Volunteering in healthcare provides more than just hours—it's a transformative experience that shapes future
+          medical professionals.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div class="space-y-8">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 mr-4">
+              <div
+                class="pulse-dot flex items-center justify-center w-12 h-12 rounded-full bg-primary-100 text-primary-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">Clinical Immersion</h3>
+              <p class="text-gray-600">Experience real healthcare environments, from emergency rooms to outpatient
+                clinics, gaining insights no textbook can provide.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <div class="flex-shrink-0 mr-4">
+              <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary-100 text-primary-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">Professional Development</h3>
+              <p class="text-gray-600">Develop essential skills like patient communication, medical ethics, and teamwork
+                that are crucial for healthcare careers.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <div class="flex-shrink-0 mr-4">
+              <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary-100 text-primary-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">Competitive Edge</h3>
+              <p class="text-gray-600">Stand out in medical school applications with documented patient interaction
+                hours and professional recommendations.</p>
+            </div>
+          </div>
         </div>
-        <div class="bg-white border-l-4 border-[#00539B] p-6 rounded-lg shadow">
-          <h3 class="text-xl font-semibold text-[#00539B] mb-2">🩺 Skill Building</h3>
-          <p>Practice communication, patient care, and public health service.</p>
+
+        <div class="relative h-96">
+          <div class="absolute inset-0 bg-primary-100 rounded-2xl overflow-hidden">
+            <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_5tkzkblw.json" background="transparent"
+              speed="1" style="width: 100%; height: 100%;" loop autoplay></lottie-player>
+          </div>
         </div>
-        <div class="bg-white border-l-4 border-[#00539B] p-6 rounded-lg shadow">
-          <h3 class="text-xl font-semibold text-[#00539B] mb-2">📄 Boost Applications</h3>
-          <p>Make your resume stand out to medical and professional schools.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonial Section -->
+  <section class="py-16 bg-primary-700 text-white">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Voices From Our Volunteers</h2>
+        <p class="text-lg max-w-3xl mx-auto text-primary-100">Hear from students who transformed their careers through
+          healthcare volunteering</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div
+          class="bg-white bg-opacity-10 p-8 rounded-xl backdrop-blur-sm border border-white border-opacity-20 card-hover">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-full bg-primary-500 flex items-center justify-center text-xl font-bold mr-4">
+              JD</div>
+            <div>
+              <h4 class="font-semibold">Jamie D.</h4>
+              <p class="text-sm text-primary-200">Pre-Med Student</p>
+            </div>
+          </div>
+          <p class="text-primary-100">"Volunteering at NYU Langone gave me clinical exposure that made all the
+            difference in my med school interviews. I could speak confidently about patient care experiences."</p>
+        </div>
+
+        <div
+          class="bg-white bg-opacity-10 p-8 rounded-xl backdrop-blur-sm border border-white border-opacity-20 card-hover">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-full bg-primary-500 flex items-center justify-center text-xl font-bold mr-4">
+              AS</div>
+            <div>
+              <h4 class="font-semibold">Aisha S.</h4>
+              <p class="text-sm text-primary-200">Nursing Student</p>
+            </div>
+          </div>
+          <p class="text-primary-100">"The skills I learned at Mount Sinai helped me secure a nursing externship. I was
+            already comfortable with patient interactions and medical terminology."</p>
+        </div>
+
+        <div
+          class="bg-white bg-opacity-10 p-8 rounded-xl backdrop-blur-sm border border-white border-opacity-20 card-hover">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-full bg-primary-500 flex items-center justify-center text-xl font-bold mr-4">
+              MR</div>
+            <div>
+              <h4 class="font-semibold">Miguel R.</h4>
+              <p class="text-sm text-primary-200">Public Health Major</p>
+            </div>
+          </div>
+          <p class="text-primary-100">"Working with NYC Health + Hospitals opened my eyes to community health
+            disparities. It completely shaped my career focus in public health medicine."</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- External Volunteer Opportunities -->
-  <section class="bg-white py-16">
+  <section id="opportunities" class="py-16 bg-white">
     <div class="max-w-6xl mx-auto px-4">
-      <h2 class="text-3xl font-bold text-center text-[#00539B] mb-10">Hospital Volunteering Opportunities (NYC)</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="text-center mb-12">
+        <span
+          class="inline-block px-3 py-1 text-sm font-semibold text-primary-700 bg-primary-100 rounded-full mb-4">OPPORTUNITIES</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Hospital Volunteering in NYC</h2>
+        <p class="text-lg max-w-3xl mx-auto text-gray-600">
+          Partner with leading healthcare institutions across the city to gain invaluable experience.
+        </p>
+      </div>
 
-        <!-- Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Cards with improved hover effects -->
         <a href="https://lenoxhill.northwell.edu/get-involved" target="_blank" rel="noopener noreferrer"
-          class="block border border-[#00539B] bg-blue-50 p-6 rounded-lg shadow hover:bg-[#e1efff] transition">
-          <h3 class="text-xl font-semibold text-[#00539B] mb-2">Lenox Hill Hospital</h3>
-          <p class="text-gray-800">Volunteer in various departments and assist with patient support at this Upper East
+          class="block border border-gray-200 bg-white p-6 rounded-xl shadow-sm hover:border-primary-300 card-hover transition-all duration-300 group">
+          <div class="flex items-center mb-4">
+            <div
+              class="w-10 h-10 rounded-md bg-primary-100 text-primary-700 flex items-center justify-center mr-4 group-hover:bg-primary-600 group-hover:text-white transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition">Lenox Hill Hospital
+            </h3>
+          </div>
+          <p class="text-gray-600">Volunteer in various departments and assist with patient support at this Upper East
             Side hospital.</p>
+          <div class="mt-4 flex items-center text-sm text-primary-600 font-medium">
+            Learn more
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                clip-rule="evenodd" />
+            </svg>
+          </div>
         </a>
 
         <a href="https://maimo.org/careers-and-volunteers/volunteer/" target="_blank" rel="noopener noreferrer"
-          class="block border border-[#00539B] bg-blue-50 p-6 rounded-lg shadow hover:bg-[#e1efff] transition">
-          <h3 class="text-xl font-semibold text-[#00539B] mb-2">Maimonides Medical Center</h3>
-          <p class="text-gray-800">Opportunities in patient interaction, admin support, and health outreach in Brooklyn.
+          class="block border border-gray-200 bg-white p-6 rounded-xl shadow-sm hover:border-primary-300 card-hover transition-all duration-300 group">
+          <div class="flex items-center mb-4">
+            <div
+              class="w-10 h-10 rounded-md bg-primary-100 text-primary-700 flex items-center justify-center mr-4 group-hover:bg-primary-600 group-hover:text-white transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition">Maimonides Medical
+              Center</h3>
+          </div>
+          <p class="text-gray-600">Opportunities in patient interaction, admin support, and health outreach in Brooklyn.
           </p>
+          <div class="mt-4 flex items-center text-sm text-primary-600 font-medium">
+            Learn more
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                clip-rule="evenodd" />
+            </svg>
+          </div>
         </a>
 
         <a href="https://www.mountsinai.org/locations/mount-sinai/about/volunteer" target="_blank"
           rel="noopener noreferrer"
-          class="block border border-[#00539B] bg-blue-50 p-6 rounded-lg shadow hover:bg-[#e1efff] transition">
-          <h3 class="text-xl font-semibold text-[#00539B] mb-2">Mount Sinai Hospital</h3>
-          <p class="text-gray-800">Join one of NYC’s top hospitals to assist patients and medical teams in various
+          class="block border border-gray-200 bg-white p-6 rounded-xl shadow-sm hover:border-primary-300 card-hover transition-all duration-300 group">
+          <div class="flex items-center mb-4">
+            <div
+              class="w-10 h-10 rounded-md bg-primary-100 text-primary-700 flex items-center justify-center mr-4 group-hover:bg-primary-600 group-hover:text-white transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition">Mount Sinai Hospital
+            </h3>
+          </div>
+          <p class="text-gray-600">Join one of NYC's top hospitals to assist patients and medical teams in various
             departments.</p>
+          <div class="mt-4 flex items-center text-sm text-primary-600 font-medium">
+            Learn more
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                clip-rule="evenodd" />
+            </svg>
+          </div>
         </a>
 
         <a href="https://www.nyp.org/volunteer/volunteer-programs-and-locations" target="_blank"
           rel="noopener noreferrer"
-          class="block border border-[#00539B] bg-blue-50 p-6 rounded-lg shadow hover:bg-[#e1efff] transition">
-          <h3 class="text-xl font-semibold text-[#00539B] mb-2">NewYork-Presbyterian</h3>
-          <p class="text-gray-800">Support staff and patients in clinical and community outreach programs across
+          class="block border border-gray-200 bg-white p-6 rounded-xl shadow-sm hover:border-primary-300 card-hover transition-all duration-300 group">
+          <div class="flex items-center mb-4">
+            <div
+              class="w-10 h-10 rounded-md bg-primary-100 text-primary-700 flex items-center justify-center mr-4 group-hover:bg-primary-600 group-hover:text-white transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition">NewYork-Presbyterian
+            </h3>
+          </div>
+          <p class="text-gray-600">Support staff and patients in clinical and community outreach programs across
             locations.</p>
+          <div class="mt-4 flex items-center text-sm text-primary-600 font-medium">
+            Learn more
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                clip-rule="evenodd" />
+            </svg>
+          </div>
         </a>
 
         <a href="https://nyulangone.org/volunteer" target="_blank" rel="noopener noreferrer"
-          class="block border border-[#00539B] bg-blue-50 p-6 rounded-lg shadow hover:bg-[#e1efff] transition">
-          <h3 class="text-xl font-semibold text-[#00539B] mb-2">NYU Langone</h3>
-          <p class="text-gray-800">Assist with patient care and gain exposure in one of NYC’s premier academic
+          class="block border border-gray-200 bg-white p-6 rounded-xl shadow-sm hover:border-primary-300 card-hover transition-all duration-300 group">
+          <div class="flex items-center mb-4">
+            <div
+              class="w-10 h-10 rounded-md bg-primary-100 text-primary-700 flex items-center justify-center mr-4 group-hover:bg-primary-600 group-hover:text-white transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition">NYU Langone</h3>
+          </div>
+          <p class="text-gray-600">Assist with patient care and gain exposure in one of NYC's premier academic
             hospitals.</p>
+          <div class="mt-4 flex items-center text-sm text-primary-600 font-medium">
+            Learn more
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                clip-rule="evenodd" />
+            </svg>
+          </div>
         </a>
 
         <a href="https://www.nychealthandhospitals.org/volunteering/" target="_blank" rel="noopener noreferrer"
-          class="block border border-[#00539B] bg-blue-50 p-6 rounded-lg shadow hover:bg-[#e1efff] transition">
-          <h3 class="text-xl font-semibold text-[#00539B] mb-2">NYC Health + Hospitals</h3>
-          <p class="text-gray-800">Volunteer in the city’s largest public health system, serving diverse communities in
+          class="block border border-gray-200 bg-white p-6 rounded-xl shadow-sm hover:border-primary-300 card-hover transition-all duration-300 group">
+          <div class="flex items-center mb-4">
+            <div
+              class="w-10 h-10 rounded-md bg-primary-100 text-primary-700 flex items-center justify-center mr-4 group-hover:bg-primary-600 group-hover:text-white transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 group-hover:text-primary-600 transition">NYC Health +
+              Hospitals</h3>
+          </div>
+          <p class="text-gray-600">Volunteer in the city's largest public health system, serving diverse communities in
             all boroughs.</p>
+          <div class="mt-4 flex items-center text-sm text-primary-600 font-medium">
+            Learn more
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                clip-rule="evenodd" />
+            </svg>
+          </div>
         </a>
+      </div>
+    </div>
+  </section>
 
+  <!-- CTA Section -->
+  <section class="py-16 bg-primary-700 text-white">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Start Your Healthcare Journey?</h2>
+      <p class="text-xl text-primary-100 mb-8">Join hundreds of students gaining real-world experience in NYC's top
+        healthcare institutions.</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="#"
+          class="px-8 py-3 bg-white text-primary-700 font-medium rounded-full hover:bg-gray-100 transition duration-300 shadow-lg">
+          Apply Now
+        </a>
+        <a href="#"
+          class="px-8 py-3 border-2 border-white text-white font-medium rounded-full hover:bg-white hover:bg-opacity-10 transition duration-300">
+          Learn More
+        </a>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-[#00539B] text-white py-8 mt-10">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm px-4">
-      <p>&copy; 2025 CUNYServe. All rights reserved.</p>
-      <div class="space-x-4 mt-4 md:mt-0">
-        <a href="#" class="hover:underline">Privacy</a>
-        <a href="#" class="hover:underline">Terms</a>
-        <a href="#" class="hover:underline">Contact</a>
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-lg font-semibold mb-4">CUNYServe</h3>
+          <p class="text-gray-400">Connecting CUNY students with meaningful volunteer opportunities to build skills and
+            serve communities.</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Home</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">About</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Opportunities</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Resources</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Support</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition">FAQ</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Contact</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Privacy Policy</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Connect</h3>
+          <div class="flex space-x-4">
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary-600 transition">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill-rule="evenodd"
+                  d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                  clip-rule="evenodd"></path>
+              </svg>
+            </a>
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary-600 transition">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84">
+                </path>
+              </svg>
+            </a>
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary-600 transition">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill-rule="evenodd"
+                  d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
+                  clip-rule="evenodd"></path>
+              </svg>
+            </a>
+            <a href="#"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary-600 transition">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z">
+                </path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-8 pt-8 text-sm text-gray-400 text-center">
+        &copy; 2025 CUNYServe. All rights reserved.
       </div>
     </div>
   </footer>
 
-  <!-- NEW: Script loading order (Alpine.js → inject navbar → load dynamic navbar JS) -->
+  <!-- Script loading order (Alpine.js → inject navbar → load dynamic navbar JS) -->
   <script src="//unpkg.com/alpinejs" defer></script>
   <script>
     async function loadNavbar() {

@@ -1,124 +1,364 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FAQ | CUNYServe</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .faq-item {
+      transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+      transform: translateY(-2px);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 500px;
+    }
+
+    .faq-item.active .faq-toggle i {
+      transform: rotate(180deg);
+    }
+
+    .search-highlight {
+      background-color: #FFEB3B;
+      padding: 0 2px;
+    }
+  </style>
 </head>
+
 <body class="font-sans text-gray-800 bg-gray-50">
 
-  <!-- ✅ Navbar Placeholder -->
-  <!-- At the bottom of EVERY .html file -->
-  
+  <!-- Navbar Placeholder -->
   <div id="navbar-placeholder"></div>
-  
-  <!-- 1. Alpine.js for dropdowns and other UI interactivity -->
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-[#00539B] to-[#0077CC] text-white py-20 text-center relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div
+        class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==')]">
+      </div>
+    </div>
+    <div class="max-w-4xl mx-auto px-4 relative z-10">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6">How Can We Help?</h1>
+      <p class="text-xl max-w-2xl mx-auto mb-8">Find answers to common questions about volunteering through CUNYServe
+      </p>
+
+      <!-- Search Bar -->
+      <div class="max-w-2xl mx-auto relative">
+        <input type="text" id="faq-search" placeholder="Search FAQs..."
+          class="w-full px-6 py-4 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-[#00539B]">
+        <button class="absolute right-3 top-3 bg-[#00539B] text-white p-2 rounded-full hover:bg-[#003366] transition">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </div>
+    <div class="absolute bottom-0 left-0 w-full h-12 bg-white transform skew-y-1 -mb-6"></div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="max-w-4xl mx-auto py-16 px-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+      <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="text-4xl text-[#00539B] mb-4"><i class="fas fa-question-circle"></i></div>
+        <h3 class="text-xl font-bold mb-2">General Questions</h3>
+        <p class="text-gray-600">About CUNYServe and how it works</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="text-4xl text-[#00539B] mb-4"><i class="fas fa-hands-helping"></i></div>
+        <h3 class="text-xl font-bold mb-2">Volunteering</h3>
+        <p class="text-gray-600">Finding and joining opportunities</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="text-4xl text-[#00539B] mb-4"><i class="fas fa-user-plus"></i></div>
+        <h3 class="text-xl font-bold mb-2">Getting Involved</h3>
+        <p class="text-gray-600">Leadership roles and submissions</p>
+      </div>
+    </div>
+
+    <div class="space-y-4" id="faq-container">
+      <!-- Q1 -->
+      <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden" x-data="{ open: false }"
+        :class="{ 'active': open }">
+        <button @click="open = !open" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+          <h2 class="text-xl font-semibold text-[#00539B]">What is CUNYServe?</h2>
+          <span class="faq-toggle text-[#00539B]">
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </span>
+        </button>
+        <div class="faq-answer px-6 pb-6">
+          <p class="text-gray-700">
+            CUNYServe is a student-powered civic engagement platform that connects students across all 25 CUNY campuses
+            with volunteer opportunities, projects, events, and leadership roles.
+          </p>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden" x-data="{ open: false }"
+        :class="{ 'active': open }">
+        <button @click="open = !open" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+          <h2 class="text-xl font-semibold text-[#00539B]">How do I find volunteering events?</h2>
+          <span class="faq-toggle text-[#00539B]">
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </span>
+        </button>
+        <div class="faq-answer px-6 pb-6">
+          <p class="text-gray-700">
+            Visit our <a href="events.html" class="text-blue-600 underline hover:text-blue-800">Events</a> page to
+            explore upcoming one-time or dated volunteering events. You can filter by campus, format, and type to find
+            the best fit.
+          </p>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden" x-data="{ open: false }"
+        :class="{ 'active': open }">
+        <button @click="open = !open" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+          <h2 class="text-xl font-semibold text-[#00539B]">What's the difference between an event and a project?</h2>
+          <span class="faq-toggle text-[#00539B]">
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </span>
+        </button>
+        <div class="faq-answer px-6 pb-6">
+          <p class="text-gray-700">
+            Events are one-time or scheduled activities. Projects are long-term or recurring opportunities listed on our
+            <a href="volunteer-projects.html" class="text-blue-600 underline hover:text-blue-800">Find a Volunteer
+              Project</a> page under Get Involved.
+          </p>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden" x-data="{ open: false }"
+        :class="{ 'active': open }">
+        <button @click="open = !open" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+          <h2 class="text-xl font-semibold text-[#00539B]">Where can pre-med or health students find service
+            opportunities?</h2>
+          <span class="faq-toggle text-[#00539B]">
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </span>
+        </button>
+        <div class="faq-answer px-6 pb-6">
+          <p class="text-gray-700">
+            Our <a href="pre-med.html" class="text-blue-600 underline hover:text-blue-800">Pre-Med & Health Pathways</a>
+            page highlights clinical volunteering, hospital partners, and events tailored to students pursuing
+            healthcare careers.
+          </p>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden" x-data="{ open: false }"
+        :class="{ 'active': open }">
+        <button @click="open = !open" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+          <h2 class="text-xl font-semibold text-[#00539B]">Can I submit my own volunteer opportunity?</h2>
+          <span class="faq-toggle text-[#00539B]">
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </span>
+        </button>
+        <div class="faq-answer px-6 pb-6">
+          <p class="text-gray-700">
+            Absolutely! Reach out to us via the <a href="contact.html"
+              class="text-blue-600 underline hover:text-blue-800">Contact</a> page and tell us about your opportunity.
+            We'll review it and add it to the site if it fits our mission.
+          </p>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden" x-data="{ open: false }"
+        :class="{ 'active': open }">
+        <button @click="open = !open" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+          <h2 class="text-xl font-semibold text-[#00539B]">How can I become a team leader?</h2>
+          <span class="faq-toggle text-[#00539B]">
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </span>
+        </button>
+        <div class="faq-answer px-6 pb-6">
+          <p class="text-gray-700">
+            Check the <a href="team-leader.html" class="text-blue-600 underline hover:text-blue-800">Become a Team
+              Leader</a> section under Get Involved for more info about what team leaders do and how to sign up.
+          </p>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden" x-data="{ open: false }"
+        :class="{ 'active': open }">
+        <button @click="open = !open" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+          <h2 class="text-xl font-semibold text-[#00539B]">How can I support this initiative?</h2>
+          <span class="faq-toggle text-[#00539B]">
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </span>
+        </button>
+        <div class="faq-answer px-6 pb-6">
+          <p class="text-gray-700">
+            You can help by spreading the word, becoming a team leader, or donating to trusted organizations via our <a
+              href="donate.html" class="text-blue-600 underline hover:text-blue-800">Donate Now</a> page.
+          </p>
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden" x-data="{ open: false }"
+        :class="{ 'active': open }">
+        <button @click="open = !open" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+          <h2 class="text-xl font-semibold text-[#00539B]">Where can I read student stories or submit my own?</h2>
+          <span class="faq-toggle text-[#00539B]">
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </span>
+        </button>
+        <div class="faq-answer px-6 pb-6">
+          <p class="text-gray-700">
+            Head to the bottom of this page or our <a href="faq.html"
+              class="text-blue-600 underline hover:text-blue-800">FAQ</a> page to submit your civic story. Sharing your
+            experience helps inspire others to get involved.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact CTA -->
+  <section class="bg-gray-100 py-16">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <div class="bg-white p-8 md:p-12 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold text-[#00539B] mb-4">Still have questions?</h2>
+        <p class="text-xl text-gray-700 mb-8">We're here to help! Contact our team and we'll get back to you as soon as
+          possible.</p>
+        <a href="contact.html"
+          class="inline-block bg-[#00539B] text-white px-8 py-3 rounded-full font-bold hover:bg-[#003366] transition duration-300">
+          Contact Us <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 py-12">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">CUNYServe</h3>
+          <p class="mb-4">Connecting CUNY students with meaningful service opportunities across New York City.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-white">Home</a></li>
+            <li><a href="#" class="hover:text-white">Volunteer Opportunities</a></li>
+            <li><a href="#" class="hover:text-white">Success Stories</a></li>
+            <li><a href="#" class="hover:text-white">About Us</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-4">Resources</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-white">For Students</a></li>
+            <li><a href="#" class="hover:text-white">For Organizations</a></li>
+            <li><a href="#" class="hover:text-white">Pathway Guides</a></li>
+            <li><a href="#" class="hover:text-white">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-4">Contact</h4>
+          <ul class="space-y-2">
+            <li class="flex items-start">
+              <i class="fas fa-envelope mt-1 mr-2 text-sm"></i>
+              <span>hello@cunyserve.org</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-map-marker-alt mt-1 mr-2 text-sm"></i>
+              <span>CUNY Central Office<br>New York, NY</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-10 pt-6 text-sm text-center md:text-left">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p>&copy; 2025 CUNYServe. All rights reserved.</p>
+          <div class="mt-4 md:mt-0">
+            <a href="#" class="hover:text-white mx-2">Privacy Policy</a>
+            <a href="#" class="hover:text-white mx-2">Terms of Service</a>
+            <a href="#" class="hover:text-white mx-2">Accessibility</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Alpine.js for dropdowns and other UI interactivity -->
   <script src="//unpkg.com/alpinejs" defer></script>
-  
-  <!-- 2. The script to fetch and inject the navbar HTML -->
+
+  <!-- Script to fetch and inject the navbar HTML -->
   <script>
-    // This script now loads the navbar and THEN our dynamic script
     async function loadNavbar() {
       try {
         const response = await fetch('/navbar.html');
         const data = await response.text();
         document.getElementById('navbar-placeholder').innerHTML = data;
 
-        // Now that the navbar HTML is loaded, load the dynamic script
         const dynamicScript = document.createElement('script');
         dynamicScript.src = '/scripts/navbar-dynamic.js';
         document.body.appendChild(dynamicScript);
-
       } catch (error) {
         console.error('Failed to load navbar:', error);
       }
     }
     loadNavbar();
   </script>
-  <!-- ✅ FAQ Section -->
-  <section class="max-w-4xl mx-auto py-20 px-6">
-    <h1 class="text-4xl font-bold text-center text-[#00539B] mb-10">Frequently Asked Questions</h1>
 
-    <div class="space-y-8">
+  <!-- FAQ Search Functionality -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const searchInput = document.getElementById('faq-search');
+      const faqItems = document.querySelectorAll('.faq-item');
 
-      <!-- Q1 -->
-      <div>
-        <h2 class="text-xl font-semibold text-[#00539B]">What is CUNYServe?</h2>
-        <p class="mt-2 text-gray-700">
-          CUNYServe is a student-powered civic engagement platform that connects students across all 25 CUNY campuses with volunteer opportunities, projects, events, and leadership roles.
-        </p>
-      </div>
+      searchInput.addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase();
 
-      <!-- Q2 -->
-      <div>
-        <h2 class="text-xl font-semibold text-[#00539B]">How do I find volunteering events?</h2>
-        <p class="mt-2 text-gray-700">
-          Visit our <a href="events.html" class="text-blue-600 underline">Events</a> page to explore upcoming one-time or dated volunteering events. You can filter by campus, format, and type to find the best fit.
-        </p>
-      </div>
+        faqItems.forEach(item => {
+          const question = item.querySelector('h2').textContent.toLowerCase();
+          const answer = item.querySelector('p').textContent.toLowerCase();
 
-      <!-- Q3 -->
-      <div>
-        <h2 class="text-xl font-semibold text-[#00539B]">What’s the difference between an event and a project?</h2>
-        <p class="mt-2 text-gray-700">
-          Events are one-time or scheduled activities. Projects are long-term or recurring opportunities listed on our <a href="volunteer-projects.html" class="text-blue-600 underline">Find a Volunteer Project</a> page under Get Involved.
-        </p>
-      </div>
+          if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+            item.style.display = 'block';
 
-      <!-- Q4 -->
-      <div>
-        <h2 class="text-xl font-semibold text-[#00539B]">Where can pre-med or health students find service opportunities?</h2>
-        <p class="mt-2 text-gray-700">
-          Our <a href="pre-med.html" class="text-blue-600 underline">Pre-Med & Health Pathways</a> page highlights clinical volunteering, hospital partners, and events tailored to students pursuing healthcare careers.
-        </p>
-      </div>
+            // Highlight matching text
+            if (searchTerm.length > 2) {
+              const regex = new RegExp(searchTerm, 'gi');
+              const questionEl = item.querySelector('h2');
+              const answerEl = item.querySelector('p');
 
-      <!-- Q5 -->
-      <div>
-        <h2 class="text-xl font-semibold text-[#00539B]">Can I submit my own volunteer opportunity?</h2>
-        <p class="mt-2 text-gray-700">
-          Absolutely! Reach out to us via the <a href="contact.html" class="text-blue-600 underline">Contact</a> page and tell us about your opportunity. We’ll review it and add it to the site if it fits our mission.
-        </p>
-      </div>
-
-      <!-- Q6 -->
-      <div>
-        <h2 class="text-xl font-semibold text-[#00539B]">How can I become a team leader?</h2>
-        <p class="mt-2 text-gray-700">
-          Check the <a href="team-leader.html" class="text-blue-600 underline">Become a Team Leader</a> section under Get Involved for more info about what team leaders do and how to sign up.
-        </p>
-      </div>
-
-      <!-- Q7 -->
-      <div>
-        <h2 class="text-xl font-semibold text-[#00539B]">How can I support this initiative?</h2>
-        <p class="mt-2 text-gray-700">
-          You can help by spreading the word, becoming a team leader, or donating to trusted organizations via our <a href="donate.html" class="text-blue-600 underline">Donate Now</a> page.
-        </p>
-      </div>
-
-      <!-- Q8 -->
-      <div>
-        <h2 class="text-xl font-semibold text-[#00539B]">Where can I read student stories or submit my own?</h2>
-        <p class="mt-2 text-gray-700">
-          Head to the bottom of this page or our <a href="faq.html" class="text-blue-600 underline">FAQ</a> page to submit your civic story. Sharing your experience helps inspire others to get involved.
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ✅ Footer -->
-  <footer class="bg-gray-900 text-gray-300 py-8">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm px-4">
-      <p>&copy; 2025 CUNYServe. All rights reserved.</p>
-      <div class="space-x-4 mt-4 md:mt-0">
-        <a href="#" class="hover:text-white">Privacy</a>
-        <a href="#" class="hover:text-white">Terms</a>
-        <a href="contact.html" class="hover:text-white">Contact</a>
-      </div>
-    </div>
-  </footer>
+              questionEl.innerHTML = questionEl.textContent.replace(regex, match =>
+                `<span class="search-highlight">${match}</span>`);
+              answerEl.innerHTML = answerEl.textContent.replace(regex, match =>
+                `<span class="search-highlight">${match}</span>`);
+            }
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
 </body>
+
 </html>

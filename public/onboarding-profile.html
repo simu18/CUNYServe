@@ -6,104 +6,386 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Step 3: Profile | CUNYServe</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom animations and styles */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #00539B, #0085CA);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .step-progress {
+            height: 6px;
+            background-color: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .step-progress-fill {
+            height: 100%;
+            background-color: #00539B;
+            transition: width 0.4s ease;
+        }
+
+        .step-card {
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .step-card.current {
+            border-bottom-color: #00539B;
+        }
+
+        .step-card.completed .step-icon {
+            background-color: #10B981;
+            color: white;
+        }
+
+        .step-card.current .step-icon {
+            background-color: #00539B;
+            color: white;
+        }
+
+        .checkbox-custom {
+            position: relative;
+            padding-left: 28px;
+            cursor: pointer;
+        }
+
+        .checkbox-custom input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .checkmark-custom {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            background-color: #fff;
+            border: 2px solid #00539B;
+            border-radius: 4px;
+        }
+
+        .checkbox-custom:hover input~.checkmark-custom {
+            background-color: #f0f7ff;
+        }
+
+        .checkbox-custom input:checked~.checkmark-custom {
+            background-color: #00539B;
+        }
+
+        .checkmark-custom:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .checkbox-custom input:checked~.checkmark-custom:after {
+            display: block;
+        }
+
+        .checkbox-custom .checkmark-custom:after {
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .btn-hover-effect {
+            transition: all 0.3s ease;
+            background-size: 200% auto;
+            background-image: linear-gradient(to right, #10B981 0%, #059669 51%, #10B981 100%);
+        }
+
+        .btn-hover-effect:hover {
+            background-position: right center;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .form-section {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+        }
+
+        .form-section:hover {
+            border-left-color: #00539B;
+            background-color: #f8fafc;
+        }
+
+        .skill-tag {
+            display: inline-flex;
+            align-items: center;
+            background-color: #EFF6FF;
+            color: #1E40AF;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .skill-tag button {
+            margin-left: 0.25rem;
+            color: #93C5FD;
+        }
+
+        .skill-tag button:hover {
+            color: #1E40AF;
+        }
+
+        .cause-chip {
+            display: inline-block;
+            background-color: #ECFDF5;
+            color: #065F46;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            border: 1px solid #D1FAE5;
+        }
+
+        .cause-chip.selected {
+            background-color: #059669;
+            color: white;
+            border-color: #059669;
+        }
+    </style>
 </head>
 
-<body class="font-sans text-gray-800 bg-gray-100">
+<body class="font-sans text-gray-800 bg-gray-50">
 
     <!-- Navbar placeholder -->
     <div id="navbar-placeholder"></div>
 
-    <main class="max-w-4xl mx-auto py-10 px-4">
+    <!-- Floating decorative elements -->
+    <div class="fixed top-20 left-10 w-16 h-16 rounded-full bg-blue-100 opacity-20 animate-float hidden md:block"></div>
+    <div class="fixed bottom-1/4 right-20 w-24 h-24 rounded-full bg-green-200 opacity-10 animate-float hidden md:block"
+        style="animation-delay: 1s;"></div>
+    <div class="fixed top-1/3 right-1/4 w-12 h-12 rounded-full bg-blue-300 opacity-15 animate-float hidden md:block"
+        style="animation-delay: 2s;"></div>
+
+    <main class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <!-- Progress Header -->
-        <header class="mb-10">
-            <h1 class="text-3xl font-bold text-center mb-4 text-[#00539B]">Volunteer Onboarding</h1>
-            <div class="flex justify-between items-center text-center">
-                <div class="step-item flex-1">
-                    <div class="text-sm font-bold text-green-600">Step 1: Account</div>
-                    <div class="text-2xl text-green-600">✅</div>
+        <header class="mb-12 text-center animate-fade-in">
+            <h1 class="text-4xl font-bold mb-4 gradient-text">Complete Your Profile</h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Finish setting up your profile to get matched with the
+                best volunteer opportunities</p>
+
+            <!-- Progress Steps -->
+            <div class="flex justify-between items-center mt-10 mb-6 relative">
+                <!-- Progress line -->
+                <div class="absolute top-1/2 left-0 right-0 h-1 bg-gray-200 -z-10">
+                    <div class="h-full bg-green-500" style="width: 66%"></div>
                 </div>
-                <div class="flex-1 border-t-2 border-green-500 mx-4"></div>
-                <div class="step-item flex-1">
-                    <div class="text-sm font-bold text-green-600">Step 2: Orientation</div>
-                    <div class="text-2xl text-green-600">✅</div>
+
+                <!-- Step 1 -->
+                <div class="step-card completed flex flex-col items-center">
+                    <div class="step-icon w-12 h-12 rounded-full flex items-center justify-center mb-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-sm font-semibold text-green-600">Account</div>
+                        <div class="text-xs text-gray-500">Completed</div>
+                    </div>
                 </div>
-                <div class="flex-1 border-t-2 border-gray-300 mx-4"></div>
-                <div class="step-item flex-1">
-                    <div class="text-sm font-bold text-[#00539B]">Step 3: Profile</div>
-                    <div class="text-2xl">◻️</div>
+
+                <!-- Step 2 -->
+                <div class="step-card completed flex flex-col items-center">
+                    <div class="step-icon w-12 h-12 rounded-full flex items-center justify-center mb-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-sm font-semibold text-green-600">Orientation</div>
+                        <div class="text-xs text-gray-500">Completed</div>
+                    </div>
                 </div>
+
+                <!-- Step 3 -->
+                <div class="step-card current flex flex-col items-center">
+                    <div class="step-icon w-12 h-12 rounded-full flex items-center justify-center mb-2">
+                        <span class="text-lg font-bold">3</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-sm font-semibold text-blue-600">Profile</div>
+                        <div class="text-xs text-gray-500">In Progress</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-6">
+                <div class="bg-green-500 h-2.5 rounded-full" style="width: 66%"></div>
             </div>
         </header>
 
         <!-- Profile Form -->
-        <form id="profile-form" class="bg-white p-8 rounded-lg shadow-md space-y-8">
+        <form id="profile-form" class="bg-white p-8 rounded-xl shadow-lg space-y-8 animate-fade-in"
+            style="animation-delay: 0.2s;">
 
             <!-- Section 1: Basic Matching -->
-            <section>
-                <h2 class="text-2xl font-semibold border-b pb-2 mb-4">1. Matching Preferences</h2>
+            <section class="form-section">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <span
+                        class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mr-3">1</span>
+                    Matching Preferences
+                </h2>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label for="campus" class="block font-medium">Your CUNY Campus</label>
-                        <input type="text" id="campus" class="w-full mt-1 p-2 border rounded bg-gray-100" readonly>
+                        <label for="campus" class="block text-sm font-medium text-gray-700 mb-1">Your CUNY
+                            Campus</label>
+                        <input type="text" id="campus"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100 focus:outline-none"
+                            readonly>
                     </div>
                     <div>
-                        <label for="graduation_year" class="block font-medium">Expected Graduation Year</label>
+                        <label for="graduation_year" class="block text-sm font-medium text-gray-700 mb-1">Expected
+                            Graduation Year</label>
                         <input type="number" id="graduation_year" placeholder="e.g., 2026"
-                            class="w-full mt-1 p-2 border rounded">
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                     </div>
                 </div>
+
                 <div class="mt-6">
-                    <label class="block font-medium">Preferred Opportunity Types</label>
-                    <div class="grid grid-cols-2 gap-2 mt-2">
-                        <label><input type="checkbox" name="opportunity_types" value="One-Time"> One-Time</label>
-                        <label><input type="checkbox" name="opportunity_types" value="Ongoing"> Ongoing</label>
-                        <label><input type="checkbox" name="opportunity_types" value="Remote/Virtual">
-                            Remote/Virtual</label>
-                        <label><input type="checkbox" name="opportunity_types" value="On-Site"> On-Site</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Opportunity Types</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <label class="checkbox-custom flex items-center">
+                            <input type="checkbox" name="opportunity_types" value="One-Time">
+                            <span class="checkmark-custom"></span>
+                            <span class="ml-3 text-gray-700">One-Time</span>
+                        </label>
+                        <label class="checkbox-custom flex items-center">
+                            <input type="checkbox" name="opportunity_types" value="Ongoing">
+                            <span class="checkmark-custom"></span>
+                            <span class="ml-3 text-gray-700">Ongoing</span>
+                        </label>
+                        <label class="checkbox-custom flex items-center">
+                            <input type="checkbox" name="opportunity_types" value="Remote/Virtual">
+                            <span class="checkmark-custom"></span>
+                            <span class="ml-3 text-gray-700">Remote/Virtual</span>
+                        </label>
+                        <label class="checkbox-custom flex items-center">
+                            <input type="checkbox" name="opportunity_types" value="On-Site">
+                            <span class="checkmark-custom"></span>
+                            <span class="ml-3 text-gray-700">On-Site</span>
+                        </label>
                     </div>
-                    <p class="form-error-msg" data-for="opportunity_types"></p>
+                    <p class="form-error-msg text-sm text-red-600 mt-1 hidden" data-for="opportunity_types"></p>
                 </div>
             </section>
 
             <!-- Section 2: Causes & Skills -->
-            <section>
-                <h2 class="text-2xl font-semibold border-b pb-2 mb-4">2. Causes & Skills</h2>
+            <section class="form-section">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <span
+                        class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mr-3">2</span>
+                    Causes & Skills
+                </h2>
+
                 <div>
-                    <label class="block font-medium">Causes you're passionate about (select up to 5)</label>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
-                        <label><input type="checkbox" name="causes" value="Education & Tutoring"> Education &
-                            Tutoring</label>
-                        <label><input type="checkbox" name="causes" value="Environmental"> Environmental</label>
-                        <label><input type="checkbox" name="causes" value="Healthcare"> Healthcare</label>
-                        <label><input type="checkbox" name="causes" value="Food Security"> Food Security</label>
-                        <label><input type="checkbox" name="causes" value="Advocacy"> Advocacy</label>
-                        <label><input type="checkbox" name="causes" value="Animals"> Animals</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Causes you're passionate about (select
+                        up to 5)</label>
+                    <div id="causes-container" class="flex flex-wrap gap-2 mb-4">
+                        <button type="button" class="cause-chip" data-value="Education & Tutoring">Education &
+                            Tutoring</button>
+                        <button type="button" class="cause-chip" data-value="Environmental">Environmental</button>
+                        <button type="button" class="cause-chip" data-value="Healthcare">Healthcare</button>
+                        <button type="button" class="cause-chip" data-value="Food Security">Food Security</button>
+                        <button type="button" class="cause-chip" data-value="Advocacy">Advocacy</button>
+                        <button type="button" class="cause-chip" data-value="Animals">Animals</button>
                     </div>
-                    <p class="form-error-msg" data-for="causes"></p>
+                    <input type="hidden" id="causes" name="causes">
+                    <p class="form-error-msg text-sm text-red-600 mt-1 hidden" data-for="causes"></p>
                 </div>
+
                 <div class="mt-6">
-                    <label for="skills" class="block font-medium">Your Skills (comma separated)</label>
-                    <input type="text" id="skills" placeholder="e.g., Event Planning, Spanish, Data Entry"
-                        class="w-full mt-1 p-2 border rounded">
+                    <label for="skills-input" class="block text-sm font-medium text-gray-700 mb-2">Your Skills</label>
+                    <div class="flex">
+                        <input type="text" id="skills-input" placeholder="e.g., Event Planning, Spanish, Data Entry"
+                            class="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:ring-blue-500 focus:border-blue-500">
+                        <button type="button" id="add-skill"
+                            class="px-4 bg-blue-600 text-white rounded-r-lg hover:bg-blue-700">Add</button>
+                    </div>
+                    <div id="skills-tags" class="flex flex-wrap mt-3">
+                        <!-- Skills will be added here dynamically -->
+                    </div>
+                    <input type="hidden" id="skills" name="skills">
+                    <p class="text-xs text-gray-500 mt-1">Press enter or click add to include each skill</p>
                 </div>
             </section>
 
             <!-- Section 3: About You -->
-            <section>
-                <h2 class="text-2xl font-semibold border-b pb-2 mb-4">3. About You</h2>
+            <section class="form-section">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <span
+                        class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mr-3">3</span>
+                    About You
+                </h2>
+
                 <div>
-                    <label for="bio" class="block font-medium">Short Bio</label>
+                    <label for="bio" class="block text-sm font-medium text-gray-700 mb-2">Short Bio</label>
                     <textarea id="bio" rows="4"
                         placeholder="Tell us a little about yourself and why you want to volunteer."
-                        class="w-full mt-1 p-2 border rounded"></textarea>
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    <p class="text-xs text-gray-500 mt-1">This will be visible to organizations you volunteer with</p>
                 </div>
             </section>
 
             <!-- Form Submission -->
-            <div class="flex justify-end pt-4 border-t">
-                <button type="submit"
-                    class="bg-green-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-green-700 transition-colors">
+            <div class="flex justify-end pt-6 border-t border-gray-200">
+                <button type="submit" class="btn-hover-effect text-white py-3 px-8 rounded-lg font-medium shadow-sm">
                     Complete Profile & View Dashboard
+                    <svg class="w-5 h-5 inline ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
                 </button>
             </div>
         </form>
@@ -113,6 +395,7 @@
     <script src="//unpkg.com/alpinejs" defer></script>
     <script>
         async function initializePage() {
+            // Load navbar
             const navbarPlaceholder = document.getElementById('navbar-placeholder');
             if (navbarPlaceholder) {
                 const response = await fetch('/navbar.html');
@@ -121,10 +404,111 @@
                 script.src = '/scripts/navbar-dynamic.js';
                 document.body.appendChild(script);
             }
+
+            // Causes selection
+            const causesContainer = document.getElementById('causes-container');
+            const causesInput = document.getElementById('causes');
+            const causeChips = causesContainer.querySelectorAll('.cause-chip');
+
+            let selectedCauses = [];
+
+            causeChips.forEach(chip => {
+                chip.addEventListener('click', function () {
+                    const value = this.getAttribute('data-value');
+
+                    if (this.classList.contains('selected')) {
+                        this.classList.remove('selected');
+                        selectedCauses = selectedCauses.filter(item => item !== value);
+                    } else {
+                        if (selectedCauses.length < 5) {
+                            this.classList.add('selected');
+                            selectedCauses.push(value);
+                        } else {
+                            alert('You can select up to 5 causes');
+                        }
+                    }
+
+                    causesInput.value = selectedCauses.join(',');
+                });
+            });
+
+            // Skills tagging
+            const skillsInput = document.getElementById('skills-input');
+            const skillsTags = document.getElementById('skills-tags');
+            const skillsHidden = document.getElementById('skills');
+            const addSkillBtn = document.getElementById('add-skill');
+
+            let skills = [];
+
+            function addSkill() {
+                const skill = skillsInput.value.trim();
+                if (skill && !skills.includes(skill)) {
+                    skills.push(skill);
+                    updateSkillsDisplay();
+                    skillsInput.value = '';
+                }
+            }
+
+            function updateSkillsDisplay() {
+                skillsTags.innerHTML = '';
+                skills.forEach(skill => {
+                    const tag = document.createElement('div');
+                    tag.className = 'skill-tag';
+                    tag.innerHTML = `
+                        ${skill}
+                        <button type="button" data-skill="${skill}" class="remove-skill">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    `;
+                    skillsTags.appendChild(tag);
+                });
+
+                skillsHidden.value = skills.join(', ');
+
+                // Add event listeners to remove buttons
+                document.querySelectorAll('.remove-skill').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const skillToRemove = this.getAttribute('data-skill');
+                        skills = skills.filter(skill => skill !== skillToRemove);
+                        updateSkillsDisplay();
+                    });
+                });
+            }
+
+            addSkillBtn.addEventListener('click', addSkill);
+
+            skillsInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addSkill();
+                }
+            });
+
+            // Load existing data if available
+            // This would be replaced with actual data loading in your implementation
+            document.getElementById('campus').value = "Baruch College"; // Example
         }
+
         document.addEventListener('DOMContentLoaded', initializePage);
     </script>
-    <script src="/scripts/onboarding-profile.js"></script>
+
+<script src="//unpkg.com/alpinejs" defer></script>
+<script>
+    async function initializePage() {
+        const navbarPlaceholder = document.getElementById('navbar-placeholder');
+        if (navbarPlaceholder) {
+            const response = await fetch('/navbar.html');
+            navbarPlaceholder.innerHTML = await response.text();
+            const script = document.createElement('script');
+            script.src = '/scripts/navbar-dynamic.js';
+            document.body.appendChild(script);
+        }
+    }
+    document.addEventListener('DOMContentLoaded', initializePage);
+</script>
+<script src="/scripts/onboarding-profile.js"></script>
 
 </body>
 

@@ -6,68 +6,197 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login | CUNYServe</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom animations and styles */
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #00539B, #0085CA);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .input-focus-effect:focus {
+      box-shadow: 0 0 0 2px white, 0 0 0 4px #00539B;
+      transition: all 0.2s ease;
+    }
+
+    .btn-hover-effect {
+      transition: all 0.3s ease;
+      background-size: 200% auto;
+      background-image: linear-gradient(to right, #00539B 0%, #0078B4 51%, #00539B 100%);
+    }
+
+    .btn-hover-effect:hover {
+      background-position: right center;
+      transform: translateY(-2px);
+    }
+
+    .wave-shape {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%23f8fafc" opacity=".25"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="%23f8fafc" opacity=".5"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23f8fafc"/></svg>');
+      background-size: cover;
+    }
+
+    .success-message {
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+  </style>
 </head>
 
-<body class="bg-gray-100 text-gray-800 font-sans">
+<body class="bg-gray-100 text-gray-800 font-sans overflow-x-hidden">
   <!-- Shared Navbar -->
   <div id="navbar-placeholder"></div>
-  <!-- 3) Page script (unchanged path) -->
-  <script src="scripts/auth.js"></script>
 
-  <!-- Login Form -->
-  <div class="flex justify-center items-center min-h-screen pt-12 sm:pt-0">
-    <div class="bg-white p-8 rounded shadow-md w-full max-w-md mx-4">
+  <!-- Floating decorative elements -->
+  <div class="fixed top-20 left-10 w-16 h-16 rounded-full bg-blue-100 opacity-20 animate-float hidden md:block"></div>
+  <div class="fixed bottom-1/4 right-20 w-24 h-24 rounded-full bg-blue-200 opacity-10 animate-float hidden md:block"
+    style="animation-delay: 1s;"></div>
+  <div class="fixed top-1/3 right-1/4 w-12 h-12 rounded-full bg-blue-300 opacity-15 animate-float hidden md:block"
+    style="animation-delay: 2s;"></div>
 
-      <!-- NEW: success message shown after email verification -->
+  <!-- Login Form Container -->
+  <div class="flex justify-center items-center min-h-screen pt-12 sm:pt-0 relative">
+    <!-- Wave shape at bottom -->
+    <div class="wave-shape"></div>
+
+    <!-- Main form with animation -->
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md mx-4 animate-fade-in" style="animation-delay: 0.2s;">
+      <!-- Success message with animation -->
       <div id="verification-success"
-        class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-        <strong class="font-bold">Success!</strong>
-        <span class="block sm:inline">Your email has been verified. You can now log in.</span>
+        class="hidden success-message bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6 flex items-start">
+        <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+            clip-rule="evenodd" />
+        </svg>
+        <div>
+          <p class="font-medium">Email verified successfully!</p>
+          <p class="text-sm mt-1">You can now log in to your account.</p>
+        </div>
       </div>
-      <!-- END NEW -->
 
-      <h2 class="text-2xl font-bold mb-2 text-center text-[#00539B]">Login to Your Account</h2>
-      <p id="loginError" class="text-sm text-red-600 text-center mb-4 hidden" aria-live="polite"></p>
+      <div class="text-center mb-6">
+        <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-blue-50 flex items-center justify-center">
+          <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+          </svg>
+        </div>
+        <h2 class="text-3xl font-bold mb-2 gradient-text">Welcome Back</h2>
+        <p class="text-gray-600">Login to continue your volunteer journey</p>
+      </div>
+
+      <p id="loginError" class="text-sm text-red-600 text-center mb-4 hidden px-4 py-2 bg-red-50 rounded-lg"
+        aria-live="polite"></p>
 
       <form id="login-form" class="space-y-5" autocomplete="on">
-        <div>
-          <label for="email" class="block mb-1 font-medium">Email</label>
-          <input type="email" id="email" name="email" placeholder="you@example.com" inputmode="email"
-            autocomplete="email" required
-            class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#00539B]" />
+        <div class="space-y-1">
+          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+              </svg>
+            </div>
+            <input type="email" id="email" name="email" placeholder="you@example.com" inputmode="email"
+              autocomplete="email" required
+              class="input-focus-effect pl-10 w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-0" />
+          </div>
         </div>
 
-        <div>
-          <label for="password" class="block mb-1 font-medium">Password</label>
-          <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password"
-            minlength="8" required
-            class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#00539B]" />
-          <p class="text-xs text-gray-500 mt-1">Minimum 8 characters.</p>
+        <div class="space-y-1">
+          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password"
+              minlength="8" required
+              class="input-focus-effect pl-10 w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-0" />
+          </div>
+          <p class="text-xs text-gray-500 mt-1">Minimum 8 characters</p>
         </div>
 
-        <!-- NEW: Forgot Password link row -->
-        <div class="flex items-center justify-between mb-6">
-          <div></div>
-          <a href="/forgot-password.html" class="text-sm text-[#00539B] hover:underline">Forgot Password?</a>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <input id="remember-me" name="remember-me" type="checkbox"
+              class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+            <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+          </div>
+          <a href="/forgot-password.html" class="text-sm font-medium text-blue-600 hover:text-blue-500 hover:underline">
+            Forgot password?
+          </a>
         </div>
 
-        <button type="submit" class="w-full bg-[#00539B] text-white py-2 rounded hover:bg-blue-700 transition">
+        <button type="submit" class="btn-hover-effect w-full text-white py-3 px-4 rounded-lg font-medium shadow-sm">
           Login
+          <span class="ml-2">→</span>
         </button>
       </form>
 
-      <p class="text-sm mt-4 text-center">
-        Don't have an account?
-        <a href="signup.html" class="text-[#00539B] hover:underline">Create one</a>
-      </p>
+      <div class="mt-6">
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-300"></div>
+          </div>
+          <div class="relative flex justify-center text-sm">
+            <span class="px-2 bg-white text-gray-500">New to CUNYServe?</span>
+          </div>
+        </div>
+
+        <div class="mt-4 text-center">
+          <a href="signup.html"
+            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            Create your account
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Scripts -->
-  <!-- 1) Alpine.js -->
   <script src="//unpkg.com/alpinejs" defer></script>
 
-  <!-- 2) Inject navbar, then load dynamic navbar behavior -->
   <script>
     async function loadNavbar() {
       try {
@@ -83,18 +212,22 @@
       }
     }
     loadNavbar();
-  </script>
 
-  <!-- NEW: Show verification success banner if ?verified=true -->
-  <script>
     document.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams(window.location.search);
       if (params.get('verified') === 'true') {
-        document.getElementById('verification-success').classList.remove('hidden');
+        const successEl = document.getElementById('verification-success');
+        successEl.classList.remove('hidden');
+        setTimeout(() => {
+          successEl.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+          setTimeout(() => successEl.classList.add('hidden'), 500);
+        }, 5000);
       }
     });
   </script>
 
+  <!-- Auth script (unchanged path) -->
+  <script src="scripts/auth.js"></script>
 </body>
 
 </html>

@@ -6,155 +6,511 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Your Profile | CUNYServe</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for enhanced UI */
+        :root {
+            --primary: #00539B;
+            --primary-light: #E6F0F8;
+        }
+
+        body {
+            background-color: #f8fafc;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .section-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-label:hover {
+            background-color: var(--primary-light);
+        }
+
+        .checkbox-label input:checked~.checkmark {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .photo-upload {
+            position: relative;
+            width: 10rem;
+            height: 10rem;
+        }
+
+        .photo-upload:hover .photo-overlay {
+            opacity: 1;
+        }
+
+        .photo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 83, 155, 0.7);
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            color: white;
+            cursor: pointer;
+        }
+
+        .progress-bar {
+            height: 0.25rem;
+            background-color: #e2e8f0;
+            border-radius: 0.125rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .profile-completion {
+            position: sticky;
+            top: 1rem;
+        }
+    </style>
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-50">
 
     <div id="navbar-placeholder"></div>
 
-    <main class="max-w-4xl mx-auto py-10 px-4">
-        <h1 class="text-3xl font-bold text-center mb-8 text-[#00539B]">Edit Your Volunteer Profile</h1>
-
-        <form id="edit-profile-form" class="bg-white p-8 rounded-lg shadow-md space-y-12">
-
-            <!-- Section 1: Photo & Bio -->
-            <fieldset>
-                <legend class="text-2xl font-semibold border-b pb-2 mb-6 w-full">Public Profile</legend>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-                    <div class="text-center">
-                        <img id="profile_photo_preview" src="/uploads/default-avatar.png" alt="Profile Picture"
-                            class="w-32 h-32 rounded-full mx-auto mb-2 object-cover">
-                        <input type="file" id="profile_photo" class="text-sm">
+    <main class="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Left Column - Profile Completion -->
+            <div class="lg:w-1/4">
+                <div class="profile-completion section-card p-6">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Profile Completion</h2>
+                    <div class="progress-bar mb-2">
+                        <div id="completion-progress" class="progress-fill" style="width: 0%"></div>
                     </div>
-                    <div class="md:col-span-2">
-                        <label for="bio" class="block font-medium">Short Bio</label>
-                        <textarea id="bio" rows="5" placeholder="Tell us about yourself..."
-                            class="w-full mt-1 p-2 border rounded"></textarea>
-                    </div>
-                </div>
-            </fieldset>
+                    <p id="completion-text" class="text-sm text-gray-600">0% complete</p>
 
-            <!-- Section 2: Matching Preferences -->
-            <fieldset>
-                <legend class="text-2xl font-semibold border-b pb-2 mb-6 w-full">Matching Preferences</legend>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                    <div>
-                        <label class="block font-medium">Preferred Boroughs</label>
-                        <div class="grid grid-cols-2 gap-2 mt-2">
-                            <label><input type="checkbox" name="boroughs_preferred" value="Bronx"> Bronx</label>
-                            <label><input type="checkbox" name="boroughs_preferred" value="Brooklyn"> Brooklyn</label>
-                            <label><input type="checkbox" name="boroughs_preferred" value="Manhattan"> Manhattan</label>
-                            <label><input type="checkbox" name="boroughs_preferred" value="Queens"> Queens</label>
-                            <label><input type="checkbox" name="boroughs_preferred" value="Staten Island"> Staten
-                                Island</label>
+                    <div class="mt-6 space-y-4">
+                        <div class="flex items-center">
+                            <svg id="photo-check" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span class="ml-2 text-sm">Profile Photo</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg id="bio-check" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span class="ml-2 text-sm">Bio</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg id="prefs-check" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span class="ml-2 text-sm">Preferences</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg id="skills-check" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span class="ml-2 text-sm">Skills</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg id="emergency-check" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span class="ml-2 text-sm">Emergency Contact</span>
                         </div>
                     </div>
-                    <div>
-                        <label class="block font-medium">Preferred Opportunity Types</label>
-                        <div class="grid grid-cols-2 gap-2 mt-2">
-                            <label><input type="checkbox" name="opportunity_types" value="One-Time"> One-Time</label>
-                            <label><input type="checkbox" name="opportunity_types" value="Ongoing"> Ongoing</label>
-                            <label><input type="checkbox" name="opportunity_types" value="Remote/Virtual">
-                                Remote/Virtual</label>
-                            <label><input type="checkbox" name="opportunity_types" value="On-Site"> On-Site</label>
-                        </div>
-                    </div>
-                </div>
-            </fieldset>
 
-            <!-- Section 3: Causes & Skills -->
-            <fieldset>
-                <legend class="text-2xl font-semibold border-b pb-2 mb-6 w-full">Causes & Skills</legend>
-                <div>
-                    <label class="block font-medium">Causes You Care About</label>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
-                        <label><input type="checkbox" name="causes" value="Education & Tutoring"> Education &
-                            Tutoring</label>
-                        <label><input type="checkbox" name="causes" value="Environmental"> Environmental</label>
-                        <label><input type="checkbox" name="causes" value="Healthcare"> Healthcare</label>
-                        <label><input type="checkbox" name="causes" value="Food Security"> Food Security</label>
-                        <label><input type="checkbox" name="causes" value="Advocacy"> Advocacy</label>
-                        <label><input type="checkbox" name="causes" value="Animals"> Animals</label>
-                    </div>
+                    <button type="button" onclick="window.location.href='/dashboard.html'"
+                        class="mt-6 w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                        Back to Dashboard
+                    </button>
                 </div>
-                <div class="mt-6">
-                    <label for="skills" class="block font-medium">Your Skills (comma separated)</label>
-                    <input type="text" id="skills" class="w-full mt-1 p-2 border rounded"
-                        placeholder="e.g., Public Speaking, Spanish, CPR">
-                </div>
-            </fieldset>
-
-            <!-- Section 4: Academic & Logistics -->
-            <fieldset>
-                <legend class="text-2xl font-semibold border-b pb-2 mb-6 w-full">Academic & Logistics</legend>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="major_program" class="block font-medium">Major / Program</label>
-                        <input type="text" id="major_program" class="w-full mt-1 p-2 border rounded">
-                    </div>
-                    <div>
-                        <label for="graduation_year" class="block font-medium">Expected Graduation Year</label>
-                        <input type="number" id="graduation_year" placeholder="e.g., 2026"
-                            class="w-full mt-1 p-2 border rounded">
-                    </div>
-                    <div>
-                        <label for="transport_mode" class="block font-medium">Primary Mode of Transport</label>
-                        <select id="transport_mode" class="w-full mt-1 p-2 border rounded">
-                            <option value="">Select an option</option>
-                            <option value="Public Transit">Public Transit</option>
-                            <option value="Car">Car</option>
-                            <option value="Bike">Bike</option>
-                            <option value="None">None</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="shirt_size" class="block font-medium">T-Shirt Size (Optional)</label>
-                        <select id="shirt_size" class="w-full mt-1 p-2 border rounded">
-                            <option value="">Select a size</option>
-                            <option value="XS">XS</option>
-                            <option value="S">S</option>
-                            <option value="M">M</option>
-                            <option value="L">L</option>
-                            <option value="XL">XL</option>
-                            <option value="XXL">XXL</option>
-                        </select>
-                    </div>
-                </div>
-            </fieldset>
-
-            <!-- Section 5: Emergency Contact & Consent -->
-            <fieldset>
-                <legend class="text-2xl font-semibold border-b pb-2 mb-6 w-full">Emergency Contact & Consent</legend>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="emergency_name" class="block font-medium">Emergency Contact Name</label>
-                        <input type="text" id="emergency_name" class="w-full mt-1 p-2 border rounded">
-                    </div>
-                    <div>
-                        <label for="emergency_relationship" class="block font-medium">Relationship</label>
-                        <input type="text" id="emergency_relationship" class="w-full mt-1 p-2 border rounded">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label for="emergency_phone" class="block font-medium">Emergency Phone</label>
-                        <input type="tel" id="emergency_phone" class="w-full mt-1 p-2 border rounded">
-                    </div>
-                </div>
-                <div class="mt-6">
-                    <p class="font-medium mb-2">Communication Preferences</p>
-                    <label class="flex items-center"><input type="checkbox" id="comms_consent_email"> <span
-                            class="ml-2">Receive emails about new opportunities and news.</span></label>
-                    <label class="flex items-center"><input type="checkbox" id="comms_consent_sms"> <span
-                            class="ml-2">Receive SMS alerts for event reminders.</span></label>
-                </div>
-            </fieldset>
-
-            <!-- Submission Button -->
-            <div class="flex justify-end pt-6 border-t">
-                <button type="submit"
-                    class="bg-green-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-green-700 transition-colors">Save
-                    All Changes</button>
             </div>
-        </form>
+
+            <!-- Right Column - Form -->
+            <div class="lg:w-3/4">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900">Edit Your Volunteer Profile</h1>
+                    <p class="mt-2 text-gray-600">Complete your profile to get better volunteer matches</p>
+                </div>
+
+                <form id="edit-profile-form" class="space-y-6">
+                    <!-- Section 1: Photo & Bio -->
+                    <div class="section-card p-6">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-6">Public Profile</h2>
+                        <div class="flex flex-col md:flex-row gap-8 items-start">
+                            <div class="photo-upload">
+                                <img id="profile_photo_preview" src="/uploads/default-avatar.png" alt="Profile Picture"
+                                    class="w-full h-full rounded-full object-cover border-4 border-white shadow">
+                                <div class="photo-overlay">
+                                    <span class="text-sm font-medium">Change Photo</span>
+                                </div>
+                                <input type="file" id="profile_photo" accept="image/*" class="hidden">
+                            </div>
+                            <div class="flex-1 w-full">
+                                <label for="bio" class="block text-sm font-medium text-gray-700 mb-1">Short Bio</label>
+                                <textarea id="bio" rows="5"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                    placeholder="Tell us about yourself..."></textarea>
+                                <p class="mt-2 text-sm text-gray-500">This will be visible to organizations you
+                                    volunteer with.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Matching Preferences -->
+                    <div class="section-card p-6">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-6">Matching Preferences</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-700 mb-3">Preferred Boroughs</h3>
+                                <div class="space-y-2">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="boroughs_preferred" value="Bronx" class="hidden">
+                                        <span
+                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
+                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span>Bronx</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="boroughs_preferred" value="Brooklyn"
+                                            class="hidden">
+                                        <span
+                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
+                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span>Brooklyn</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="boroughs_preferred" value="Manhattan"
+                                            class="hidden">
+                                        <span
+                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
+                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span>Manhattan</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="boroughs_preferred" value="Queens" class="hidden">
+                                        <span
+                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
+                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span>Queens</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="boroughs_preferred" value="Staten Island"
+                                            class="hidden">
+                                        <span
+                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
+                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span>Staten Island</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-700 mb-3">Opportunity Types</h3>
+                                <div class="space-y-2">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="opportunity_types" value="One-Time" class="hidden">
+                                        <span
+                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
+                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span>One-Time</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="opportunity_types" value="Ongoing" class="hidden">
+                                        <span
+                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
+                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span>Ongoing</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="opportunity_types" value="Remote/Virtual"
+                                            class="hidden">
+                                        <span
+                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
+                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span>Remote/Virtual</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="opportunity_types" value="On-Site" class="hidden">
+                                        <span
+                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
+                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span>On-Site</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Causes & Skills -->
+                    <div class="section-card p-6">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-6">Causes & Skills</h2>
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-700 mb-3">Causes You Care About</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="causes" value="Education & Tutoring"
+                                            class="hidden">
+                                        <span
+                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
+                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span>Education & Tutoring</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="causes" value="Environmental" class="hidden">
+                                        <span
+                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
+                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span>Environmental</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="causes" value="Healthcare" class="hidden">
+                                        <span
+                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
+                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span>Healthcare</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="causes" value="Food Security" class="hidden">
+                                        <span
+                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
+                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span>Food Security</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="causes" value="Advocacy" class="hidden">
+                                        <span
+                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
+                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span>Advocacy</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="causes" value="Animals" class="hidden">
+                                        <span
+                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
+                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span>Animals</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="skills" class="block text-sm font-medium text-gray-700 mb-1">Your Skills
+                                    (comma separated)</label>
+                                <input type="text" id="skills"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                    placeholder="e.g., Public Speaking, Spanish, CPR">
+                                <p class="mt-2 text-sm text-gray-500">These skills will help match you with relevant
+                                    opportunities.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Academic & Logistics -->
+                    <div class="section-card p-6">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-6">Academic & Logistics</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="major_program" class="block text-sm font-medium text-gray-700 mb-1">Major /
+                                    Program</label>
+                                <input type="text" id="major_program"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="graduation_year"
+                                    class="block text-sm font-medium text-gray-700 mb-1">Expected Graduation
+                                    Year</label>
+                                <input type="number" id="graduation_year" min="2023" max="2030"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                    placeholder="e.g., 2026">
+                            </div>
+                            <div>
+                                <label for="transport_mode" class="block text-sm font-medium text-gray-700 mb-1">Primary
+                                    Mode of Transport</label>
+                                <select id="transport_mode"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                    <option value="">Select an option</option>
+                                    <option value="Public Transit">Public Transit</option>
+                                    <option value="Car">Car</option>
+                                    <option value="Bike">Bike</option>
+                                    <option value="None">None</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="shirt_size" class="block text-sm font-medium text-gray-700 mb-1">T-Shirt
+                                    Size (Optional)</label>
+                                <select id="shirt_size"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                    <option value="">Select a size</option>
+                                    <option value="XS">XS</option>
+                                    <option value="S">S</option>
+                                    <option value="M">M</option>
+                                    <option value="L">L</option>
+                                    <option value="XL">XL</option>
+                                    <option value="XXL">XXL</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 5: Emergency Contact & Consent -->
+                    <div class="section-card p-6">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-6">Emergency Contact & Consent</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="emergency_name"
+                                    class="block text-sm font-medium text-gray-700 mb-1">Emergency Contact Name</label>
+                                <input type="text" id="emergency_name"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="emergency_relationship"
+                                    class="block text-sm font-medium text-gray-700 mb-1">Relationship</label>
+                                <input type="text" id="emergency_relationship"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="emergency_phone"
+                                    class="block text-sm font-medium text-gray-700 mb-1">Emergency Phone</label>
+                                <input type="tel" id="emergency_phone"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <h3 class="text-sm font-medium text-gray-700 mb-3">Communication Preferences</h3>
+                            <div class="space-y-3">
+                                <label class="flex items-start">
+                                    <input type="checkbox" id="comms_consent_email"
+                                        class="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                    <span class="ml-2 text-sm text-gray-700">Receive emails about new opportunities and
+                                        news</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" id="comms_consent_sms"
+                                        class="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                    <span class="ml-2 text-sm text-gray-700">Receive SMS alerts for event
+                                        reminders</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submission Button -->
+                    <div class="flex justify-end">
+                        <button type="submit"
+                            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Save All Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </main>
 
     <!-- Script loader -->

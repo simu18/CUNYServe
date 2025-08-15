@@ -1,65 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Meet the Team | CUNYServe</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .team-card:hover .team-img {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(0, 83, 155, 0.3);
+    }
+
+    .wave-bg {
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%2300539B' fill-opacity='1' d='M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") no-repeat bottom;
+      background-size: 100%;
+    }
+
+    .social-icon {
+      transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-3px);
+    }
+  </style>
 </head>
 
-<body class="font-sans text-gray-800">
+<body class="font-sans text-gray-800 bg-gray-50">
 
   <!-- Navbar Placeholder -->
   <div id="navbar-placeholder"></div>
 
   <!-- Hero Section -->
-  <section class="bg-[#00539B] text-white py-16 text-center">
-    <h1 class="text-4xl font-bold mb-4">Meet the Team</h1>
-    <p class="text-lg max-w-2xl mx-auto">We’re a group of CUNY students passionate about civic engagement, access, and building tools that make volunteering easier and more impactful.</p>
+  <section class="relative bg-gradient-to-r from-[#00539B] to-[#0077CC] text-white py-20 text-center overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div
+        class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==')]">
+      </div>
+    </div>
+    <div class="max-w-4xl mx-auto px-4 relative z-10">
+      <h1 class="text-5xl font-bold mb-6 animate-fade-in">Our Passionate Team</h1>
+      <p class="text-xl max-w-2xl mx-auto mb-8 leading-relaxed">We're CUNY students united by a shared vision: making
+        civic engagement accessible and impactful through technology.</p>
+      <div class="flex justify-center space-x-4">
+        <a href="#team"
+          class="bg-white text-[#00539B] px-6 py-3 rounded-full font-medium hover:bg-opacity-90 transition duration-300 shadow-lg">Meet
+          the Team</a>
+        <a href="#"
+          class="border-2 border-white text-white px-6 py-3 rounded-full font-medium hover:bg-white hover:bg-opacity-10 transition duration-300">Join
+          Us</a>
+      </div>
+    </div>
+    <div class="wave-bg h-20 w-full absolute bottom-0 left-0"></div>
+  </section>
+
+  <!-- Team Values -->
+  <section class="py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center text-[#00539B] mb-12">Our Core Values</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-gray-50 p-8 rounded-xl border-l-4 border-[#00539B] hover:shadow-md transition">
+          <div class="text-4xl text-[#00539B] mb-4"><i class="fas fa-hand-holding-heart"></i></div>
+          <h3 class="text-xl font-bold mb-3">Service First</h3>
+          <p class="text-gray-700">We believe in putting community needs at the center of everything we build.</p>
+        </div>
+        <div class="bg-gray-50 p-8 rounded-xl border-l-4 border-[#00539B] hover:shadow-md transition">
+          <div class="text-4xl text-[#00539B] mb-4"><i class="fas fa-users"></i></div>
+          <h3 class="text-xl font-bold mb-3">Inclusive Design</h3>
+          <p class="text-gray-700">We create for all CUNY students, ensuring accessibility across our diverse campuses.
+          </p>
+        </div>
+        <div class="bg-gray-50 p-8 rounded-xl border-l-4 border-[#00539B] hover:shadow-md transition">
+          <div class="text-4xl text-[#00539B] mb-4"><i class="fas fa-lightbulb"></i></div>
+          <h3 class="text-xl font-bold mb-3">Innovative Solutions</h3>
+          <p class="text-gray-700">We leverage technology to solve real problems in civic engagement.</p>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Team Members -->
-  <section class="py-16 bg-gray-50">
-    <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
-      
-      <!-- Team Member 1 -->
-      <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-        <h2 class="text-xl font-bold text-[#00539B] mb-2">Sara Ahmed</h2>
-        <p class="text-sm text-gray-600 mb-3">Computer Science Student</p>
-        <p class="text-gray-700 text-sm">Sara led the design and development of CUNYServe. She’s passionate about using tech to create inclusive platforms that connect students with real-world service opportunities and foster meaningful community change.</p>
-      </div>
+  <section id="team" class="py-16 bg-gradient-to-b from-white to-gray-50">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center text-[#00539B] mb-4">Meet the Team</h2>
+      <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Dedicated students building tools to connect CUNY
+        with meaningful service opportunities.</p>
 
-      <!-- Team Member 2 -->
-      <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-        <h2 class="text-xl font-bold text-[#00539B] mb-2">Rachel Kim</h2>
-        <p class="text-sm text-gray-600 mb-3">Biology & Pre-Med Student</p>
-        <p class="text-gray-700 text-sm">Rachel contributed research and content for the Pre-Med & Health Pathways page. Her volunteer work in healthcare inspired her to help students find accessible ways to gain experience while serving their communities.</p>
-      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <!-- Team Member 1 -->
+        <div class="team-card bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition duration-500">
+          <div class="relative overflow-hidden h-64">
+            <div
+              class="team-img absolute inset-0 bg-[url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80')] bg-cover bg-center transition duration-500">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+            <div class="absolute bottom-0 left-0 p-6 text-white">
+              <h3 class="text-2xl font-bold">Sabbir Hussain</h3>
+              <p class="text-sm opacity-90">Full-stack Developer</p>
+            </div>
+          </div>
+          <div class="p-6">
+            <p class="text-gray-700 mb-4">Sabbir helped build the platform's functionality and worked on improving
+              design and responsiveness. He believes civic tech can make service more accessible across CUNY.</p>
+            <div class="flex space-x-4">
+              <a href="#" class="social-icon text-[#00539B] hover:text-[#003366]"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" class="social-icon text-[#00539B] hover:text-[#003366]"><i class="fab fa-github"></i></a>
+              <a href="#" class="social-icon text-[#00539B] hover:text-[#003366]"><i class="fas fa-globe"></i></a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="team-card bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition duration-500">
+          <div class="relative overflow-hidden h-64">
+            <div
+              class="team-img absolute inset-0 bg-[url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80')] bg-cover bg-center transition duration-500">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+            <div class="absolute bottom-0 left-0 p-6 text-white">
+              <h3 class="text-2xl font-bold">Sara Ahmed</h3>
+              <p class="text-sm opacity-90">Frontend Developer</p>
+            </div>
+          </div>
+          <div class="p-6">
+            <p class="text-gray-700 mb-4">Sara led the design CUNYServe. She's passionate about using
+              tech to create inclusive platforms that connect students with real-world service opportunities.</p>
+            <div class="flex space-x-4">
+              <a href="#" class="social-icon text-[#00539B] hover:text-[#003366]"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" class="social-icon text-[#00539B] hover:text-[#003366]"><i class="fab fa-github"></i></a>
+              <a href="#" class="social-icon text-[#00539B] hover:text-[#003366]"><i class="fas fa-envelope"></i></a>
+            </div>
+          </div>
+        </div>
 
-      <!-- Team Member 3 -->
-      <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-        <h2 class="text-xl font-bold text-[#00539B] mb-2">Sabbir Hussain</h2>
-        <p class="text-sm text-gray-600 mb-3">Computer Science Student</p>
-        <p class="text-gray-700 text-sm">Sabbir helped build the platform’s functionality and worked on improving filtering and responsiveness. He believes civic tech can make service more accessible for every student across CUNY’s campuses.</p>
+        <!-- Team Member 2 -->
+        <div class="team-card bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition duration-500">
+          <div class="relative overflow-hidden h-64">
+            <div
+              class="team-img absolute inset-0 bg-[url('https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=761&q=80')] bg-cover bg-center transition duration-500">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+            <div class="absolute bottom-0 left-0 p-6 text-white">
+              <h3 class="text-2xl font-bold">Rachel Kim</h3>
+              <p class="text-sm opacity-90">Health Pathways Lead</p>
+            </div>
+          </div>
+          <div class="p-6">
+            <p class="text-gray-700 mb-4">Rachel contributed research and content for the Pre-Med & Health Pathways
+              page. Her volunteer work in healthcare inspired her to help students gain meaningful experience.</p>
+            <div class="flex space-x-4">
+              <a href="#" class="social-icon text-[#00539B] hover:text-[#003366]"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" class="social-icon text-[#00539B] hover:text-[#003366]"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-icon text-[#00539B] hover:text-[#003366]"><i class="fas fa-envelope"></i></a>
+            </div>
+          </div>
+        </div>
+        
       </div>
+    </div>
+  </section>
 
+  <!-- Join Our Team CTA -->
+  <section class="py-16 bg-[#00539B] text-white">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-6">Want to Join Our Mission?</h2>
+      <p class="text-xl mb-8 max-w-2xl mx-auto">We're always looking for passionate CUNY students to help grow
+        CUNYServe. Whether you're into tech, community organizing, or just want to make a difference - we'd love to hear
+        from you!</p>
+      <a href="#"
+        class="inline-block bg-white text-[#00539B] px-8 py-3 rounded-full font-bold hover:bg-opacity-90 transition duration-300 shadow-lg">
+        Apply Now <i class="fas fa-arrow-right ml-2"></i>
+      </a>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-gray-900 text-gray-300 py-8 mt-10">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm px-4">
-      <p>&copy; 2025 CUNYServe. All rights reserved.</p>
-      <div class="space-x-4 mt-4 md:mt-0">
-        <a href="#" class="hover:text-white">Privacy</a>
-        <a href="#" class="hover:text-white">Terms</a>
-        <a href="#" class="hover:text-white">Contact</a>
+  <footer class="bg-gray-900 text-gray-300 py-12">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">CUNYServe</h3>
+          <p class="mb-4">Connecting CUNY students with meaningful service opportunities across New York City.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-white">Home</a></li>
+            <li><a href="#" class="hover:text-white">Volunteer Opportunities</a></li>
+            <li><a href="#" class="hover:text-white">Success Stories</a></li>
+            <li><a href="#" class="hover:text-white">About Us</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-4">Resources</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-white">For Students</a></li>
+            <li><a href="#" class="hover:text-white">For Organizations</a></li>
+            <li><a href="#" class="hover:text-white">Pathway Guides</a></li>
+            <li><a href="#" class="hover:text-white">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-4">Contact</h4>
+          <ul class="space-y-2">
+            <li class="flex items-start">
+              <i class="fas fa-envelope mt-1 mr-2 text-sm"></i>
+              <span>hello@cunyserve.org</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-map-marker-alt mt-1 mr-2 text-sm"></i>
+              <span>CUNY Central Office<br>New York, NY</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-10 pt-6 text-sm text-center md:text-left">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p>&copy; 2025 CUNYServe. All rights reserved.</p>
+          <div class="mt-4 md:mt-0">
+            <a href="#" class="hover:text-white mx-2">Privacy Policy</a>
+            <a href="#" class="hover:text-white mx-2">Terms of Service</a>
+            <a href="#" class="hover:text-white mx-2">Accessibility</a>
+          </div>
+        </div>
       </div>
     </div>
   </footer>
 
   <!-- Load Navbar + Dropdown functionality -->
   <script src="navbar.js"></script>
+  <script src="//unpkg.com/alpinejs" defer></script>
+  <script>
+    async function initializePage() {
+      const navbarPlaceholder = document.getElementById('navbar-placeholder');
+      if (navbarPlaceholder) {
+        const response = await fetch('/navbar.html');
+        navbarPlaceholder.innerHTML = await response.text();
+        const script = document.createElement('script');
+        script.src = '/scripts/navbar-dynamic.js';
+        document.body.appendChild(script);
+      }
+    }
+    document.addEventListener('DOMContentLoaded', initializePage);
+  </script>
 
 </body>
+
 </html>
