@@ -90,11 +90,37 @@
             position: sticky;
             top: 1rem;
         }
+
+        .checkmark {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            position: relative;
+            margin-right: 0.5rem;
+        }
+
+        .checkmark.checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .checkmark.checked::after {
+            content: "";
+            position: absolute;
+            left: 0.25rem;
+            top: 0.1rem;
+            width: 0.3rem;
+            height: 0.6rem;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
     </style>
 </head>
 
 <body class="bg-gray-50">
-
     <div id="navbar-placeholder"></div>
 
     <main class="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
@@ -110,43 +136,23 @@
 
                     <div class="mt-6 space-y-4">
                         <div class="flex items-center">
-                            <svg id="photo-check" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
+                            <div id="photo-check" class="checkmark"></div>
                             <span class="ml-2 text-sm">Profile Photo</span>
                         </div>
                         <div class="flex items-center">
-                            <svg id="bio-check" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
+                            <div id="bio-check" class="checkmark"></div>
                             <span class="ml-2 text-sm">Bio</span>
                         </div>
                         <div class="flex items-center">
-                            <svg id="prefs-check" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
+                            <div id="prefs-check" class="checkmark"></div>
                             <span class="ml-2 text-sm">Preferences</span>
                         </div>
                         <div class="flex items-center">
-                            <svg id="skills-check" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
+                            <div id="skills-check" class="checkmark"></div>
                             <span class="ml-2 text-sm">Skills</span>
                         </div>
                         <div class="flex items-center">
-                            <svg id="emergency-check" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
+                            <div id="emergency-check" class="checkmark"></div>
                             <span class="ml-2 text-sm">Emergency Contact</span>
                         </div>
                     </div>
@@ -173,7 +179,7 @@
                             <div class="photo-upload">
                                 <img id="profile_photo_preview" src="/uploads/default-avatar.png" alt="Profile Picture"
                                     class="w-full h-full rounded-full object-cover border-4 border-white shadow">
-                                <div class="photo-overlay">
+                                <div class="photo-overlay" onclick="document.getElementById('profile_photo').click()">
                                     <span class="text-sm font-medium">Change Photo</span>
                                 </div>
                                 <input type="file" id="profile_photo" accept="image/*" class="hidden">
@@ -198,65 +204,30 @@
                                 <div class="space-y-2">
                                     <label class="checkbox-label">
                                         <input type="checkbox" name="boroughs_preferred" value="Bronx" class="hidden">
-                                        <span
-                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
-                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
+                                        <span class="checkmark mr-2"></span>
                                         <span>Bronx</span>
                                     </label>
                                     <label class="checkbox-label">
                                         <input type="checkbox" name="boroughs_preferred" value="Brooklyn"
                                             class="hidden">
-                                        <span
-                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
-                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
+                                        <span class="checkmark mr-2"></span>
                                         <span>Brooklyn</span>
                                     </label>
                                     <label class="checkbox-label">
                                         <input type="checkbox" name="boroughs_preferred" value="Manhattan"
                                             class="hidden">
-                                        <span
-                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
-                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
+                                        <span class="checkmark mr-2"></span>
                                         <span>Manhattan</span>
                                     </label>
                                     <label class="checkbox-label">
                                         <input type="checkbox" name="boroughs_preferred" value="Queens" class="hidden">
-                                        <span
-                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
-                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
+                                        <span class="checkmark mr-2"></span>
                                         <span>Queens</span>
                                     </label>
                                     <label class="checkbox-label">
                                         <input type="checkbox" name="boroughs_preferred" value="Staten Island"
                                             class="hidden">
-                                        <span
-                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
-                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
+                                        <span class="checkmark mr-2"></span>
                                         <span>Staten Island</span>
                                     </label>
                                 </div>
@@ -266,51 +237,23 @@
                                 <div class="space-y-2">
                                     <label class="checkbox-label">
                                         <input type="checkbox" name="opportunity_types" value="One-Time" class="hidden">
-                                        <span
-                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
-                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
+                                        <span class="checkmark mr-2"></span>
                                         <span>One-Time</span>
                                     </label>
                                     <label class="checkbox-label">
                                         <input type="checkbox" name="opportunity_types" value="Ongoing" class="hidden">
-                                        <span
-                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
-                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
+                                        <span class="checkmark mr-2"></span>
                                         <span>Ongoing</span>
                                     </label>
                                     <label class="checkbox-label">
                                         <input type="checkbox" name="opportunity_types" value="Remote/Virtual"
                                             class="hidden">
-                                        <span
-                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
-                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
+                                        <span class="checkmark mr-2"></span>
                                         <span>Remote/Virtual</span>
                                     </label>
                                     <label class="checkbox-label">
                                         <input type="checkbox" name="opportunity_types" value="On-Site" class="hidden">
-                                        <span
-                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
-                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
+                                        <span class="checkmark mr-2"></span>
                                         <span>On-Site</span>
                                     </label>
                                 </div>
@@ -328,74 +271,32 @@
                                     <label class="checkbox-label">
                                         <input type="checkbox" name="causes" value="Education & Tutoring"
                                             class="hidden">
-                                        <span
-                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
-                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
+                                        <span class="checkmark mr-2"></span>
                                         <span>Education & Tutoring</span>
                                     </label>
                                     <label class="checkbox-label">
                                         <input type="checkbox" name="causes" value="Environmental" class="hidden">
-                                        <span
-                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
-                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
+                                        <span class="checkmark mr-2"></span>
                                         <span>Environmental</span>
                                     </label>
                                     <label class="checkbox-label">
                                         <input type="checkbox" name="causes" value="Healthcare" class="hidden">
-                                        <span
-                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
-                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
+                                        <span class="checkmark mr-2"></span>
                                         <span>Healthcare</span>
                                     </label>
                                     <label class="checkbox-label">
                                         <input type="checkbox" name="causes" value="Food Security" class="hidden">
-                                        <span
-                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
-                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
+                                        <span class="checkmark mr-2"></span>
                                         <span>Food Security</span>
                                     </label>
                                     <label class="checkbox-label">
                                         <input type="checkbox" name="causes" value="Advocacy" class="hidden">
-                                        <span
-                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
-                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
+                                        <span class="checkmark mr-2"></span>
                                         <span>Advocacy</span>
                                     </label>
                                     <label class="checkbox-label">
                                         <input type="checkbox" name="causes" value="Animals" class="hidden">
-                                        <span
-                                            class="checkmark w-4 h-4 border border-gray-300 rounded-sm mr-2 flex items-center justify-center">
-                                            <svg class="check-icon hidden w-3 h-3 text-white pointer-events-none"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
+                                        <span class="checkmark mr-2"></span>
                                         <span>Animals</span>
                                     </label>
                                 </div>
@@ -513,23 +414,324 @@
         </div>
     </main>
 
-    <!-- Script loader -->
-    <script src="//unpkg.com/alpinejs" defer></script>
     <script>
-        async function initializePage() {
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load navbar
             const navbarPlaceholder = document.getElementById('navbar-placeholder');
             if (navbarPlaceholder) {
-                const response = await fetch('/navbar.html');
-                navbarPlaceholder.innerHTML = await response.text();
-                const script = document.createElement('script');
-                script.src = '/scripts/navbar-dynamic.js';
-                document.body.appendChild(script);
+                try {
+                    const response = await fetch('/navbar.html');
+                    navbarPlaceholder.innerHTML = await response.text();
+                } catch (error) {
+                    console.error('Failed to load navbar:', error);
+                }
             }
-        }
-        document.addEventListener('DOMContentLoaded', initializePage);
-    </script>
-    <script src="/scripts/profile-edit.js"></script>
 
+            // Helper functions
+            const byId = (id) => document.getElementById(id);
+            const setValue = (id, val) => { const el = byId(id); if (el) el.value = val ?? ''; };
+            const setChecked = (id, val) => { const el = byId(id); if (el) el.checked = !!val; };
+            const setSrc = (id, val, fallback) => { const el = byId(id); if (el) el.src = val || fallback || ''; };
+
+            // Checkbox helpers
+            const populateCheckboxes = (name, values) => {
+                const valuesSet = new Set(values || []);
+                document.querySelectorAll(`input[name="${name}"]`).forEach((checkbox) => {
+                    checkbox.checked = valuesSet.has(checkbox.value);
+                    // Update visual checkmark
+                    const checkmark = checkbox.closest('.checkbox-label')?.querySelector('.checkmark');
+                    if (checkmark) {
+                        checkmark.classList.toggle('checked', checkbox.checked);
+                    }
+                });
+            };
+
+            // Calculate profile completion percentage
+            const calculateCompletion = (data) => {
+                const profile = data.profile || {};
+                const user = data.user || {};
+                const orientation = data.orientation || {};
+
+                let completedFields = 0;
+                const totalFields = 5; // photo, bio, prefs, skills, emergency
+
+                // Photo check
+                if (user.profilePicture && user.profilePicture !== '/uploads/default-avatar.png') {
+                    completedFields++;
+                    byId('photo-check').classList.add('checked');
+                }
+
+                // Bio check
+                if (profile.bio && profile.bio.trim().length > 0) {
+                    completedFields++;
+                    byId('bio-check').classList.add('checked');
+                }
+
+                // Preferences check (at least one borough and one opportunity type)
+                if ((profile.boroughs_preferred?.length > 0) && (profile.opportunity_types?.length > 0)) {
+                    completedFields++;
+                    byId('prefs-check').classList.add('checked');
+                }
+
+                // Skills check
+                if (profile.skills?.length > 0) {
+                    completedFields++;
+                    byId('skills-check').classList.add('checked');
+                }
+
+                // Emergency contact check
+                if (orientation.emergency_name && orientation.emergency_phone) {
+                    completedFields++;
+                    byId('emergency-check').classList.add('checked');
+                }
+
+                const percentage = Math.round((completedFields / totalFields) * 100);
+                byId('completion-progress').style.width = `${percentage}%`;
+                byId('completion-text').textContent = `${percentage}% complete`;
+            };
+
+            // Populate form with data
+            const populateForm = (data) => {
+                const profile = data.profile || {};
+                const user = data.user || {};
+                const orientation = data.orientation || {};
+
+                // Section 1: Public Profile
+                setSrc('profile_photo_preview', user.profilePicture, '/uploads/default-avatar.png');
+                setValue('bio', profile.bio || '');
+
+                // Section 2 & 3: Preferences, Causes & Skills
+                populateCheckboxes('boroughs_preferred', profile.boroughs_preferred);
+                populateCheckboxes('opportunity_types', profile.opportunity_types);
+                populateCheckboxes('causes', profile.causes);
+                setValue('skills', Array.isArray(profile.skills) ? profile.skills.join(', ') : '');
+
+                // Section 4: Academic & Logistics
+                setValue('major_program', profile.major_program || '');
+                setValue('graduation_year', profile.graduation_year || '');
+                setValue('transport_mode', profile.transport_mode || '');
+                setValue('shirt_size', profile.shirt_size || '');
+
+                // Section 5: Emergency & Consent
+                setValue('emergency_name', orientation.emergency_name || '');
+                setValue('emergency_relationship', orientation.emergency_relationship || '');
+                setValue('emergency_phone', orientation.emergency_phone || '');
+                setChecked('comms_consent_email', orientation.comms_consent_email || false);
+                setChecked('comms_consent_sms', orientation.comms_consent_sms || false);
+
+                // Calculate completion percentage
+                calculateCompletion(data);
+            };
+
+            // Load profile data
+            const loadProfileData = async () => {
+                try {
+                    const res = await fetch('/api/profile/all');
+                    if (!res.ok) {
+                        alert('Failed to load your profile data. Please log in again.');
+                        window.location.href = '/login.html';
+                        return;
+                    }
+                    const allData = await res.json();
+                    populateForm(allData);
+                } catch (error) {
+                    console.error('Failed to load profile data:', error);
+                    alert('Network error while loading your profile. Please try again.');
+                }
+            };
+
+            // Photo upload preview
+            const photoInput = byId('profile_photo');
+            if (photoInput) {
+                photoInput.addEventListener('change', () => {
+                    const file = photoInput.files && photoInput.files[0];
+                    if (!file) return;
+
+                    // Validate file type
+                    if (!file.type.match('image.*')) {
+                        alert('Please select an image file (JPEG, PNG, etc.)');
+                        return;
+                    }
+
+                    // Validate file size (max 5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('Image must be less than 5MB');
+                        return;
+                    }
+
+                    const preview = byId('profile_photo_preview');
+                    if (preview) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            preview.src = e.target.result;
+                            // Update completion percentage
+                            byId('photo-check').classList.add('checked');
+                            updateCompletionPercentage();
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            // Update completion percentage when form changes
+            const updateCompletionPercentage = () => {
+                let completedFields = 0;
+                const totalFields = 5;
+
+                // Photo
+                if (photoInput.files && photoInput.files.length > 0) {
+                    completedFields++;
+                } else if (byId('profile_photo_preview').src.includes('default-avatar.png') === false) {
+                    completedFields++;
+                }
+
+                // Bio
+                if (byId('bio').value.trim().length > 0) {
+                    completedFields++;
+                }
+
+                // Preferences
+                const boroughsChecked = document.querySelectorAll('input[name="boroughs_preferred"]:checked').length > 0;
+                const opportunitiesChecked = document.querySelectorAll('input[name="opportunity_types"]:checked').length > 0;
+                if (boroughsChecked && opportunitiesChecked) {
+                    completedFields++;
+                }
+
+                // Skills
+                if (byId('skills').value.trim().length > 0) {
+                    completedFields++;
+                }
+
+                // Emergency contact
+                if (byId('emergency_name').value.trim().length > 0 && byId('emergency_phone').value.trim().length > 0) {
+                    completedFields++;
+                }
+
+                const percentage = Math.round((completedFields / totalFields) * 100);
+                byId('completion-progress').style.width = `${percentage}%`;
+                byId('completion-text').textContent = `${percentage}% complete`;
+
+                // Update checkmarks
+                byId('photo-check').classList.toggle('checked', completedFields >= 1);
+                byId('bio-check').classList.toggle('checked', byId('bio').value.trim().length > 0);
+                byId('prefs-check').classList.toggle('checked', boroughsChecked && opportunitiesChecked);
+                byId('skills-check').classList.toggle('checked', byId('skills').value.trim().length > 0);
+                byId('emergency-check').classList.toggle('checked',
+                    byId('emergency_name').value.trim().length > 0 && byId('emergency_phone').value.trim().length > 0);
+            };
+
+            // Add event listeners for form changes
+            const form = byId('edit-profile-form');
+            if (form) {
+                form.addEventListener('input', updateCompletionPercentage);
+                form.addEventListener('change', updateCompletionPercentage);
+            }
+
+            // Form submission
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    // Disable submit button
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    if (submitBtn) submitBtn.disabled = true;
+
+                    try {
+                        // Step 1: Upload photo if changed
+                        if (photoInput.files && photoInput.files[0]) {
+                            const formData = new FormData();
+                            formData.append('profilePicture', photoInput.files[0]);
+
+                            const photoRes = await fetch('/api/profile/photo', {
+                                method: 'POST',
+                                body: formData
+                            });
+
+                            if (!photoRes.ok) {
+                                throw new Error('Photo upload failed');
+                            }
+                        }
+
+                        // Step 2: Prepare other data
+                        const getCheckedValues = (name) =>
+                            Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(cb => cb.value);
+
+                        const profileData = {
+                            bio: byId('bio').value,
+                            skills: byId('skills').value.split(',').map(s => s.trim()).filter(Boolean),
+                            boroughs_preferred: getCheckedValues('boroughs_preferred'),
+                            opportunity_types: getCheckedValues('opportunity_types'),
+                            causes: getCheckedValues('causes'),
+                            major_program: byId('major_program').value,
+                            graduation_year: byId('graduation_year').value,
+                            transport_mode: byId('transport_mode').value,
+                            shirt_size: byId('shirt_size').value,
+                        };
+
+                        const orientationData = {
+                            emergency_name: byId('emergency_name').value,
+                            emergency_relationship: byId('emergency_relationship').value,
+                            emergency_phone: byId('emergency_phone').value,
+                            comms_consent_email: byId('comms_consent_email').checked,
+                            comms_consent_sms: byId('comms_consent_sms').checked,
+                        };
+
+                        // Step 3: Save profile data
+                        const saveRes = await fetch('/api/profile/all', {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ profileData, orientationData }),
+                        });
+
+                        if (!saveRes.ok) {
+                            throw new Error('Profile save failed');
+                        }
+
+                        alert('Profile updated successfully! Redirecting to dashboard...');
+                        window.location.href = '/dashboard.html';
+                    } catch (error) {
+                        console.error('Error saving profile:', error);
+                        alert('Error saving profile: ' + error.message);
+                        if (submitBtn) submitBtn.disabled = false;
+                    }
+                });
+            }
+
+            // Initialize
+            await loadProfileData();
+        });
+    </script>
+
+<script src="//unpkg.com/alpinejs" defer></script>
+
+<script>
+    async function loadNavbar() {
+        try {
+            const response = await fetch('/navbar.html');
+            const data = await response.text();
+            document.getElementById('navbar-placeholder').innerHTML = data;
+
+            const dynamicScript = document.createElement('script');
+            dynamicScript.src = '/scripts/navbar-dynamic.js';
+            document.body.appendChild(dynamicScript);
+        } catch (error) {
+            console.error('Failed to load navbar:', error);
+        }
+    }
+    loadNavbar();
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('verified') === 'true') {
+            const successEl = document.getElementById('verification-success');
+            successEl.classList.remove('hidden');
+            setTimeout(() => {
+                successEl.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                setTimeout(() => successEl.classList.add('hidden'), 500);
+            }, 5000);
+        }
+    });
+</script>
 </body>
 
 </html>

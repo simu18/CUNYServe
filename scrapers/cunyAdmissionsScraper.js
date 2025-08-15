@@ -160,12 +160,14 @@
 
 // scrapers/cunyAdmissionsScraper.js (Refactored)
 
+// scrapers/cunyAdmissionsScraper.js (Fully Updated & Resilient)
+
 const puppeteer = require('puppeteer');
 
 async function scrapeCunyAdmissionsEvents() {
     console.log('--- [Admissions Scraper] Starting ---');
-
     let browser;
+
     try {
         browser = await puppeteer.launch({
             headless: true,
@@ -173,26 +175,27 @@ async function scrapeCunyAdmissionsEvents() {
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
     } catch (error) {
-        console.error('--- [Admissions Scraper] Browser launch failed:', error);
-        return { success: false, error: 'Failed to launch browser' };
+        console.error('❌ [Admissions Scraper] Browser launch failed:', error);
+        return []; // Always return an array on failure
     }
 
     const page = await browser.newPage();
     await page.setUserAgent(
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     );
-    page.setDefaultTimeout(60000);
+
+    page.setDefaultTimeout(90000); // 90 seconds
 
     const targetUrl = 'https://www.cuny.edu/admissions/undergraduate/events/';
     console.log(`--- [Admissions Scraper] Navigating to ${targetUrl}...`);
 
     try {
-        await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
+        await page.goto(targetUrl, { waitUntil: 'networkidle2' });
         await page.waitForSelector('table tr td .event', { timeout: 30000 });
     } catch (error) {
-        console.error('--- [Admissions Scraper] Page load failed:', error);
+        console.error('❌ [Admissions Scraper] Page load failed:', error.message);
         await browser.close();
-        return { success: false, error: 'Failed to load page or find events' };
+        return [];
     }
 
     let allEvents = [];
@@ -232,17 +235,16 @@ async function scrapeCunyAdmissionsEvents() {
             return events;
         });
 
-        console.log(`--- [Admissions Scraper] Found ${allEvents.length} events.`);
-    } catch (error) {
-        console.error('--- [Admissions Scraper] Scraping failed:', error);
+        console.log(`✅ [Admissions Scraper] Found ${allEvents.length} events.`);
+    } catch (scrapeError) {
+        console.error('⚠️ [Admissions Scraper] Scraping failed:', scrapeError.message);
         await browser.close();
-        return { success: false, error: 'Failed to extract event data' };
+        return [];
     }
 
     await browser.close();
-    console.log('--- [Admissions Scraper] Finished. ---');
+    console.log('--- [Admissions Scraper] Finished ---');
 
-    // Return the scraped data (no DB saving here)
     return allEvents;
 }
 

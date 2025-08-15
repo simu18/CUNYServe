@@ -8,7 +8,51 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    /* Fade-in animation for sections */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8fafc;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #003f7f 0%, #4da8da 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .card-hover {
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-pattern {
+      background-image: radial-gradient(circle at 25% 50%, rgba(0, 63, 127, 0.2) 0%, rgba(0, 63, 127, 0) 50%);
+    }
+
+    .floating {
+      animation: floating 6s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-15px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
     .fade-in {
       opacity: 0;
       transform: translateY(20px);
@@ -20,7 +64,6 @@
       transform: translateY(0);
     }
 
-    /* Typed text animation in hero */
     .typed-text {
       display: inline;
       border-right: 2px solid white;
@@ -28,124 +71,265 @@
       overflow: hidden;
     }
 
-    /* Parallax background effect */
-    .parallax-bg {
-      background-attachment: fixed;
-      background-size: cover;
-      background-position: center;
+    .glow-on-hover {
+      transition: box-shadow 0.3s ease;
+    }
+
+    .glow-on-hover:hover {
+      box-shadow: 0 0 15px rgba(0, 63, 127, 0.5);
+    }
+
+    .wave-shape {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .wave-shape svg {
+      position: relative;
+      display: block;
+      width: calc(100% + 1.3px);
+      height: 100px;
+    }
+
+    .wave-shape .shape-fill {
+      fill: #FFFFFF;
     }
   </style>
 </head>
 
-<body class="font-sans text-gray-800 bg-gray-50">
+<body class="text-gray-800">
 
   <!-- Navbar placeholder -->
   <div id="navbar-placeholder"></div>
 
   <!-- Hero Section -->
-  <section class="relative h-[500px] flex items-center justify-center text-white overflow-hidden parallax-bg"
-    style="background-image: url('https://images.unsplash.com/photo-1573496789518-85c38e9fd0c3');">
-    <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-black/40"></div>
-    <div class="relative z-10 text-center px-6 max-w-3xl">
-      <h1 class="text-4xl sm:text-5xl font-bold mb-4 drop-shadow-lg">
-        Empowering CUNY Students to <span class="typed-text" id="typed"></span>
+  <section
+    class="relative h-screen min-h-[600px] flex items-center justify-center text-white overflow-hidden bg-[#003f7f] hero-pattern">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/10"></div>
+
+    <!-- Floating elements -->
+    <div class="absolute top-20 left-10 w-16 h-16 rounded-full bg-white/10 floating" style="animation-delay: 0s;"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-24 h-24 rounded-full bg-white/5 floating" style="animation-delay: 1s;">
+    </div>
+    <div class="absolute top-1/3 right-20 w-12 h-12 rounded-full bg-white/15 floating" style="animation-delay: 2s;">
+    </div>
+
+    <div class="relative z-10 text-center px-6 max-w-4xl">
+      <div class="mb-8">
+        <span class="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium mb-4">CUNY
+          Student Initiative</span>
+      </div>
+      <h1 class="text-4xl sm:text-6xl font-bold mb-6 leading-tight">
+        Empowering CUNY Students to <br>
+        <span class="typed-text text-white" id="typed"></span>
       </h1>
-      <p class="text-lg sm:text-xl mb-6 drop-shadow-md">Connecting students with meaningful civic engagement
-        opportunities across all campuses.</p>
+      <p class="text-xl sm:text-2xl mb-8 max-w-2xl mx-auto leading-relaxed">Connecting students with meaningful civic
+        engagement opportunities across all 25 campuses.</p>
       <div class="flex flex-wrap justify-center gap-4">
         <a href="events.html"
-          class="bg-[#003f7f] hover:bg-[#00295c] text-white px-8 py-3 rounded-md font-semibold transition-shadow shadow-sm hover:shadow-md">Find
-          Opportunities</a>
+          class="bg-white text-[#003f7f] hover:bg-gray-100 px-8 py-4 rounded-full font-semibold transition-all shadow-lg hover:shadow-xl glow-on-hover">
+          Find Opportunities <i class="fas fa-arrow-right ml-2"></i>
+        </a>
         <a href="#pages"
-          class="border border-white px-8 py-3 rounded-md font-semibold hover:bg-white hover:text-black transition-colors">Explore
-          the Site</a>
+          class="border-2 border-white text-white hover:bg-white hover:text-[#003f7f] px-8 py-4 rounded-full font-semibold transition-all">
+          Explore the Site
+        </a>
       </div>
+    </div>
+
+    <!-- Wave shape divider -->
+    <div class="wave-shape">
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path
+          d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+          class="shape-fill"></path>
+      </svg>
     </div>
   </section>
 
   <!-- Purpose Section -->
-  <section class="bg-white py-20 fade-in">
-    <div class="max-w-4xl mx-auto text-center px-6">
-      <h2 class="text-3xl sm:text-4xl font-semibold text-[#003f7f] mb-6">Our Purpose</h2>
-      <p class="text-gray-700 text-lg sm:text-xl leading-relaxed">
-        CUNYServe is a student-led initiative connecting all 25 CUNY campuses through civic engagement, volunteerism,
-        and impactful community service. Our goal is to make it simple for students to discover, participate in, and
-        lead
-        service opportunities that create real change—both on campus and across New York City.
-      </p>
+  <section class="py-24 fade-in bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex flex-col lg:flex-row items-center gap-12">
+        <div class="lg:w-1/2">
+          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f" alt="CUNY students volunteering"
+            class="rounded-2xl shadow-xl w-full h-auto object-cover">
+        </div>
+        <div class="lg:w-1/2">
+          <h2 class="text-3xl sm:text-5xl font-bold mb-6 gradient-text">Our Purpose</h2>
+          <p class="text-gray-700 text-lg leading-relaxed mb-6">
+            CUNYServe is a student-led initiative connecting all 25 CUNY campuses through civic engagement,
+            volunteerism,
+            and impactful community service. Our goal is to make it simple for students to discover, participate in, and
+            lead
+            service opportunities that create real change—both on campus and across New York City.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <div class="flex items-center">
+              <div class="bg-[#003f7f]/10 p-3 rounded-full mr-3">
+                <i class="fas fa-users text-[#003f7f]"></i>
+              </div>
+              <span class="font-medium">25 Campuses</span>
+            </div>
+            <div class="flex items-center">
+              <div class="bg-[#003f7f]/10 p-3 rounded-full mr-3">
+                <i class="fas fa-hand-holding-heart text-[#003f7f]"></i>
+              </div>
+              <span class="font-medium">100+ Partners</span>
+            </div>
+            <div class="flex items-center">
+              <div class="bg-[#003f7f]/10 p-3 rounded-full mr-3">
+                <i class="fas fa-calendar-check text-[#003f7f]"></i>
+              </div>
+              <span class="font-medium">500+ Events</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Explore the Site Section -->
-  <section id="pages" class="py-20 fade-in">
+  <section id="pages" class="py-20 fade-in bg-gradient-to-b from-white to-gray-50">
     <div class="max-w-6xl mx-auto px-6">
-      <h2 class="text-3xl sm:text-4xl font-semibold text-[#003f7f] mb-12 text-center">Explore the Site</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-5xl font-bold mb-4 gradient-text">Explore the Site</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">Discover all the ways you can get involved and make a difference
+          through CUNYServe.</p>
+      </div>
 
-        <!-- Cards -->
-        <a href="events.html"
-          class="group bg-white p-6 rounded-xl shadow-sm hover:shadow-lg border-l-4 border-[#003f7f] transition transform hover:-translate-y-1 fade-in">
-          <div class="text-4xl text-[#003f7f] mb-4"><i class="fas fa-calendar-alt"></i></div>
-          <h3 class="text-xl font-semibold mb-2 group-hover:text-[#00295c]">Events</h3>
-          <p class="text-gray-600 text-sm">Browse upcoming CUNY and NYC-wide volunteer opportunities by campus,
-            interest, or availability.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Event Card -->
+        <a href="events.html" class="bg-white p-8 rounded-2xl shadow-md card-hover group">
+          <div
+            class="w-16 h-16 bg-[#003f7f]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#003f7f] group-hover:text-white transition-all">
+            <i class="fas fa-calendar-alt text-2xl text-[#003f7f] group-hover:text-white"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3 text-gray-800 group-hover:text-[#003f7f] transition-colors">Events</h3>
+          <p class="text-gray-600">Browse upcoming CUNY and NYC-wide volunteer opportunities by campus, interest, or
+            availability.</p>
+          <div class="mt-4 text-[#003f7f] font-medium flex items-center">
+            Learn more <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+          </div>
         </a>
 
-        <a href="volunteer-projects.html"
-          class="group bg-white p-6 rounded-xl shadow-sm hover:shadow-lg border-l-4 border-[#003f7f] transition transform hover:-translate-y-1 fade-in">
-          <div class="text-4xl text-[#003f7f] mb-4"><i class="fas fa-hands-helping"></i></div>
-          <h3 class="text-xl font-semibold mb-2 group-hover:text-[#00295c]">Get Involved</h3>
-          <p class="text-gray-600 text-sm">Take leadership roles, volunteer, or support our mission through donations
-            and events.</p>
+        <!-- Get Involved Card -->
+        <a href="volunteer-projects.html" class="bg-white p-8 rounded-2xl shadow-md card-hover group">
+          <div
+            class="w-16 h-16 bg-[#003f7f]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#003f7f] group-hover:text-white transition-all">
+            <i class="fas fa-hands-helping text-2xl text-[#003f7f] group-hover:text-white"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3 text-gray-800 group-hover:text-[#003f7f] transition-colors">Get Involved
+          </h3>
+          <p class="text-gray-600">Take leadership roles, volunteer, or support our mission through donations and
+            events.</p>
+          <div class="mt-4 text-[#003f7f] font-medium flex items-center">
+            Learn more <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+          </div>
         </a>
 
-        <a href="pre-med.html"
-          class="group bg-white p-6 rounded-xl shadow-sm hover:shadow-lg border-l-4 border-[#003f7f] transition transform hover:-translate-y-1 fade-in">
-          <div class="text-4xl text-[#003f7f] mb-4"><i class="fas fa-user-md"></i></div>
-          <h3 class="text-xl font-semibold mb-2 group-hover:text-[#00295c]">Pre-Med</h3>
-          <p class="text-gray-600 text-sm">Resources for health-focused students seeking service hours in clinical or
-            medical settings.</p>
+        <!-- Pre-Med Card -->
+        <a href="pre-med.html" class="bg-white p-8 rounded-2xl shadow-md card-hover group">
+          <div
+            class="w-16 h-16 bg-[#003f7f]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#003f7f] group-hover:text-white transition-all">
+            <i class="fas fa-user-md text-2xl text-[#003f7f] group-hover:text-white"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3 text-gray-800 group-hover:text-[#003f7f] transition-colors">Pre-Med</h3>
+          <p class="text-gray-600">Resources for health-focused students seeking service hours in clinical or medical
+            settings.</p>
+          <div class="mt-4 text-[#003f7f] font-medium flex items-center">
+            Learn more <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+          </div>
         </a>
 
-        <a href="about.html"
-          class="group bg-white p-6 rounded-xl shadow-sm hover:shadow-lg border-l-4 border-[#003f7f] transition transform hover:-translate-y-1 fade-in">
-          <div class="text-4xl text-[#003f7f] mb-4"><i class="fas fa-users"></i></div>
-          <h3 class="text-xl font-semibold mb-2 group-hover:text-[#00295c]">About</h3>
-          <p class="text-gray-600 text-sm">Learn about our team and the student-led initiative connecting civic
-            engagement across CUNY.</p>
+        <!-- About Card -->
+        <a href="about.html" class="bg-white p-8 rounded-2xl shadow-md card-hover group">
+          <div
+            class="w-16 h-16 bg-[#003f7f]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#003f7f] group-hover:text-white transition-all">
+            <i class="fas fa-users text-2xl text-[#003f7f] group-hover:text-white"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3 text-gray-800 group-hover:text-[#003f7f] transition-colors">About</h3>
+          <p class="text-gray-600">Learn about our team and the student-led initiative connecting civic engagement
+            across CUNY.</p>
+          <div class="mt-4 text-[#003f7f] font-medium flex items-center">
+            Learn more <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+          </div>
         </a>
 
-        <a href="faq.html"
-          class="group bg-white p-6 rounded-xl shadow-sm hover:shadow-lg border-l-4 border-[#003f7f] transition transform hover:-translate-y-1 fade-in">
-          <div class="text-4xl text-[#003f7f] mb-4"><i class="fas fa-question-circle"></i></div>
-          <h3 class="text-xl font-semibold mb-2 group-hover:text-[#00295c]">FAQ</h3>
-          <p class="text-gray-600 text-sm">Get answers to common questions and read or submit stories from students and
+        <!-- FAQ Card -->
+        <a href="faq.html" class="bg-white p-8 rounded-2xl shadow-md card-hover group">
+          <div
+            class="w-16 h-16 bg-[#003f7f]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#003f7f] group-hover:text-white transition-all">
+            <i class="fas fa-question-circle text-2xl text-[#003f7f] group-hover:text-white"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3 text-gray-800 group-hover:text-[#003f7f] transition-colors">FAQ</h3>
+          <p class="text-gray-600">Get answers to common questions and read or submit stories from students and
             volunteers.</p>
+          <div class="mt-4 text-[#003f7f] font-medium flex items-center">
+            Learn more <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+          </div>
         </a>
 
-        <a href="donate.html"
-          class="group bg-white p-6 rounded-xl shadow-sm hover:shadow-lg border-l-4 border-[#003f7f] transition transform hover:-translate-y-1 fade-in">
-          <div class="text-4xl text-[#003f7f] mb-4"><i class="fas fa-hand-holding-heart"></i></div>
-          <h3 class="text-xl font-semibold mb-2 group-hover:text-[#00295c]">Donate Now</h3>
-          <p class="text-gray-600 text-sm">Support trusted community organizations and nonprofits through verified
-            donation partners.</p>
+        <!-- Donate Card -->
+        <a href="donate.html" class="bg-white p-8 rounded-2xl shadow-md card-hover group">
+          <div
+            class="w-16 h-16 bg-[#003f7f]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#003f7f] group-hover:text-white transition-all">
+            <i class="fas fa-hand-holding-heart text-2xl text-[#003f7f] group-hover:text-white"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3 text-gray-800 group-hover:text-[#003f7f] transition-colors">Donate Now</h3>
+          <p class="text-gray-600">Support trusted community organizations and nonprofits through verified donation
+            partners.</p>
+          <div class="mt-4 text-[#003f7f] font-medium flex items-center">
+            Learn more <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+          </div>
         </a>
+      </div>
+    </div>
+  </section>
 
+  <!-- Stats Section -->
+  <section class="py-20 bg-[#003f7f] text-white fade-in">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div class="p-8">
+          <div class="text-5xl font-bold mb-2">25+</div>
+          <div class="text-xl font-medium">CUNY Campuses</div>
+          <div class="h-1 bg-white/30 w-20 mx-auto mt-4"></div>
+        </div>
+        <div class="p-8">
+          <div class="text-5xl font-bold mb-2">5,000+</div>
+          <div class="text-xl font-medium">Student Volunteers</div>
+          <div class="h-1 bg-white/30 w-20 mx-auto mt-4"></div>
+        </div>
+        <div class="p-8">
+          <div class="text-5xl font-bold mb-2">100+</div>
+          <div class="text-xl font-medium">Community Partners</div>
+          <div class="h-1 bg-white/30 w-20 mx-auto mt-4"></div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Newsletter Signup -->
-  <section class="py-16 bg-[#f4f6fa] fade-in">
-    <div class="max-w-4xl mx-auto text-center px-6">
-      <h2 class="text-2xl sm:text-3xl font-semibold text-[#003f7f] mb-4">Stay Connected</h2>
-      <p class="text-gray-700 mb-6">Subscribe to receive updates on the latest volunteer opportunities and community
-        stories.</p>
-      <form class="flex flex-col sm:flex-row gap-4 justify-center">
+  <section class="py-20 bg-white fade-in">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <div class="inline-block bg-[#003f7f]/10 px-6 py-3 rounded-full mb-6">
+        <i class="fas fa-envelope text-[#003f7f] mr-2"></i>
+        <span class="font-medium text-[#003f7f]">Stay Updated</span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-bold mb-4 gradient-text">Join Our Community</h2>
+      <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Subscribe to receive updates on the latest volunteer opportunities
+        and community stories from across CUNY.</p>
+
+      <form class="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
         <input type="email" placeholder="Enter your email"
-          class="px-4 py-3 border border-gray-300 rounded-md w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-[#003f7f]">
-        <button
-          class="bg-[#003f7f] hover:bg-[#00295c] text-white px-8 py-3 rounded-md font-semibold transition-shadow shadow-sm hover:shadow-md">
+          class="flex-grow px-6 py-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#003f7f] focus:border-transparent">
+        <button type="submit"
+          class="bg-[#003f7f] hover:bg-[#00295c] text-white px-8 py-4 rounded-full font-semibold transition-all shadow-md hover:shadow-lg">
           Subscribe
         </button>
       </form>
@@ -153,13 +337,58 @@
   </section>
 
   <!-- Footer -->
-  <footer class="bg-gray-900 text-gray-300 py-8">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm px-4">
-      <p>&copy; 2025 CUNYServe. All rights reserved.</p>
-      <div class="space-x-4 mt-4 md:mt-0">
-        <a href="#" class="hover:text-white transition">Privacy</a>
-        <a href="#" class="hover:text-white transition">Terms</a>
-        <a href="#" class="hover:text-white transition">Contact</a>
+  <footer class="bg-gray-900 text-gray-300 pt-16 pb-8">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">CUNYServe</h3>
+          <p class="mb-4">Connecting CUNY students with civic engagement opportunities across New York City.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="events.html" class="hover:text-white transition">Events</a></li>
+            <li><a href="volunteer-projects.html" class="hover:text-white transition">Get Involved</a></li>
+            <li><a href="pre-med.html" class="hover:text-white transition">Pre-Med Resources</a></li>
+            <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Resources</h3>
+          <ul class="space-y-2">
+            <li><a href="faq.html" class="hover:text-white transition">FAQ</a></li>
+            <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-white transition">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-white text-lg font-bold mb-4">Contact</h3>
+          <address class="not-italic">
+            <p class="mb-2"><i class="fas fa-map-marker-alt mr-2"></i> CUNY Central Office</p>
+            <p class="mb-2"><i class="fas fa-phone mr-2"></i> (212) 541-0000</p>
+            <p class="mb-2"><i class="fas fa-envelope mr-2"></i> info@cunyserve.edu</p>
+          </address>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p>&copy; 2025 CUNYServe. All rights reserved.</p>
+
+        <!-- Admin Dashboard Button - Subtle but accessible -->
+        <a href="admin-dashboard.html"
+          class="mt-4 md:mt-0 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-sm rounded-full text-gray-300 hover:text-white transition flex items-center">
+          <i class="fas fa-lock mr-2"></i> Admin Dashboard
+        </a>
       </div>
     </div>
   </footer>
@@ -196,7 +425,7 @@
     faders.forEach(fader => observer.observe(fader));
 
     // Typed text animation
-    const phrases = ["Make a Difference", "Lead Change", "Serve the Community"];
+    const phrases = ["Make a Difference", "Lead Change", "Serve the Community", "Build Connections", "Create Impact"];
     let i = 0, j = 0, currentPhrase = [], isDeleting = false, speed = 120;
     const typedElement = document.getElementById("typed");
 

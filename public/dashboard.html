@@ -271,23 +271,34 @@
         </div>
     </div>
     <script src="//unpkg.com/alpinejs" defer></script>
+    
     <script>
-        // Robust navbar loader
-        async function initializePage() {
+        async function loadNavbar() {
             try {
-                const ph = document.getElementById('navbar-placeholder');
-                if (ph) {
-                    const res = await fetch('/navbar.html');
-                    ph.innerHTML = await res.text();
-                    const navScript = document.createElement('script');
-                    navScript.src = '/scripts/navbar-dynamic.js';
-                    document.body.appendChild(navScript);
-                }
-            } catch (e) {
-                console.error('Failed to load navbar:', e);
+                const response = await fetch('/navbar.html');
+                const data = await response.text();
+                document.getElementById('navbar-placeholder').innerHTML = data;
+
+                const dynamicScript = document.createElement('script');
+                dynamicScript.src = '/scripts/navbar-dynamic.js';
+                document.body.appendChild(dynamicScript);
+            } catch (error) {
+                console.error('Failed to load navbar:', error);
             }
         }
-        document.addEventListener('DOMContentLoaded', initializePage);
+        loadNavbar();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('verified') === 'true') {
+                const successEl = document.getElementById('verification-success');
+                successEl.classList.remove('hidden');
+                setTimeout(() => {
+                    successEl.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                    setTimeout(() => successEl.classList.add('hidden'), 500);
+                }, 5000);
+            }
+        });
     </script>
     <script src="/scripts/dashboard-new.js"></script>
 </body>

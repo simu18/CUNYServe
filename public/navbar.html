@@ -1,125 +1,169 @@
 <!-- public/navbar.html -->
-<nav class="fixed top-0 left-0 w-full bg-[#003f7f]/90 backdrop-blur-md shadow-lg z-50">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+<nav class="fixed top-0 left-0 w-full z-50" x-data="{ isMobileMenuOpen: false }">
+  <!-- Main pill-shaped navbar container with darker background -->
+  <div class="max-w-7xl mx-auto px-4 py-2">
+    <div class="bg-gray-100/90 backdrop-blur-xl rounded-full shadow-2xl border border-gray-300">
+      <div class="h-14 flex items-center justify-between px-4">
 
-    <!-- Logo + Desktop Links -->
-    <div class="flex items-center space-x-4">
-      <a href="/index.html"
-        class="text-white font-extrabold text-2xl tracking-tight hover:text-[#a3c0f9] transition">CUNYServe</a>
-
-      <!-- Desktop Menu -->
-      <div class="hidden md:flex ml-10 space-x-2 items-center">
-        <a href="/events.html"
-          class="text-gray-100 hover:text-white px-4 py-2 rounded-md text-sm font-medium transition hover:bg-[#00295c]">Events</a>
-
-        <!-- Get Involved Dropdown -->
-        <div class="relative" x-data="{ open: false }">
-          <button @click="open = !open"
-            class="flex items-center text-gray-100 px-4 py-2 rounded-md text-sm font-medium hover:text-white hover:bg-[#00295c] transition">
-            Get Involved
-            <svg class="w-4 h-4 ml-1 transition-transform duration-200" :class="{'rotate-180': open}" fill="none"
-              stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          <div x-show="open" @click.away="open = false" x-transition
-            class="absolute mt-2 w-56 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-10">
-            <a href="/volunteer-projects.html"
-              class="block px-4 py-2 text-gray-700 hover:bg-[#f1f5f9] rounded-lg transition">Find a Volunteer
-              Project</a>
-            <a href="/team-leader.html"
-              class="block px-4 py-2 text-gray-700 hover:bg-[#f1f5f9] rounded-lg transition">Become a Team Leader</a>
+        <!-- Logo with better contrast -->
+        <a href="/index.html" class="flex items-center group">
+          <div class="bg-gradient-to-r from-[#003f7f] to-[#0066cc] p-2 rounded-full group-hover:rotate-[15deg] transition-all duration-300 mr-3 shadow-md">
+            <i class="fas fa-hands-helping text-white text-xl"></i>
           </div>
+          <span class="text-2xl font-bold bg-gradient-to-r from-[#003f7f] to-[#0066cc] bg-clip-text text-transparent">
+            CUNYServe
+          </span>
+        </a>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-1 h-full">
+          <!-- Events Link -->
+          <a href="/events.html" class="relative group px-5 h-10 flex items-center rounded-full transition-all duration-300 hover:bg-[#003f7f]/10">
+            <span class="text-gray-800 group-hover:text-[#003f7f] font-medium">Events</span>
+            <span class="absolute inset-x-1 bottom-0 h-0.5 bg-[#003f7f] rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+          </a>
+
+          <!-- Get Involved Dropdown -->
+          <div class="relative" x-data="{ open: false }">
+            <button @click="open = !open" class="flex items-center group px-5 h-10 rounded-full transition-all duration-300 hover:bg-[#003f7f]/10">
+              <span class="text-gray-800 group-hover:text-[#003f7f] font-medium">Get Involved</span>
+              <svg class="w-4 h-4 ml-1 transition-transform duration-200 text-gray-600 group-hover:text-[#003f7f]" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-200" 
+                 x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" 
+                 x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" 
+                 x-transition:leave-end="opacity-0 translate-y-1"
+                 class="absolute left-0 mt-2 w-56 rounded-xl shadow-xl bg-white/95 backdrop-blur-md ring-1 ring-black/5 overflow-hidden">
+              <a href="/volunteer-projects.html" class="block px-4 py-3 text-gray-700 hover:bg-[#003f7f]/5 transition-all flex items-center border-b border-gray-100/50">
+                <i class="fas fa-search mr-3 text-[#003f7f]"></i> Find a Volunteer Project
+              </a>
+              <a href="/team-leader.html" class="block px-4 py-3 text-gray-700 hover:bg-[#003f7f]/5 transition-all flex items-center">
+                <i class="fas fa-user-tie mr-3 text-[#003f7f]"></i> Become a Team Leader
+              </a>
+            </div>
+          </div>
+
+          <!-- Pre-Med Link -->
+          <a href="/pre-med.html" class="relative group px-5 h-10 flex items-center rounded-full transition-all duration-300 hover:bg-[#003f7f]/10">
+            <span class="text-gray-800 group-hover:text-[#003f7f] font-medium">Pre-Med</span>
+            <span class="absolute inset-x-1 bottom-0 h-0.5 bg-[#003f7f] rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+          </a>
+
+          <!-- About Dropdown -->
+          <div class="relative" x-data="{ open: false }">
+            <button @click="open = !open" class="flex items-center group px-5 h-10 rounded-full transition-all duration-300 hover:bg-[#003f7f]/10">
+              <span class="text-gray-800 group-hover:text-[#003f7f] font-medium">About</span>
+              <svg class="w-4 h-4 ml-1 transition-transform duration-200 text-gray-600 group-hover:text-[#003f7f]" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-200" 
+                 x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" 
+                 x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" 
+                 x-transition:leave-end="opacity-0 translate-y-1"
+                 class="absolute left-0 mt-2 w-48 rounded-xl shadow-xl bg-white/95 backdrop-blur-md ring-1 ring-black/5 overflow-hidden">
+              <a href="/about.html" class="block px-4 py-3 text-gray-700 hover:bg-[#003f7f]/5 transition-all flex items-center border-b border-gray-100/50">
+                <i class="fas fa-bullseye mr-3 text-[#003f7f]"></i> Our Mission
+              </a>
+              <a href="/team.html" class="block px-4 py-3 text-gray-700 hover:bg-[#003f7f]/5 transition-all flex items-center">
+                <i class="fas fa-users mr-3 text-[#003f7f]"></i> Our Team
+              </a>
+            </div>
+          </div>
+
+          <!-- FAQ Link -->
+          <a href="/faq.html" class="relative group px-5 h-10 flex items-center rounded-full transition-all duration-300 hover:bg-[#003f7f]/10">
+            <span class="text-gray-800 group-hover:text-[#003f7f] font-medium">FAQ</span>
+            <span class="absolute inset-x-1 bottom-0 h-0.5 bg-[#003f7f] rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+          </a>
+
+          <!-- Donate Button with Vibrant Color -->
+          <a href="/donate.html" class="ml-2 px-5 h-10 flex items-center rounded-full transition-all duration-300 bg-gradient-to-r from-[#ff6b6b] to-[#ff8e8e] text-white font-medium shadow-md hover:shadow-lg hover:from-[#ff5252] hover:to-[#ff7676]">
+            <i class="fas fa-heart mr-2"></i> Donate Now
+          </a>
         </div>
 
-        <a href="/pre-med.html"
-          class="text-gray-100 hover:text-white px-4 py-2 rounded-md text-sm font-medium transition hover:bg-[#00295c]">Pre-Med</a>
-
-        <!-- About Dropdown -->
-        <div class="relative" x-data="{ open: false }">
-          <button @click="open = !open"
-            class="flex items-center text-gray-100 px-4 py-2 rounded-md text-sm font-medium hover:text-white hover:bg-[#00295c] transition">
-            About
-            <svg class="w-4 h-4 ml-1 transition-transform duration-200" :class="{'rotate-180': open}" fill="none"
-              stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          <div x-show="open" @click.away="open = false" x-transition
-            class="absolute mt-2 w-48 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-10">
-            <a href="/about.html" class="block px-4 py-2 text-gray-700 hover:bg-[#f1f5f9] rounded-lg transition">Our
-              Mission</a>
-            <a href="/team.html" class="block px-4 py-2 text-gray-700 hover:bg-[#f1f5f9] rounded-lg transition">Our
-              Team</a>
-          </div>
+        <!-- User Section with Prominent Dashboard Button -->
+        <div class="hidden md:flex items-center ml-4" id="nav-user-section">
+          <a href="/login.html" class="px-5 h-10 flex items-center rounded-full transition-all duration-300 bg-[#003f7f] text-white font-medium shadow-md hover:bg-[#00295c] hover:shadow-lg">
+            <i class="fas fa-sign-in-alt mr-2"></i> Login
+          </a>
+          <!-- Dashboard button will appear here when logged in -->
         </div>
 
-        <a href="/faq.html"
-          class="text-gray-100 hover:text-white px-4 py-2 rounded-md text-sm font-medium transition hover:bg-[#00295c]">FAQ</a>
-        <a href="/donate.html"
-          class="text-gray-100 hover:text-white px-4 py-2 rounded-md text-sm font-medium transition hover:bg-[#00295c]">Donate
-          Now</a>
+        <!-- Mobile Menu Button -->
+        <div class="md:hidden">
+          <button @click="isMobileMenuOpen = !isMobileMenuOpen" class="p-2 rounded-full bg-[#003f7f] text-white hover:bg-[#00295c] focus:outline-none transition-all shadow-md" type="button">
+            <svg :class="{'hidden': isMobileMenuOpen, 'block': !isMobileMenuOpen}" class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg :class="{'hidden': !isMobileMenuOpen, 'block': isMobileMenuOpen}" class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
       </div>
-    </div>
-
-    <!-- Right: User Section -->
-    <div class="hidden md:flex items-center ml-4" id="nav-user-section">
-      <a href="/login.html"
-        class="bg-white text-[#003f7f] px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-200 transition">Login</a>
-    </div>
-
-    <!-- Mobile Menu Button -->
-    <div class="md:hidden">
-      <button @click="isMobileMenuOpen = !isMobileMenuOpen"
-        class="p-2 rounded-md text-gray-200 hover:text-white hover:bg-[#00295c] focus:outline-none" type="button">
-        <svg :class="{'hidden': isMobileMenuOpen, 'block': !isMobileMenuOpen}" class="h-6 w-6" stroke="currentColor"
-          fill="none" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-        <svg :class="{'hidden': !isMobileMenuOpen, 'block': isMobileMenuOpen}" class="h-6 w-6" stroke="currentColor"
-          fill="none" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
     </div>
   </div>
 
-  <!-- Mobile Menu -->
-  <div :class="{'block': isMobileMenuOpen, 'hidden': !isMobileMenuOpen}"
-    class="md:hidden bg-[#003f7f]/95 backdrop-blur-md">
-    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-      <a href="/events.html"
-        class="text-gray-100 hover:bg-[#00295c] hover:text-white block px-3 py-2 rounded-md text-base font-medium">Events</a>
-      <h3 class="px-3 pt-2 text-xs font-semibold text-gray-300 uppercase tracking-wider">Get Involved</h3>
-      <a href="/volunteer-projects.html"
-        class="text-gray-100 hover:bg-[#00295c] hover:text-white block px-3 py-2 rounded-md text-base font-medium">Find
-        a Volunteer Project</a>
-      <a href="/team-leader.html"
-        class="text-gray-100 hover:bg-[#00295c] hover:text-white block px-3 py-2 rounded-md text-base font-medium">Become
-        a Team Leader</a>
-      <a href="/pre-med.html"
-        class="text-gray-100 hover:bg-[#00295c] hover:text-white block px-3 py-2 rounded-md text-base font-medium">Pre-Med</a>
-      <h3 class="px-3 pt-2 text-xs font-semibold text-gray-300 uppercase tracking-wider">About</h3>
-      <a href="/about.html"
-        class="text-gray-100 hover:bg-[#00295c] hover:text-white block px-3 py-2 rounded-md text-base font-medium">Our
-        Mission</a>
-      <a href="/team.html"
-        class="text-gray-100 hover:bg-[#00295c] hover:text-white block px-3 py-2 rounded-md text-base font-medium">Our
-        Team</a>
-      <a href="/faq.html"
-        class="text-gray-100 hover:bg-[#00295c] hover:text-white block px-3 py-2 rounded-md text-base font-medium">FAQ</a>
-      <a href="/donate.html"
-        class="text-gray-100 hover:bg-[#00295c] hover:text-white block px-3 py-2 rounded-md text-base font-medium">Donate
-        Now</a>
-    </div>
-    <div id="nav-user-section-mobile" class="pt-4 pb-3 border-t border-gray-700">
-      <div class="px-2">
-        <a href="/login.html"
-          class="block w-full text-left bg-white text-[#003f7f] px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-200 transition">Login</a>
+  <!-- Mobile Menu (Pill-shaped container) with better contrast -->
+  <div x-show="isMobileMenuOpen" x-transition:enter="transition ease-out duration-200" 
+       x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" 
+       x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" 
+       x-transition:leave-end="opacity-0 scale-95"
+       class="md:hidden fixed top-20 left-1/2 transform -translate-x-1/2 w-[95%] max-w-md bg-gray-100/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300 overflow-hidden">
+    <div class="px-2 pt-2 pb-3 space-y-1">
+      <a href="/events.html" class="flex items-center text-gray-800 hover:bg-[#003f7f]/10 hover:text-[#003f7f] block px-4 py-3 rounded-xl text-base font-medium transition-all mx-2">
+        <i class="fas fa-calendar-alt mr-3 w-5 text-center"></i> Events
+      </a>
+      
+      <div class="px-4 pt-1">
+        <h3 class="text-xs font-semibold text-gray-600 uppercase tracking-wider flex items-center">
+          <i class="fas fa-hands-helping mr-2"></i> Get Involved
+        </h3>
       </div>
+      <a href="/volunteer-projects.html" class="flex items-center text-gray-800 hover:bg-[#003f7f]/10 hover:text-[#003f7f] block px-4 py-3 rounded-xl text-base font-medium transition-all mx-2 pl-10">
+        <i class="fas fa-search mr-3 w-5 text-center"></i> Find a Volunteer Project
+      </a>
+      <a href="/team-leader.html" class="flex items-center text-gray-800 hover:bg-[#003f7f]/10 hover:text-[#003f7f] block px-4 py-3 rounded-xl text-base font-medium transition-all mx-2 pl-10">
+        <i class="fas fa-user-tie mr-3 w-5 text-center"></i> Become a Team Leader
+      </a>
+      
+      <a href="/pre-med.html" class="flex items-center text-gray-800 hover:bg-[#003f7f]/10 hover:text-[#003f7f] block px-4 py-3 rounded-xl text-base font-medium transition-all mx-2">
+        <i class="fas fa-user-md mr-3 w-5 text-center"></i> Pre-Med
+      </a>
+      
+      <div class="px-4 pt-1">
+        <h3 class="text-xs font-semibold text-gray-600 uppercase tracking-wider flex items-center">
+          <i class="fas fa-info-circle mr-2"></i> About
+        </h3>
+      </div>
+      <a href="/about.html" class="flex items-center text-gray-800 hover:bg-[#003f7f]/10 hover:text-[#003f7f] block px-4 py-3 rounded-xl text-base font-medium transition-all mx-2 pl-10">
+        <i class="fas fa-bullseye mr-3 w-5 text-center"></i> Our Mission
+      </a>
+      <a href="/team.html" class="flex items-center text-gray-800 hover:bg-[#003f7f]/10 hover:text-[#003f7f] block px-4 py-3 rounded-xl text-base font-medium transition-all mx-2 pl-10">
+        <i class="fas fa-users mr-3 w-5 text-center"></i> Our Team
+      </a>
+      
+      <a href="/faq.html" class="flex items-center text-gray-800 hover:bg-[#003f7f]/10 hover:text-[#003f7f] block px-4 py-3 rounded-xl text-base font-medium transition-all mx-2">
+        <i class="fas fa-question-circle mr-3 w-5 text-center"></i> FAQ
+      </a>
+      
+      <a href="/donate.html" class="flex items-center bg-gradient-to-r from-[#ff6b6b] to-[#ff8e8e] text-white block px-4 py-3 rounded-xl text-base font-medium transition-all mx-2 mt-2 shadow-md hover:shadow-lg">
+        <i class="fas fa-heart mr-3 w-5 text-center"></i> Donate Now
+      </a>
+    </div>
+    
+    <div id="nav-user-section-mobile" class="pt-2 pb-3 border-t border-gray-300 mx-2">
+      <a href="/login.html" class="flex items-center justify-center bg-[#003f7f] text-white px-4 py-3 rounded-xl text-base font-medium shadow-md hover:bg-[#00295c] hover:shadow-lg transition-all">
+        <i class="fas fa-sign-in-alt mr-2"></i> Login
+      </a>
+      <!-- Dashboard button will appear here when logged in -->
     </div>
   </div>
 </nav>
 
 <!-- Add spacing for fixed navbar -->
-<div class="h-16"></div>
+<div class="h-20"></div>

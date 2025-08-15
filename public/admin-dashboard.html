@@ -1,32 +1,996 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard | CUNYServe</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cuny: {
+                            blue: '#00539B',
+                            light: '#E6F0F7',
+                            accent: '#FFC72C'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'wave': 'wave 1.5s linear infinite',
+                        'fade-in': 'fadeIn 0.5s ease-out'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        wave: {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '10%': { transform: 'rotate(14deg)' },
+                            '20%': { transform: 'rotate(-8deg)' },
+                            '30%': { transform: 'rotate(14deg)' },
+                            '40%': { transform: 'rotate(-4deg)' },
+                            '50%': { transform: 'rotate(10deg)' },
+                            '60%': { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(0deg)' }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(90deg, #00539B 0%, #FFC72C 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
 </head>
 
-<body class="bg-gray-100">
-    <div id="navbar-placeholder"></div>
-    <main class="max-w-7xl mx-auto py-10 px-4">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-[#00539B]">Admin Dashboard</h1>
-            <button id="start-scrape-btn" class="bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">
-                Start New Scrape
-            </button>
+<body class="bg-gradient-to-br from-cuny-light to-white min-h-full">
+    <!-- Navbar Placeholder -->
+    <div id="navbar-placeholder" class="glass-effect fixed top-0 left-0 right-0 z-50"></div>
+
+    <main class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8 pt-24">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+            <div class="flex items-center space-x-4">
+                <h1 id="dashboard-title"
+                    class="text-4xl font-extrabold gradient-text transition-all duration-300 hover:scale-105">
+                    Admin Dashboard
+                </h1>
+                <div id="status-indicator" class="h-3 w-3 rounded-full bg-gray-300 animate-pulse-slow"></div>
+            </div>
+
+            <div class="mt-4 md:mt-0 flex items-center space-x-4">
+                <!-- Notification Bell -->
+                <div class="relative">
+                    <button id="notification-bell"
+                        class="relative p-2 rounded-full bg-white shadow-sm hover:shadow-md transition-all duration-200 hover:rotate-12">
+                        <i class="fas fa-bell text-gray-600 text-xl"></i>
+                        <span id="notification-badge"
+                            class="absolute top-0 right-0 block h-3 w-3 rounded-full bg-red-500 ring-2 ring-white hidden"></span>
+                    </button>
+                    <!-- Notification Panel -->
+                    <div id="notification-panel"
+                        class="absolute right-0 mt-2 w-96 bg-white rounded-xl shadow-2xl p-4 z-50 hidden max-h-96 overflow-y-auto scrollbar-hide transform transition-all origin-top-right">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold text-lg">Notifications</h3>
+                            <button id="clear-notifications" class="text-sm text-cuny.blue hover:underline">Clear
+                                All</button>
+                        </div>
+                        <div id="notifications-container" class="space-y-3">
+                            <!-- Notifications dynamically inserted -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Start Scrape Button -->
+                <button id="start-scrape-btn"
+                    class="relative overflow-hidden group bg-gradient-to-r from-cuny.blue to-blue-700 text-white font-bold py-3 px-6 rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <span class="relative z-10 flex items-center">
+                        <span id="scrape-btn-text" class="flex items-center">
+                            <i class="fas fa-spider mr-2"></i>
+                            Start New Scrape
+                        </span>
+                        <span id="scrape-btn-spinner" class="hidden items-center">
+                            <i class="fas fa-spinner fa-spin mr-2"></i>
+                            Scraping in progress...
+                        </span>
+                    </span>
+                    <span
+                        class="absolute inset-0 bg-gradient-to-r from-blue-700 to-cuny.blue opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                </button>
+            </div>
         </div>
 
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <h2 class="text-xl font-semibold mb-4">Scraped Events Review</h2>
-            <div id="events-table-container">
-                <p>Loading events...</p>
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div
+                class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 border-l-4 border-cuny.blue">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Pending Events</p>
+                        <p id="pending-count" class="text-3xl font-bold text-gray-900">-</p>
+                    </div>
+                    <div class="p-3 rounded-full bg-blue-50 text-blue-600">
+                        <i class="fas fa-clock text-xl"></i>
+                    </div>
+                </div>
             </div>
+            <div
+                class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 border-l-4 border-green-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Approved Events</p>
+                        <p id="approved-count" class="text-3xl font-bold text-gray-900">-</p>
+                    </div>
+                    <div class="p-3 rounded-full bg-green-50 text-green-600">
+                        <i class="fas fa-check-circle text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 border-l-4 border-red-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Rejected Events</p>
+                        <p id="rejected-count" class="text-3xl font-bold text-gray-900">-</p>
+                    </div>
+                    <div class="p-3 rounded-full bg-red-50 text-red-600">
+                        <i class="fas fa-times-circle text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2">
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800">Scraped Events Review</h2>
+                        <div class="flex space-x-2">
+                            <button id="refresh-events"
+                                class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                            <div class="relative">
+                                <button id="filter-btn"
+                                    class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors">
+                                    <i class="fas fa-filter"></i>
+                                </button>
+                                <div id="filter-dropdown"
+                                    class="absolute right-0 mt-1 w-48 bg-white rounded-md shadow-lg z-10 hidden">
+                                    <div class="p-2">
+                                        <label
+                                            class="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                            <input type="checkbox" class="form-checkbox text-cuny.blue" value="pending"
+                                                checked>
+                                            <span>Pending</span>
+                                        </label>
+                                        <label
+                                            class="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                            <input type="checkbox" class="form-checkbox text-green-500" value="approved"
+                                                checked>
+                                            <span>Approved</span>
+                                        </label>
+                                        <label
+                                            class="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                            <input type="checkbox" class="form-checkbox text-red-500" value="rejected"
+                                                checked>
+                                            <span>Rejected</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="events-table-container" class="overflow-x-auto">
+                        <div class="flex flex-col items-center justify-center py-12">
+                            <div class="animate-float">
+                                <i class="fas fa-spider text-5xl text-gray-300"></i>
+                            </div>
+                            <h3 class="mt-4 text-lg font-medium text-gray-700">Loading events...</h3>
+                            <p class="mt-1 text-sm text-gray-500">Gathering the latest scraped data</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <aside class="lg:col-span-1 space-y-6">
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800">Scrape History</h2>
+                        <button id="refresh-history"
+                            class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <div id="scrape-history-container" class="space-y-4 max-h-[500px] overflow-y-auto scrollbar-hide">
+                        <div class="flex flex-col items-center justify-center py-8">
+                            <i class="fas fa-history text-4xl text-gray-300 mb-3"></i>
+                            <h3 class="text-md font-medium text-gray-700">Loading history...</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions Panel -->
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Quick Actions</h2>
+                    <div class="space-y-3">
+                        <button id="approve-all-btn"
+                            class="w-full flex items-center justify-between p-3 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors">
+                            <span>Approve All Pending</span>
+                            <i class="fas fa-check-circle"></i>
+                        </button>
+                        <button id="export-btn"
+                            class="w-full flex items-center justify-between p-3 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors">
+                            <span>Export Approved Events</span>
+                            <i class="fas fa-file-export"></i>
+                        </button>
+                        <button id="settings-btn"
+                            class="w-full flex items-center justify-between p-3 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                            <span>Scraper Settings</span>
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+                </div>
+            </aside>
         </div>
     </main>
 
-    <!-- Your standard script loader block -->
-    <script src="/scripts/admin-dashboard.js"></script>
+    <!-- Modern Modal Template -->
+    <div id="modal-template" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md transform transition-all fade-in">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="modal-title" class="text-xl font-bold text-gray-900"></h3>
+                    <button id="modal-close" class="text-gray-400 hover:text-gray-500">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="modal-content" class="mb-6"></div>
+                <div class="flex justify-end space-x-3">
+                    <button id="modal-cancel"
+                        class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button id="modal-confirm"
+                        class="px-4 py-2 bg-cuny.blue text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- ELEMENT SELECTORS ---
+            const elements = {
+                startScrapeBtn: document.getElementById('start-scrape-btn'),
+                tableContainer: document.getElementById('events-table-container'),
+                historyContainer: document.getElementById('scrape-history-container'),
+                scrapeBtnText: document.getElementById('scrape-btn-text'),
+                scrapeBtnSpinner: document.getElementById('scrape-btn-spinner'),
+                dashboardTitle: document.getElementById('dashboard-title'),
+                notificationBell: document.getElementById('notification-bell'),
+                notificationBadge: document.getElementById('notification-badge'),
+                notificationPanel: document.getElementById('notification-panel'),
+                notificationsContainer: document.getElementById('notifications-container'),
+                clearNotifications: document.getElementById('clear-notifications'),
+                statusIndicator: document.getElementById('status-indicator'),
+                pendingCount: document.getElementById('pending-count'),
+                approvedCount: document.getElementById('approved-count'),
+                rejectedCount: document.getElementById('rejected-count'),
+                refreshEvents: document.getElementById('refresh-events'),
+                refreshHistory: document.getElementById('refresh-history'),
+                filterBtn: document.getElementById('filter-btn'),
+                filterDropdown: document.getElementById('filter-dropdown'),
+                approveAllBtn: document.getElementById('approve-all-btn'),
+                exportBtn: document.getElementById('export-btn'),
+                settingsBtn: document.getElementById('settings-btn'),
+                modalTemplate: document.getElementById('modal-template')
+            };
+
+            // --- STATE MANAGEMENT ---
+            let state = {
+                unreadNotifications: 0,
+                lastScrapeStatus: 'idle',
+                events: [],
+                history: [],
+                statusCounts: { pending: 0, approved: 0, rejected: 0 },
+                activeFilters: ['pending', 'approved', 'rejected']
+            };
+
+            // --- UTILITY FUNCTIONS ---
+            const animateCSS = (element, animation, prefix = 'animate-') => {
+                return new Promise((resolve) => {
+                    const animationName = `${prefix}${animation}`;
+                    element.classList.add(animationName);
+
+                    function handleAnimationEnd() {
+                        element.classList.remove(animationName);
+                        element.removeEventListener('animationend', handleAnimationEnd);
+                        resolve('Animation ended');
+                    }
+
+                    element.addEventListener('animationend', handleAnimationEnd);
+                });
+            };
+
+            const showModal = ({ title, content, onConfirm }) => {
+                const modal = elements.modalTemplate.cloneNode(true);
+                modal.id = 'active-modal';
+                modal.classList.remove('hidden');
+
+                modal.querySelector('#modal-title').textContent = title;
+                modal.querySelector('#modal-content').innerHTML = content;
+
+                const confirmBtn = modal.querySelector('#modal-confirm');
+                confirmBtn.addEventListener('click', () => {
+                    onConfirm();
+                    modal.remove();
+                });
+
+                modal.querySelector('#modal-close').addEventListener('click', () => modal.remove());
+                modal.querySelector('#modal-cancel').addEventListener('click', () => modal.remove());
+
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) modal.remove();
+                });
+
+                document.body.appendChild(modal);
+            };
+
+            // --- UI ANIMATIONS ---
+            const updateStatusIndicator = (status) => {
+                elements.statusIndicator.className = 'h-3 w-3 rounded-full animate-pulse-slow';
+
+                if (status === 'running') {
+                    elements.statusIndicator.classList.add('bg-yellow-500');
+                    animateCSS(elements.dashboardTitle, 'pulse');
+                } else if (status === 'error') {
+                    elements.statusIndicator.classList.add('bg-red-500');
+                    animateCSS(elements.dashboardTitle, 'shake');
+                } else {
+                    elements.statusIndicator.classList.add('bg-green-500');
+                }
+            };
+
+            // --- NOTIFICATION SYSTEM ---
+            const showNotification = (message, type = 'info', options = {}) => {
+                state.unreadNotifications++;
+                elements.notificationBadge.textContent = state.unreadNotifications;
+                elements.notificationBadge.classList.remove('hidden');
+
+                // Animate bell
+                animateCSS(elements.notificationBell, 'wave').then(() => {
+                    elements.notificationBell.classList.remove('animate-wave');
+                });
+
+                const notification = document.createElement('div');
+                notification.className = `p-4 rounded-xl border-l-4 mb-3 fade-in ${type === 'error' ? 'bg-red-50 border-red-500 text-red-700' :
+                        type === 'success' ? 'bg-green-50 border-green-500 text-green-700' :
+                            'bg-blue-50 border-blue-500 text-blue-700'
+                    }`;
+
+                notification.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-start space-x-3">
+                            <div class="flex-shrink-0 pt-0.5">
+                                <i class="fas ${type === 'error' ? 'fa-exclamation-circle' :
+                        type === 'success' ? 'fa-check-circle' : 'fa-info-circle'
+                    }"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">${type.charAt(0).toUpperCase() + type.slice(1)}</p>
+                                <p class="text-sm mt-1">${message}</p>
+                            </div>
+                        </div>
+                        <button class="notification-close text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="mt-2 text-xs text-gray-500 flex items-center">
+                        <i class="far fa-clock mr-1"></i>
+                        ${new Date().toLocaleTimeString()}
+                        ${options.source ? `<span class="ml-2 px-2 py-0.5 bg-gray-100 rounded-full text-xs">${options.source}</span>` : ''}
+                    </div>
+                `;
+
+                elements.notificationsContainer.insertBefore(notification, elements.notificationsContainer.firstChild);
+
+                // Auto-remove after 5 seconds if not persistent
+                if (!options.persistent) {
+                    setTimeout(() => {
+                        notification.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                        setTimeout(() => notification.remove(), 300);
+                    }, 5000);
+                }
+            };
+
+            // Notification event listeners
+            elements.notificationBell.addEventListener('click', () => {
+                elements.notificationPanel.classList.toggle('hidden');
+                if (!elements.notificationPanel.classList.contains('hidden')) {
+                    state.unreadNotifications = 0;
+                    elements.notificationBadge.classList.add('hidden');
+                }
+            });
+
+            elements.notificationsContainer.addEventListener('click', (e) => {
+                if (e.target.closest('.notification-close')) {
+                    e.target.closest('div[class*="bg-"]').remove();
+                }
+            });
+
+            elements.clearNotifications.addEventListener('click', () => {
+                elements.notificationsContainer.innerHTML = '<p class="text-sm text-gray-500 py-4 text-center">No notifications</p>';
+            });
+
+            // --- MODERN RENDER FUNCTIONS ---
+            const renderEventsTable = (events) => {
+                if (!events || events.length === 0) {
+                    elements.tableContainer.innerHTML = `
+                        <div class="text-center py-12">
+                            <div class="mx-auto w-24 h-24 text-gray-300 mb-4">
+                                <i class="fas fa-calendar-times text-5xl"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-700">No events found</h3>
+                            <p class="mt-1 text-sm text-gray-500">Try adjusting your filters or start a new scrape</p>
+                            <button id="start-scrape-empty" class="mt-4 px-4 py-2 bg-cuny.blue text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                Start New Scrape
+                            </button>
+                        </div>
+                    `;
+
+                    document.getElementById('start-scrape-empty')?.addEventListener('click', () => {
+                        elements.startScrapeBtn.click();
+                    });
+
+                    return;
+                }
+
+                let tableHTML = `
+                    <div class="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gradient-to-r from-blue-50 to-indigo-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Event Date</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Title</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">College</th>
+                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                `;
+
+                events.forEach(event => {
+                    const statusConfig = {
+                        'approved': { bg: 'bg-green-100', text: 'text-green-800', icon: 'fa-check-circle' },
+                        'rejected': { bg: 'bg-red-100', text: 'text-red-800', icon: 'fa-times-circle' },
+                        'pending': { bg: 'bg-yellow-100', text: 'text-yellow-800', icon: 'fa-clock' }
+                    }[event.status];
+
+                    const dateObj = event.date ? new Date(event.date) : null;
+                    const formattedDate = dateObj ? dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A';
+
+                    tableHTML += `
+                        <tr class="hover:bg-gray-50 transition-colors duration-150" data-status="${event.status}">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="status-badge px-3 py-1 inline-flex items-center text-xs leading-5 font-semibold rounded-full ${statusConfig.bg} ${statusConfig.text}">
+                                    <i class="fas ${statusConfig.icon} mr-1"></i>
+                                    ${event.status}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <div class="flex items-center">
+                                    <i class="far fa-calendar-alt text-gray-400 mr-1"></i>
+                                    ${formattedDate}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-900 max-w-xs truncate">
+                                <a href="${event.sourceUrl}" target="_blank" class="hover:text-blue-600 hover:underline flex items-center">
+                                    <i class="fas fa-external-link-alt text-blue-400 mr-1"></i>
+                                    ${event.title}
+                                </a>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <div class="flex items-center">
+                                    <span class="inline-block h-2 w-2 rounded-full mr-2 bg-indigo-400"></span>
+                                    ${event.college}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <button data-id="${event._id}" data-status="approved" class="approve-btn mr-3 px-3 py-1 rounded-md bg-green-50 text-green-700 hover:bg-green-100 hover:text-green-900 transition-colors duration-200 flex items-center">
+                                    <i class="fas fa-check mr-1"></i>
+                                    Approve
+                                </button>
+                                <button data-id="${event._id}" data-status="rejected" class="reject-btn px-3 py-1 rounded-md bg-red-50 text-red-700 hover:bg-red-100 hover:text-red-900 transition-colors duration-200 flex items-center">
+                                    <i class="fas fa-times mr-1"></i>
+                                    Reject
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                tableHTML += `</tbody></table></div>`;
+                elements.tableContainer.innerHTML = tableHTML;
+            };
+
+            const renderHistory = (history) => {
+                if (!history || history.length === 0) {
+                    elements.historyContainer.innerHTML = `
+                        <div class="text-center py-8">
+                            <i class="fas fa-history text-4xl text-gray-300 mb-3"></i>
+                            <h3 class="text-md font-medium text-gray-700">No scrape history found</h3>
+                            <p class="text-sm text-gray-500 mt-1">Scraping jobs will appear here</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let historyHTML = '<div class="space-y-4">';
+
+                history.forEach((log, index) => {
+                    const startTime = new Date(log.startTime);
+                    const formattedDate = startTime.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    const formattedTime = startTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+                    const statusConfig = {
+                        'completed': { color: 'text-green-600', icon: 'fa-check-circle', bg: 'bg-green-100' },
+                        'failed': { color: 'text-red-600', icon: 'fa-exclamation-circle', bg: 'bg-red-100' },
+                        'running': { color: 'text-yellow-600', icon: 'fa-sync-alt fa-spin', bg: 'bg-yellow-100' }
+                    }[log.status];
+
+                    // Date separator
+                    if (index === 0 || new Date(history[index - 1].startTime).toLocaleDateString() !== startTime.toLocaleDateString()) {
+                        historyHTML += `
+                            <div class="relative">
+                                <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                                    <div class="w-full border-t border-gray-200"></div>
+                                </div>
+                                <div class="relative flex justify-center">
+                                    <span class="px-2 bg-white text-sm text-gray-500">${formattedDate}</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    historyHTML += `
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full ${statusConfig.bg} flex items-center justify-center mr-3">
+                                    <i class="${statusConfig.color} fas ${statusConfig.icon}"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex justify-between items-center">
+                                        <p class="text-sm font-medium text-gray-900">
+                                            Scrape Job ${log.status === 'running' ? '(In Progress)' : ''}
+                                        </p>
+                                        <span class="text-xs text-gray-500">${formattedTime}</span>
+                                    </div>
+                                    ${log.status === 'completed' ? `
+                                        <div class="mt-2 grid grid-cols-2 gap-2 text-xs">
+                                            <div class="bg-blue-50 p-2 rounded">
+                                                <p class="font-medium text-blue-800">CUNY Events</p>
+                                                <p class="text-blue-600">${log.stats?.cunyEvents?.new || 0} new</p>
+                                            </div>
+                                            <div class="bg-purple-50 p-2 rounded">
+                                                <p class="font-medium text-purple-800">Admissions</p>
+                                                <p class="text-purple-600">${log.stats?.cunyAdmissions?.new || 0} new</p>
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                    ${log.status === 'failed' ? `
+                                        <div class="mt-1">
+                                            <p class="text-xs text-red-500">${log.error || 'Unknown error occurred'}</p>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                historyHTML += '</div>';
+                elements.historyContainer.innerHTML = historyHTML;
+            };
+
+            const updateCounts = (counts) => {
+                elements.pendingCount.textContent = counts.pending;
+                elements.approvedCount.textContent = counts.approved;
+                elements.rejectedCount.textContent = counts.rejected;
+
+                // Animate count changes
+                if (counts.pending > state.statusCounts.pending) {
+                    animateCSS(elements.pendingCount, 'pulse');
+                }
+                if (counts.approved > state.statusCounts.approved) {
+                    animateCSS(elements.approvedCount, 'pulse');
+                }
+                if (counts.rejected > state.statusCounts.rejected) {
+                    animateCSS(elements.rejectedCount, 'pulse');
+                }
+
+                state.statusCounts = counts;
+            };
+
+            // --- DATA FETCHING & PROCESSING ---
+            const fetchData = async () => {
+                try {
+                    const [eventsRes, historyRes] = await Promise.all([
+                        fetch('/api/admin/scraped-events'),
+                        fetch('/api/admin/scrape-history')
+                    ]);
+
+                    if (!eventsRes.ok || !historyRes.ok) {
+                        throw new Error(eventsRes.status === 403 ? 'Admin access required' : 'Failed to fetch data');
+                    }
+
+                    const events = await eventsRes.json();
+                    const history = await historyRes.json();
+
+                    // Process and store data
+                    state.events = events;
+                    state.history = history;
+
+                    // Calculate status counts
+                    const counts = {
+                        pending: events.filter(e => e.status === 'pending').length,
+                        approved: events.filter(e => e.status === 'approved').length,
+                        rejected: events.filter(e => e.status === 'rejected').length
+                    };
+                    updateCounts(counts);
+
+                    // Filter events based on active filters
+                    const filteredEvents = state.activeFilters.length > 0
+                        ? events.filter(e => state.activeFilters.includes(e.status))
+                        : [];
+
+                    renderEventsTable(filteredEvents);
+                    renderHistory(history);
+
+                    // Update status based on latest job
+                    const latestJob = history[0];
+                    if (latestJob) {
+                        if (latestJob.status === 'running' && state.lastScrapeStatus !== 'running') {
+                            updateStatusIndicator('running');
+                            elements.startScrapeBtn.disabled = true;
+                            elements.scrapeBtnText.classList.add('hidden');
+                            elements.scrapeBtnSpinner.classList.remove('hidden');
+                            showNotification('Scraping job started', 'info', { source: 'System' });
+                        } else if (latestJob.status !== 'running' && state.lastScrapeStatus === 'running') {
+                            updateStatusIndicator(latestJob.status === 'completed' ? 'ok' : 'error');
+                            elements.startScrapeBtn.disabled = false;
+                            elements.scrapeBtnText.classList.remove('hidden');
+                            elements.scrapeBtnSpinner.classList.add('hidden');
+
+                            if (latestJob.status === 'completed') {
+                                showNotification('Scraping completed successfully', 'success', { source: 'System' });
+                            } else if (latestJob.status === 'failed') {
+                                showNotification(`Scraping failed: ${latestJob.error || 'Unknown error'}`, 'error', { source: 'System' });
+                            }
+                        }
+
+                        state.lastScrapeStatus = latestJob.status;
+                    }
+                } catch (error) {
+                    console.error('Failed to fetch admin data:', error);
+                    showNotification(error.message, 'error');
+                    updateStatusIndicator('error');
+                }
+            };
+
+            // --- EVENT HANDLERS ---
+            const handleStartScrape = async () => {
+                showModal({
+                    title: 'Start Scraping Process',
+                    content: `
+                        <div class="text-center">
+                            <i class="fas fa-spider text-5xl text-yellow-500 mb-4"></i>
+                            <p class="text-sm text-gray-600 mb-4">
+                                This will initiate the web scraping process which may take several minutes to complete.
+                                During this time, the system might be slower than usual.
+                            </p>
+                            <div class="bg-blue-50 p-3 rounded-lg text-sm text-blue-800">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                Last scrape: ${state.history[0] ? new Date(state.history[0].startTime).toLocaleString() : 'Never'}
+                            </div>
+                        </div>
+                    `,
+                    onConfirm: async () => {
+                        elements.startScrapeBtn.disabled = true;
+                        elements.scrapeBtnText.classList.add('hidden');
+                        elements.scrapeBtnSpinner.classList.remove('hidden');
+
+                        try {
+                            const res = await fetch('/api/admin/scrape-events', { method: 'POST' });
+                            const data = await res.json();
+
+                            if (res.ok) {
+                                showNotification('Scraping initiated: ' + data.msg, 'success');
+
+                                // Enhanced polling with increasing intervals
+                                let retries = 0;
+                                const poll = () => {
+                                    setTimeout(async () => {
+                                        await fetchData();
+                                        if (state.lastScrapeStatus === 'running' && retries < 10) {
+                                            retries++;
+                                            poll();
+                                        }
+                                    }, retries < 3 ? 3000 : 5000); // Faster polling initially
+                                };
+                                poll();
+                            } else {
+                                throw new Error(data.msg || 'Failed to start scraper');
+                            }
+                        } catch (error) {
+                            showNotification(error.message, 'error');
+                            elements.startScrapeBtn.disabled = false;
+                            elements.scrapeBtnText.classList.remove('hidden');
+                            elements.scrapeBtnSpinner.classList.add('hidden');
+                            animateCSS(elements.startScrapeBtn, 'shake');
+                        }
+                    }
+                });
+            };
+
+            const handleStatusUpdate = async (id, status) => {
+                const row = document.querySelector(`tr[data-id="${id}"]`);
+                if (row) row.classList.add(status === 'approved' ? 'glow-green' : 'glow-red');
+
+                try {
+                    const res = await fetch(`/api/admin/scraped-events/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ status })
+                    });
+
+                    if (res.ok) {
+                        showNotification(`Event ${status} successfully`, 'success');
+                        fetchData(); // Refresh data
+                    } else {
+                        throw new Error('Failed to update status');
+                    }
+                } catch (error) {
+                    showNotification(error.message, 'error');
+                    if (row) row.classList.remove('glow-green', 'glow-red');
+                    animateCSS(row || elements.tableContainer, 'shake');
+                }
+            };
+
+            const handleApproveAll = () => {
+                showModal({
+                    title: 'Approve All Pending',
+                    content: `
+                        <div class="text-center">
+                            <i class="fas fa-check-circle text-5xl text-green-500 mb-4"></i>
+                            <p class="text-sm text-gray-600 mb-4">
+                                This will approve all ${state.statusCounts.pending} pending events. 
+                                Are you sure you want to continue?
+                            </p>
+                        </div>
+                    `,
+                    onConfirm: async () => {
+                        try {
+                            const res = await fetch('/api/admin/approve-all-pending', { method: 'POST' });
+                            if (res.ok) {
+                                showNotification(`Approved all ${state.statusCounts.pending} pending events`, 'success');
+                                fetchData();
+                            } else {
+                                throw new Error('Failed to approve all');
+                            }
+                        } catch (error) {
+                            showNotification(error.message, 'error');
+                        }
+                    }
+                });
+            };
+
+            // --- EVENT LISTENERS ---
+            elements.startScrapeBtn.addEventListener('click', handleStartScrape);
+            elements.approveAllBtn.addEventListener('click', handleApproveAll);
+
+            elements.refreshEvents.addEventListener('click', () => {
+                animateCSS(elements.refreshEvents, 'spin');
+                fetchData();
+            });
+
+            elements.refreshHistory.addEventListener('click', () => {
+                animateCSS(elements.refreshHistory, 'spin');
+                fetchData();
+            });
+
+            elements.filterBtn.addEventListener('click', () => {
+                elements.filterDropdown.classList.toggle('hidden');
+            });
+
+            // Close filter dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!elements.filterBtn.contains(e.target) && !elements.filterDropdown.contains(e.target)) {
+                    elements.filterDropdown.classList.add('hidden');
+                }
+            });
+
+            // Filter checkbox changes
+            elements.filterDropdown.addEventListener('change', (e) => {
+                if (e.target.type === 'checkbox') {
+                    const value = e.target.value;
+                    if (e.target.checked) {
+                        if (!state.activeFilters.includes(value)) {
+                            state.activeFilters.push(value);
+                        }
+                    } else {
+                        state.activeFilters = state.activeFilters.filter(f => f !== value);
+                    }
+
+                    const filteredEvents = state.activeFilters.length > 0
+                        ? state.events.filter(e => state.activeFilters.includes(e.status))
+                        : [];
+                    renderEventsTable(filteredEvents);
+                }
+            });
+
+            elements.tableContainer.addEventListener('click', async (e) => {
+                const target = e.target.closest('.approve-btn, .reject-btn');
+                if (target) {
+                    const id = target.dataset.id;
+                    const status = target.dataset.status;
+                    await handleStatusUpdate(id, status);
+                }
+            });
+
+            elements.exportBtn.addEventListener('click', () => {
+                showModal({
+                    title: 'Export Events',
+                    content: `
+                        <div class="space-y-4">
+                            <div class="bg-yellow-50 p-3 rounded-lg text-sm text-yellow-800">
+                                <i class="fas fa-exclamation-triangle mr-1"></i>
+                                This will export all approved events as a CSV file.
+                            </div>
+                            <div class="space-y-2">
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="form-checkbox text-cuny.blue" checked>
+                                    <span>Include event title</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="form-checkbox text-cuny.blue" checked>
+                                    <span>Include event date</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="form-checkbox text-cuny.blue">
+                                    <span>Include college name</span>
+                                </label>
+                            </div>
+                        </div>
+                    `,
+                    onConfirm: () => {
+                        showNotification('Export started. You will receive a download link shortly.', 'info');
+                        // In a real implementation, you would trigger the export here
+                    }
+                });
+            });
+
+            elements.settingsBtn.addEventListener('click', () => {
+                showModal({
+                    title: 'Scraper Settings',
+                    content: `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Scrape Interval (hours)</label>
+                                <select class="w-full border border-gray-300 rounded-lg p-2">
+                                    <option>1</option>
+                                    <option selected>6</option>
+                                    <option>12</option>
+                                    <option>24</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Max Concurrent Scrapers</label>
+                                <input type="range" min="1" max="10" value="3" class="w-full">
+                                <div class="flex justify-between text-xs text-gray-500">
+                                    <span>1 (Slow)</span>
+                                    <span>10 (Fast)</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" id="enable-auto" class="form-checkbox text-cuny.blue" checked>
+                                <label for="enable-auto">Enable automatic scraping</label>
+                            </div>
+                        </div>
+                    `,
+                    onConfirm: () => {
+                        showNotification('Scraper settings updated', 'success');
+                    }
+                });
+            });
+
+            // --- INITIALIZATION ---
+            updateStatusIndicator('ok');
+            fetchData();
+
+            // Smart polling - adjust based on tab visibility
+            let pollInterval = setInterval(fetchData, 30000);
+            document.addEventListener('visibilitychange', () => {
+                clearInterval(pollInterval);
+                if (!document.hidden) {
+                    fetchData(); // Immediate refresh when tab becomes visible
+                    pollInterval = setInterval(fetchData, document.hasFocus() ? 15000 : 30000);
+                }
+            });
+
+            // Add a nice hover effect to the dashboard title
+            elements.dashboardTitle.addEventListener('mouseenter', () => {
+                elements.dashboardTitle.classList.add('transform', 'scale-105');
+            });
+            elements.dashboardTitle.addEventListener('mouseleave', () => {
+                elements.dashboardTitle.classList.remove('transform', 'scale-105');
+            });
+        });
+    </script>
+    <script src="//unpkg.com/alpinejs" defer></script>
+    
+    <script>
+        async function loadNavbar() {
+            try {
+                const response = await fetch('/navbar.html');
+                const data = await response.text();
+                document.getElementById('navbar-placeholder').innerHTML = data;
+
+                const dynamicScript = document.createElement('script');
+                dynamicScript.src = '/scripts/navbar-dynamic.js';
+                document.body.appendChild(dynamicScript);
+            } catch (error) {
+                console.error('Failed to load navbar:', error);
+            }
+        }
+        loadNavbar();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('verified') === 'true') {
+                const successEl = document.getElementById('verification-success');
+                successEl.classList.remove('hidden');
+                setTimeout(() => {
+                    successEl.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                    setTimeout(() => successEl.classList.add('hidden'), 500);
+                }, 5000);
+            }
+        });
+    </script>
 </body>
 
 </html>
