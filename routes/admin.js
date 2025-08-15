@@ -1,3 +1,5 @@
+// routes/admin.js (Updated to call runAllScrapers without Mongo URI)
+
 const express = require('express');
 const router = express.Router();
 
@@ -5,7 +7,7 @@ console.log('--- Loading routes/admin.js file ---');
 
 const authMiddleware = require('../middleware/auth');
 const adminAuth = require('../middleware/adminAuth');
-const { scrapeAndSaveCunyEvents } = require('../scrapers/cunyScraper');
+const { runAllScrapers } = require('../scrapers'); // <-- Updated import
 const ScrapedEvent = require('../models/ScrapedEvent');
 const Event = require('../models/Event');
 const { parseCunyDateTime } = require('../utils/dateParser');
@@ -21,18 +23,20 @@ router.get('/test', (req, res) => {
 
 // -------------------------------------------------------------
 // @route   POST /api/admin/scrape-events
-// @desc    Trigger the CUNY event scraper
+// @desc    Trigger all event scrapers
 // @access  Private (Admin only)
 // -------------------------------------------------------------
 router.post('/scrape-events', [authMiddleware, adminAuth], async (req, res) => {
-    console.log(`--- ADMIN: Scrape request received from ${req.user?.email || 'Unknown User'} ---`);
-    
-    res.status(202).json({ msg: 'Scraping process started. This may take a few minutes.' });
+    console.log('Scrape request received from admin:', req.user?.email || 'Unknown User');
 
-    scrapeAndSaveCunyEvents(process.env.MONGO_URI)
-        .then(() => console.log('✅ Scraping completed.'))
+    // Respond right away so the request doesn't hang
+    res.status(202).json({ msg: 'Scraping process for all sources has been started.' });
+
+    // Just call the runner. It handles everything internally.
+    runAllScrapers()
+        .then(() => console.log('✅ All scrapers completed.'))
         .catch(err => {
-            console.error("--- SCRAPER BACKGROUND ERROR ---", err);
+            console.error("--- SCRAPER RUNNER BACKGROUND ERROR ---", err);
         });
 });
 
@@ -79,7 +83,7 @@ router.put('/scraped-events/:id', [authMiddleware, adminAuth], async (req, res) 
             return res.status(404).json({ msg: 'Scraped event not found.' });
         }
 
-        // If approved, try to create/update the public event
+        // If approved, create/update public event
         if (status === 'approved') {
             console.log(`[1/4] Event status is 'approved'. Starting public event creation for: "${scrapedEvent.title}"`);
             console.log(`[2/4] Parsing dateStr: '${scrapedEvent.date}' and timeStr: '${scrapedEvent.time}'`);
