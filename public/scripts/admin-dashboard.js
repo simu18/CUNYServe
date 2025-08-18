@@ -1,6 +1,4 @@
-// 
-
-// public/scripts/admin-dashboard.js (Final Merged Version)
+// public/scripts/admin-dashboard.js (Final Merged & Robust Version)
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- ELEMENT SELECTORS ---
@@ -102,38 +100,56 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.rejectedCount.textContent = state.events.filter(e => e.status === 'rejected').length;
     };
 
-    const renderEventsTable = () => {
-        const filteredEvents = state.events.filter(e => state.activeFilters.includes(e.status));
+    const renderEventsTable = (events = state.events) => {
+        const filteredEvents = events.filter(e => state.activeFilters.includes(e.status || 'unverified'));
         if (!filteredEvents.length) {
             elements.tableContainer.innerHTML = `<div class="text-center py-10"><h3 class="mt-2 text-lg font-medium">No events found</h3></div>`;
             return;
         }
-        let html = `<div class="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+
+        let tableHTML = `
             <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gradient-to-r from-blue-50 to-indigo-50">
+                <thead class="bg-gray-50">
                     <tr>
-                        <th>Status</th><th>Event Date</th><th>Title</th><th>College</th><th>Actions</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title & Source</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">College</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                     </tr>
-                </thead><tbody>`;
-        filteredEvents.forEach(event => {
-            const statusColor = {
-                approved: { bg: 'bg-green-100', text: 'text-green-800', icon: '✓' },
-                rejected: { bg: 'bg-red-100', text: 'text-red-800', icon: '✗' },
-                unverified: { bg: 'bg-yellow-100', text: 'text-yellow-800', icon: '⌛' }
-            }[event.status];
-            html += `<tr>
-                <td><span class="status-badge px-3 py-1 inline-flex items-center rounded-full ${statusColor.bg} ${statusColor.text}">${statusColor.icon} ${event.status}</span></td>
-                <td>${event.date || 'N/A'}</td>
-                <td><a href="${event.sourceUrl}" target="_blank">${event.title}</a></td>
-                <td>${event.college}</td>
-                <td>
-                    <button data-id="${event._id}" data-status="approved" class="approve-btn">Approve</button>
-                    <button data-id="${event._id}" data-status="rejected" class="reject-btn">Reject</button>
-                </td>
-            </tr>`;
-        });
-        html += `</tbody></table></div>`;
-        elements.tableContainer.innerHTML = html;
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">`;
+
+        for (const event of filteredEvents) {
+            const status = event.status || 'unverified';
+            const title = event.title || 'No Title';
+            const sourceUrl = event.sourceUrl || '#';
+            const college = event.college || 'N/A';
+            const date = event.date || 'N/A';
+            const id = event._id;
+
+            tableHTML += `
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                        ${status === 'approved' ? 'bg-green-100 text-green-800' : 
+                          status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}">
+                        ${status}
+                    </span></td>
+                    <td class="px-6 py-4 text-sm text-gray-900">
+                        ${title}
+                        <a href="${sourceUrl}" target="_blank" class="block text-xs text-blue-600 hover:underline">Source</a>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${college}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${date}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button data-id="${id}" data-status="approved" class="approve-btn text-green-600 hover:text-green-900 mr-4">Approve</button>
+                        <button data-id="${id}" data-status="rejected" class="reject-btn text-red-600 hover:text-red-900">Reject</button>
+                    </td>
+                </tr>`;
+        }
+
+        tableHTML += `</tbody></table>`;
+        elements.tableContainer.innerHTML = tableHTML;
     };
 
     const renderHistory = () => {
@@ -147,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- API FUNCTIONS ---
     const fetchAdminData = async () => {
         try {
+            elements.tableContainer.innerHTML = '<p>Loading events...</p>';
             const [eventsRes, historyRes] = await Promise.all([
                 fetch('/api/admin/scraped-events'),
                 fetch('/api/admin/scrape-history')
@@ -164,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- EVENT HANDLERS ---
     elements.startScrapeBtn.addEventListener('click', () => {
-        // keep your old modal confirmation logic here, calling fetch('/api/admin/scrape-events', { method: 'POST' }) and polling
+        // keep your old modal confirmation logic here
     });
 
     elements.approveAllBtn.addEventListener('click', async () => {

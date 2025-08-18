@@ -5,6 +5,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const mongoose = require('mongoose'); 
 const connectDB = require('./config/db');
 const cron = require('node-cron'); // <-- For scheduled scraping
 const { runAllScrapers } = require('./scrapers'); // <-- Now using the unified scraper runner

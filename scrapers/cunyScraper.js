@@ -200,6 +200,7 @@
 // scrapers/cunyScraper.js (Final Corrected Version)
 
 // scrapers/cunyScraper.js (Final Corrected Version)
+// scrapers/cunyScraper.js
 const puppeteer = require('puppeteer');
 
 async function scrapeCunyEvents() {
@@ -208,12 +209,12 @@ async function scrapeCunyEvents() {
     try {
         browser = await puppeteer.launch({
             headless: true,
-            executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+            executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', // adjust for server
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
     } catch (e) {
         console.error("❌ PUPPETEER LAUNCH FAILED in cunyScraper:", e);
-        return []; // Always return an array
+        return []; // Always return an array to avoid breaking callers
     }
 
     const page = await browser.newPage();
@@ -225,7 +226,7 @@ async function scrapeCunyEvents() {
         Object.defineProperty(navigator, 'webdriver', { get: () => false });
     });
 
-    page.setDefaultTimeout(90000); // 90 seconds
+    page.setDefaultTimeout(90000); // 90s timeout
     const targetUrl = 'https://events.cuny.edu/';
     console.log(`📡 [CUNY Events] Navigating to ${targetUrl}...`);
 
@@ -238,11 +239,13 @@ async function scrapeCunyEvents() {
     }
 
     let allEvents = [];
+    let hasNextPage = true;
     let currentPage = 1;
     const maxPagesToScrape = 5;
 
-    while (currentPage <= maxPagesToScrape) {
+    while (hasNextPage && currentPage <= maxPagesToScrape) {
         console.log(`🔍 [CUNY Events] Scraping page ${currentPage}...`);
+
         try {
             await page.waitForSelector('li.cec-list-item', { timeout: 30000 });
 
@@ -269,27 +272,30 @@ async function scrapeCunyEvents() {
                     }
                 });
 
-                return eventData; // ✅ Critical fix: return array
+                return eventData;
             });
 
             allEvents.push(...pageEvents);
             console.log(`✅ [CUNY Events] Found ${pageEvents.length} events on page ${currentPage}. Total so far: ${allEvents.length}`);
 
+            // --- Pagination Fix ---
             const nextButton = await page.$('.pagination a[href*="page"]:not([href*="page/1"]):not(.disabled)');
+
             if (nextButton && currentPage < maxPagesToScrape) {
                 currentPage++;
+                console.log(`➡️ [CUNY Events] Navigating to page ${currentPage}...`);
                 await Promise.all([
                     nextButton.click(),
-                    page.waitForNavigation({ waitUntil: 'networkidle2' })
+                    page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 90000 })
                 ]);
-                // Randomized delay to mimic human behavior
-                await new Promise(resolve => setTimeout(resolve, Math.random() * 2000 + 1000));
+                await new Promise(resolve => setTimeout(resolve, 3000)); // human-like delay
             } else {
-                break;
+                console.log('--- [CUNY Events] No more pages or reached max page limit ---');
+                hasNextPage = false;
             }
         } catch (error) {
             console.error(`⚠️ [CUNY Events] Error on page ${currentPage}:`, error.message);
-            break;
+            hasNextPage = false;
         }
     }
 
