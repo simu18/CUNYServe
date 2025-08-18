@@ -1,237 +1,29 @@
-// // scrapers/cunyScraper.js (Final Integrated Version)
-// const puppeteer = require('puppeteer');
-// const mongoose = require('mongoose');
-// const ScrapedEvent = require('../models/ScrapedEvent');
-
-// async function scrapeCunyEvents(mongoUri) {
-//     if (!mongoUri) {
-//         throw new Error('MongoDB URI is required to save scraped events.');
-//     }
-
-//     // Database connection
-//     console.log('🔌 Connecting to MongoDB...');
-//     try {
-//         await mongoose.connect(mongoUri, {
-//             connectTimeoutMS: 10000,
-//             socketTimeoutMS: 45000
-//         });
-//         console.log('✅ MongoDB connected for scraping.');
-//     } catch (dbError) {
-//         console.error('❌ MongoDB connection failed:', dbError);
-//         return { success: false, error: 'Database connection failed' };
-//     }
-
-//     // Browser setup
-//     console.log('🚀 Launching headless browser...');
-//     const browser = await puppeteer.launch({
-//         headless: true,
-//         executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-//         args: ['--no-sandbox', '--disable-setuid-sandbox']
-//     });
-    
-//     const page = await browser.newPage();
-//     await page.setUserAgent(
-//         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-//     );
-//     page.setDefaultTimeout(60000);
-
-//     // Initial page load
-//     const targetUrl = 'https://events.cuny.edu/';
-//     console.log(`📡 Navigating to ${targetUrl}...`);
-    
-//     try {
-//         await page.goto(targetUrl, { 
-//             waitUntil: 'domcontentloaded',
-//             timeout: 60000
-//         });
-//         await page.waitForSelector('li.cec-list-item', { timeout: 30000 });
-//     } catch (error) {
-//         console.error('❌ Failed to load initial page:', error);
-//         await browser.close();
-//         await mongoose.disconnect();
-//         return { success: false, error: 'Failed to load page' };
-//     }
-
-//     // Scraping logic
-//     let allEvents = [];
-//     let hasNextPage = true;
-//     let currentPage = 1;
-//     let retryCount = 0;
-//     const maxRetries = 3;
-//     const maxPagesToScrape = 5; // Limit to be nice to their server
-
-//     while (hasNextPage && currentPage <= maxPagesToScrape && retryCount < maxRetries) {
-//         console.log(`🔍 Scraping page ${currentPage}...`);
-        
-//         try {
-//             await page.waitForSelector('li.cec-list-item', { timeout: 30000 });
-
-//             const pageEvents = await page.evaluate(() => {
-//                 const eventNodes = document.querySelectorAll('li.cec-list-item');
-//                 const eventData = [];
-
-//                 eventNodes.forEach(node => {
-//                     const titleElement = node.querySelector('h2.low a');
-//                     const collegeElement = node.querySelector('h4.low-normal:nth-of-type(1)');
-//                     const dateElement = node.querySelector('h4.low-normal:nth-of-type(2)');
-//                     const timeElement = node.querySelector('h4:not(.low-normal)');
-//                     const link = titleElement?.href;
-
-//                     if (titleElement && dateElement && link) {
-//                         eventData.push({
-//                             title: titleElement.innerText.trim(),
-//                             college: collegeElement?.innerText.trim() || 'Not specified',
-//                             date: dateElement.innerText.trim(),
-//                             time: timeElement?.innerText.trim() || 'Not specified',
-//                             sourceUrl: link,
-//                             scrapedAt: new Date() // Add timestamp
-//                         });
-//                     }
-//                 });
-
-//                 return eventData;
-//             });
-
-//             allEvents = [...allEvents, ...pageEvents];
-//             console.log(`✅ Found ${pageEvents.length} events on page ${currentPage}. Total so far: ${allEvents.length}`);
-//             retryCount = 0;
-
-//             // Pagination handling
-//             const nextButton = await page.$('.pagination a[href*="page"]:not([href*="page/1"]):not(.disabled)');
-//             if (nextButton) {
-//                 currentPage++;
-//                 console.log(`➡️ Navigating to page ${currentPage}...`);
-                
-//                 try {
-//                     await Promise.all([
-//                         nextButton.click(),
-//                         page.waitForNavigation({ 
-//                             waitUntil: 'domcontentloaded',
-//                             timeout: 60000 
-//                         })
-//                     ]);
-//                     // Alternative to waitForTimeout for older Puppeteer versions
-//                     await new Promise(resolve => setTimeout(resolve, 3000));
-//                 } catch (error) {
-//                     console.error(`⚠️ Failed to navigate to page ${currentPage}:`, error.message);
-//                     retryCount++;
-//                     if (retryCount < maxRetries) {
-//                         console.log(`🔄 Retrying page ${currentPage} (attempt ${retryCount + 1}/${maxRetries})`);
-//                         continue;
-//                     } else {
-//                         hasNextPage = false;
-//                     }
-//                 }
-//             } else {
-//                 hasNextPage = false;
-//             }
-//         } catch (error) {
-//             console.error(`⚠️ Error scraping page ${currentPage}:`, error.message);
-//             retryCount++;
-//             if (retryCount < maxRetries) {
-//                 console.log(`🔄 Retrying page ${currentPage} (attempt ${retryCount + 1}/${maxRetries})`);
-//                 continue;
-//             } else {
-//                 hasNextPage = false;
-//             }
-//         }
-//     }
-
-//     // Database operations
-//     let newEventsCount = 0;
-//     let duplicateEventsCount = 0;
-//     let errorCount = 0;
-
-//     if (allEvents.length > 0) {
-//         console.log('💾 Saving events to database...');
-        
-//         for (const event of allEvents) {
-//             try {
-//                 const result = await ScrapedEvent.updateOne(
-//                     { sourceUrl: event.sourceUrl },
-//                     { $set: event },
-//                     { upsert: true }
-//                 );
-                
-//                 if (result.upsertedCount > 0) {
-//                     newEventsCount++;
-//                 } else if (result.modifiedCount > 0) {
-//                     duplicateEventsCount++;
-//                 }
-//             } catch (error) {
-//                 errorCount++;
-//                 if (error.code !== 11000) { // Skip duplicate key errors
-//                     console.error('Error saving event:', error);
-//                 }
-//             }
-//         }
-//     }
-
-//     console.log(`✅ Database update complete. 
-//     New events: ${newEventsCount}
-//     Updated events: ${duplicateEventsCount}
-//     Errors: ${errorCount}`);
-
-//     // Cleanup
-//     await browser.close();
-//     await mongoose.disconnect();
-//     console.log('🏁 Scraper finished and disconnected from DB.');
-    
-//     return { 
-//         success: true, 
-//         stats: {
-//             totalFound: allEvents.length,
-//             newEvents: newEventsCount,
-//             updatedEvents: duplicateEventsCount,
-//             errors: errorCount
-//         }
-//     };
-// }
-
-// module.exports = { scrapeCunyEvents };
-
-
-// scrapers/cunyScraper.js (Refactored)
-
-// scrapers/cunyScraper.js (Fully Updated & Resilient Version)
-
-// scrapers/cunyScraper.js (Stealth Version)
-
-// scrapers/cunyScraper.js (Final Corrected Version)
-
-// scrapers/cunyScraper.js (Final Corrected Version)
-// scrapers/cunyScraper.js
+// scrapers/cunyScraper.js (Final Version with Correct Selectors)
 const puppeteer = require('puppeteer');
 
 async function scrapeCunyEvents() {
-    console.log('🚀 [CUNY Events] Launching headless browser in stealth mode...');
+    console.log('🚀 [CUNY Events] Launching headless browser...');
     let browser;
     try {
         browser = await puppeteer.launch({
             headless: true,
-            executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', // adjust for server
+            executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
     } catch (e) {
         console.error("❌ PUPPETEER LAUNCH FAILED in cunyScraper:", e);
-        return []; // Always return an array to avoid breaking callers
+        return [];
     }
 
     const page = await browser.newPage();
-    await page.setUserAgent(
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
-    );
-    await page.setViewport({ width: 1280, height: 800 });
-    await page.evaluateOnNewDocument(() => {
-        Object.defineProperty(navigator, 'webdriver', { get: () => false });
-    });
+    await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36');
+    page.setDefaultTimeout(90000);
 
-    page.setDefaultTimeout(90000); // 90s timeout
     const targetUrl = 'https://events.cuny.edu/';
     console.log(`📡 [CUNY Events] Navigating to ${targetUrl}...`);
 
     try {
-        await page.goto(targetUrl, { waitUntil: 'networkidle2' });
+        await page.goto(targetUrl, { waitUntil: 'domcontentloaded' });
     } catch (error) {
         console.error(`❌ [CUNY Events] Failed to load initial page:`, error.message);
         await browser.close();
@@ -239,20 +31,22 @@ async function scrapeCunyEvents() {
     }
 
     let allEvents = [];
-    let hasNextPage = true;
-    let currentPage = 1;
-    const maxPagesToScrape = 5;
+    const maxPagesToScrape = 10;
 
-    while (hasNextPage && currentPage <= maxPagesToScrape) {
+    for (let currentPage = 1; currentPage <= maxPagesToScrape; currentPage++) {
         console.log(`🔍 [CUNY Events] Scraping page ${currentPage}...`);
 
         try {
-            await page.waitForSelector('li.cec-list-item', { timeout: 30000 });
+            // --- THIS IS THE FIX ---
+            // Based on your debug_page.html, the correct container is 'ul.cec-list'
+            console.log("--- [CUNY Events] Waiting for selector: 'ul.cec-list' ---");
+            await page.waitForSelector('ul.cec-list', { timeout: 30000 });
+            console.log("--- [CUNY Events] Selector 'ul.cec-list' found! ---");
 
+            // The evaluate function is already correct because it looks for 'li.cec-list-item'
             const pageEvents = await page.evaluate(() => {
                 const eventNodes = document.querySelectorAll('li.cec-list-item');
                 const eventData = [];
-
                 eventNodes.forEach(node => {
                     const titleElement = node.querySelector('h2.low a');
                     const collegeElement = node.querySelector('h4.low-normal:nth-of-type(1)');
@@ -266,36 +60,51 @@ async function scrapeCunyEvents() {
                             college: collegeElement?.innerText.trim() || 'Not specified',
                             date: dateElement.innerText.trim(),
                             time: timeElement?.innerText.trim() || 'Not specified',
-                            sourceUrl: link,
-                            scrapedAt: new Date()
+                            sourceUrl: link
                         });
                     }
                 });
-
                 return eventData;
             });
+
+            if (pageEvents.length === 0) {
+                console.log('--- [CUNY Events] No events found on this page. Ending scrape.');
+                break;
+            }
 
             allEvents.push(...pageEvents);
             console.log(`✅ [CUNY Events] Found ${pageEvents.length} events on page ${currentPage}. Total so far: ${allEvents.length}`);
 
-            // --- Pagination Fix ---
-            const nextButton = await page.$('.pagination a[href*="page"]:not([href*="page/1"]):not(.disabled)');
+            // The pagination link for "next" is 'div.pagination a[href*="page/2"]' or similar
+            // A more general selector is one that is not the 'prev' link and not the 'current' page.
+            const nextButton = await page.$('div.pagination a:not([class="disabled"]):not([class="current"])');
+            
+            // A simpler, more direct selector for the "next" link text
+            const nextLink = await page.evaluateHandle(() => {
+                const links = Array.from(document.querySelectorAll('div.pagination a'));
+                return links.find(a => a.innerText.trim().toLowerCase() === 'next');
+            });
+            
+            const nextButtonElement = nextLink.asElement();
 
-            if (nextButton && currentPage < maxPagesToScrape) {
-                currentPage++;
-                console.log(`➡️ [CUNY Events] Navigating to page ${currentPage}...`);
+            if (nextButtonElement) {
+                console.log(`➡️ [CUNY Events] Clicking next page button...`);
                 await Promise.all([
-                    nextButton.click(),
+                    nextButtonElement.click(),
                     page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 90000 })
                 ]);
-                await new Promise(resolve => setTimeout(resolve, 3000)); // human-like delay
+                await new Promise(resolve => setTimeout(resolve, 2000));
             } else {
-                console.log('--- [CUNY Events] No more pages or reached max page limit ---');
-                hasNextPage = false;
+                console.log('--- [CUNY Events] No more "Next" button found. Ending scrape.');
+                break;
             }
         } catch (error) {
-            console.error(`⚠️ [CUNY Events] Error on page ${currentPage}:`, error.message);
-            hasNextPage = false;
+            console.error(`⚠️ [CUNY Events] Error on page ${currentPage}. Ending scrape for this source. Error:`, error.message);
+            // We are saving a debug file here again in case the NEXT page fails.
+            const screenshotPath = `debug_screenshot_page_${currentPage}.png`;
+            await page.screenshot({ path: screenshotPath, fullPage: true });
+            console.log(`📸 Screenshot of the failed page has been saved to: ${screenshotPath}`);
+            break;
         }
     }
 

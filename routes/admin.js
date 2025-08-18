@@ -1,56 +1,53 @@
-// routes/admin.js (Simplified + Correct Connection Logic)
+// routes/admin.js (Final Corrected Version)
 
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/auth');
 const adminAuth = require('../middleware/adminAuth');
 
-const { runAllScrapers } = require('../scrapers'); // Master runner
+// Import all necessary models and utilities
+const { runAllScrapers } = require('../scrapers'); // Master runner for all scrapers
 const ScrapedEvent = require('../models/ScrapedEvent');
 const Event = require('../models/Event');
 const { parseCunyDateTime } = require('../utils/dateParser');
 const ScrapeHistory = require('../models/ScrapeHistory');
 
 // -------------------------------------------------------------
-// @route   GET /api/admin/test
-// @desc    Simple test route
-// @access  Public (for sanity check)
-// -------------------------------------------------------------
-router.get('/test', (req, res) => {
-    res.json({ message: 'Admin route is working!' });
-});
-
-// -------------------------------------------------------------
 // @route   POST /api/admin/scrape-events
-// @desc    Trigger all scrapers
+// @desc    Trigger all scrapers to run in the background
 // @access  Private (Admin only)
 // -------------------------------------------------------------
 router.post('/scrape-events', [authMiddleware, adminAuth], async (req, res) => {
     console.log('Scrape request received from admin:', req.user?.email || 'Unknown User');
 
-    // Log history start
+    // Create a history log to track this run
     const historyLog = new ScrapeHistory({
         startTime: new Date(),
         status: 'running',
-        triggeredBy: req.user?.email || 'Unknown User'
+        triggeredBy: req.user?.email || 'System'
     });
     await historyLog.save();
 
+    // Immediately respond to the user so their browser doesn't time out
     res.status(202).json({
-        msg: 'Scraping process started. This may take a few minutes.',
+        msg: 'Scraping process has been started. This may take a few minutes to complete.',
         historyId: historyLog._id
     });
 
-    // --- FIX: No mongoose.connect/disconnect here ---
+    // --- THIS IS THE MAIN FIX ---
+    // Run the scraper in the background. It will use the main server's DB connection.
+    // We do NOT connect or disconnect from the database here.
     runAllScrapers()
         .then(result => {
+            // When the scraper is done, update the history log
             historyLog.endTime = new Date();
             historyLog.status = 'completed';
             historyLog.stats = result?.stats || {};
             return historyLog.save();
         })
-        .then(() => console.log('✅ All scrapers completed successfully.'))
+        .then(() => console.log('✅ All scrapers completed successfully and history was updated.'))
         .catch(err => {
+            // If the scraper fails, log the error and update the history
             console.error("--- SCRAPER BACKGROUND ERROR ---", err);
             historyLog.endTime = new Date();
             historyLog.status = 'failed';
@@ -78,7 +75,7 @@ router.get('/scraped-events', [authMiddleware, adminAuth], async (req, res) => {
 
 // -------------------------------------------------------------
 // @route   POST /api/admin/approve-all-pending
-// @desc    Approve all pending scraped events
+// @desc    Approve all 'unverified' scraped events
 // @access  Private (Admin only)
 // -------------------------------------------------------------
 router.post('/approve-all-pending', [authMiddleware, adminAuth], async (req, res) => {
@@ -96,7 +93,7 @@ router.post('/approve-all-pending', [authMiddleware, adminAuth], async (req, res
 
 // -------------------------------------------------------------
 // @route   PUT /api/admin/scraped-events/:id
-// @desc    Approve or reject a scraped event
+// @desc    Approve or reject a single scraped event
 // @access  Private (Admin only)
 // -------------------------------------------------------------
 router.put('/scraped-events/:id', [authMiddleware, adminAuth], async (req, res) => {
@@ -118,7 +115,7 @@ router.put('/scraped-events/:id', [authMiddleware, adminAuth], async (req, res) 
         }
 
         if (status === 'approved') {
-            console.log(`[1/4] Approved: "${scrapedEvent.title}". Parsing date/time...`);
+            console.log(`[1/3] Approved: "${scrapedEvent.title}". Parsing date/time...`);
             const { start, end, success } = parseCunyDateTime(scrapedEvent.date, scrapedEvent.time);
 
             if (!success) {
@@ -128,7 +125,7 @@ router.put('/scraped-events/:id', [authMiddleware, adminAuth], async (req, res) 
                 });
             }
 
-            console.log(`[2/4] Date parse success. Creating/updating public event...`);
+            console.log(`[2/3] Date parse success. Creating/updating public event...`);
 
             const newPublicEvent = {
                 title: scrapedEvent.title,
@@ -148,7 +145,7 @@ router.put('/scraped-events/:id', [authMiddleware, adminAuth], async (req, res) 
                 { upsert: true }
             );
 
-            console.log(`✅ Public event saved for "${scrapedEvent.title}"`);
+            console.log(`[3/3] ✅ Public event saved for "${scrapedEvent.title}"`);
         }
 
         res.json(scrapedEvent);
@@ -160,7 +157,7 @@ router.put('/scraped-events/:id', [authMiddleware, adminAuth], async (req, res) 
 
 // -------------------------------------------------------------
 // @route   GET /api/admin/scrape-history
-// @desc    Get scrape history
+// @desc    Get recent scrape history logs
 // @access  Private (Admin only)
 // -------------------------------------------------------------
 router.get('/scrape-history', [authMiddleware, adminAuth], async (req, res) => {
