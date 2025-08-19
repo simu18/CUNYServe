@@ -12,10 +12,9 @@ const ScrapeHistorySchema = new mongoose.Schema({
     },
     triggeredBy: { type: String },
     stats: {
-        totalFound: Number,
-        newEvents: Number,
-        updatedEvents: Number,
-        errors: Number
+        cunyEvents: { new: Number, updated: Number, failed: Number },
+        cunyAdmissions: { new: Number, updated: Number, failed: Number },
+        nycService: { new: Number, updated: Number, failed: Number } // <-- New field
     },
     error: { type: String }
 });

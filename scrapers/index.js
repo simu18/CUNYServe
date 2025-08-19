@@ -1,11 +1,12 @@
-// scrapers/index.js (Final Corrected Version)
+
 
 const ScrapedEvent = require('../models/ScrapedEvent');
 const { scrapeCunyEvents } = require('./cunyScraper');
 const { scrapeCunyAdmissionsEvents } = require('./cunyAdmissionsScraper');
+const { scrapeNycServiceEvents } = require('./nycServiceScraper'); // <-- New Scraper
 
 // --- Save Data Function ---
-// This function now uses the existing Mongoose connection.
+// Uses the existing Mongoose connection from server.js
 async function saveData(scraperName, scrapedData) {
     if (!Array.isArray(scrapedData) || scrapedData.length === 0) {
         console.log(`[${scraperName}] No new data to save.`);
@@ -16,9 +17,8 @@ async function saveData(scraperName, scrapedData) {
 
     for (const event of scrapedData) {
         try {
-            // Mongoose will use the connection established by server.js
             const result = await ScrapedEvent.updateOne(
-                { sourceUrl: event.sourceUrl },
+                { sourceUrl: event.sourceUrl }, // Unique identifier
                 { $set: event },
                 { upsert: true }
             );
@@ -38,36 +38,43 @@ async function saveData(scraperName, scrapedData) {
 }
 
 // --- Main Runner ---
-// This function NO LONGER accepts a mongoUri parameter.
+// Runs all scrapers in parallel and saves their data
 const runAllScrapers = async () => {
     console.log('--- [SCRAPER RUNNER] Starting all scrapers ---');
 
-    // Run scrapers in parallel
-    const [cunyEventsData, cunyAdmissionsData] = await Promise.all([
+    const [
+        cunyEventsData, 
+        cunyAdmissionsData,
+        nycServiceData
+    ] = await Promise.all([
         scrapeCunyEvents().catch(error => {
             console.error('❌ [CUNY Events] Scraper threw a critical error:', error);
-            return []; // Always return an empty array on failure
+            return [];
         }),
         scrapeCunyAdmissionsEvents().catch(error => {
             console.error('❌ [CUNY Admissions] Scraper threw a critical error:', error);
-            return []; // Always return an empty array on failure
+            return [];
+        }),
+        scrapeNycServiceEvents().catch(error => {
+            console.error('❌ [NYC Service] Scraper threw a critical error:', error);
+            return [];
         })
     ]);
 
     console.log('--- [SCRAPER RUNNER] Finished scraping. Now saving data... ---');
 
-    // Save scraped data using the main application's DB connection
     const cunyStats = await saveData('CUNY Events', cunyEventsData);
     const admissionsStats = await saveData('CUNY Admissions', cunyAdmissionsData);
+    const nycServiceStats = await saveData('NYC Service', nycServiceData);
 
     console.log('--- [SCRAPER RUNNER] All scrapers have finished their runs. ---');
 
-    // Return the combined stats
     return { 
         stats: {
             cunyEvents: cunyStats,
-            cunyAdmissions: admissionsStats
-        } 
+            cunyAdmissions: admissionsStats,
+            nycService: nycServiceStats
+        }
     };
 };
 

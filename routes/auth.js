@@ -1,4 +1,3 @@
-// routes/auth.js (Final Updated: Two-Step Signup + Full Auth)
 
 const express = require('express');
 const router = express.Router();

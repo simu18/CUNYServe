@@ -1,4 +1,4 @@
-// scrapers/cunyAdmissionsScraper.js (Improved + Robust + Full Fields)
+
 const puppeteer = require('puppeteer');
 
 async function scrapeCunyAdmissionsEvents() {

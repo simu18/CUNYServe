@@ -1,4 +1,4 @@
-// public/scripts/admin-dashboard.js (Final Merged & Robust Version)
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- ELEMENT SELECTORS ---
@@ -157,6 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
             elements.historyContainer.innerHTML = `<p class="text-gray-500">No history found</p>`;
             return;
         }
+    
         // keep your old history rendering logic here
     };
 

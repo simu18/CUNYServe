@@ -1,4 +1,4 @@
-// scrapers/cunyScraper.js (Final Version with Correct Selectors)
+
 const puppeteer = require('puppeteer');
 
 async function scrapeCunyEvents() {
@@ -37,13 +37,10 @@ async function scrapeCunyEvents() {
         console.log(`🔍 [CUNY Events] Scraping page ${currentPage}...`);
 
         try {
-            // --- THIS IS THE FIX ---
-            // Based on your debug_page.html, the correct container is 'ul.cec-list'
             console.log("--- [CUNY Events] Waiting for selector: 'ul.cec-list' ---");
             await page.waitForSelector('ul.cec-list', { timeout: 30000 });
             console.log("--- [CUNY Events] Selector 'ul.cec-list' found! ---");
 
-            // The evaluate function is already correct because it looks for 'li.cec-list-item'
             const pageEvents = await page.evaluate(() => {
                 const eventNodes = document.querySelectorAll('li.cec-list-item');
                 const eventData = [];
@@ -100,7 +97,6 @@ async function scrapeCunyEvents() {
             }
         } catch (error) {
             console.error(`⚠️ [CUNY Events] Error on page ${currentPage}. Ending scrape for this source. Error:`, error.message);
-            // We are saving a debug file here again in case the NEXT page fails.
             const screenshotPath = `debug_screenshot_page_${currentPage}.png`;
             await page.screenshot({ path: screenshotPath, fullPage: true });
             console.log(`📸 Screenshot of the failed page has been saved to: ${screenshotPath}`);

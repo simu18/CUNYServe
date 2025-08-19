@@ -1,4 +1,4 @@
-// public/scripts/onboarding-orientation.js
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('orientation-form');

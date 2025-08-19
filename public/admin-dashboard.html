@@ -610,6 +610,10 @@
                                                 <p class="font-medium text-purple-800">Admissions</p>
                                                 <p class="text-purple-600">${log.stats?.cunyAdmissions?.new || 0} new</p>
                                             </div>
+                                            <div class="bg-teal-50 p-2 rounded"> <!-- ADD THIS NEW DIV -->
+                                                 <p class="font-medium text-teal-800">NYC Service</p>
+                                                 <p class="text-teal-600">${log.stats?.nycService?.new || 0} new</p>
+                                              </div>
                                         </div>
                                     ` : ''}
                                     ${log.status === 'failed' ? `

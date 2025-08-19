@@ -1,4 +1,4 @@
-// routes/admin.js (Final Corrected Version)
+// routes/admin.js
 
 const express = require('express');
 const router = express.Router();
@@ -34,12 +34,10 @@ router.post('/scrape-events', [authMiddleware, adminAuth], async (req, res) => {
         historyId: historyLog._id
     });
 
-    // --- THIS IS THE MAIN FIX ---
     // Run the scraper in the background. It will use the main server's DB connection.
     // We do NOT connect or disconnect from the database here.
     runAllScrapers()
         .then(result => {
-            // When the scraper is done, update the history log
             historyLog.endTime = new Date();
             historyLog.status = 'completed';
             historyLog.stats = result?.stats || {};
@@ -47,7 +45,6 @@ router.post('/scrape-events', [authMiddleware, adminAuth], async (req, res) => {
         })
         .then(() => console.log('✅ All scrapers completed successfully and history was updated.'))
         .catch(err => {
-            // If the scraper fails, log the error and update the history
             console.error("--- SCRAPER BACKGROUND ERROR ---", err);
             historyLog.endTime = new Date();
             historyLog.status = 'failed';

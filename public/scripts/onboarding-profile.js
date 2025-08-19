@@ -1,4 +1,4 @@
-// public/scripts/onboarding-profile.js (Updated for hidden causes + skills)
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('profile-form');

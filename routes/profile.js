@@ -1,4 +1,3 @@
-// routes/profile.js (Corrected + Photo Upload)
 
 const express = require('express');
 const router = express.Router();

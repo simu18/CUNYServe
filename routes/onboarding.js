@@ -5,7 +5,7 @@ const router = express.Router();
 const authMiddleware = require('../middleware/auth');
 const User = require('../models/User');
 const UserOrientation = require('../models/UserOrientation');
-const UserProfile = require('../models/UserProfile'); // <-- ADDED
+const UserProfile = require('../models/UserProfile');
 
 // -------------------------------
 // ORIENTATION ROUTES (existing)

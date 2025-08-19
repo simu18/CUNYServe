@@ -1,4 +1,4 @@
-// public/scripts/navbar-dynamic.js (Premium Update)
+
 const navUserSection = document.getElementById('nav-user-section');
 const navUserSectionMobile = document.getElementById('nav-user-section-mobile');
 

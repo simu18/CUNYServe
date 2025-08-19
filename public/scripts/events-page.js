@@ -1,4 +1,4 @@
-// public/scripts/events-page.js (Modern Event Cards + Enhanced Filtering + Add to Calendar)
+
 document.addEventListener('DOMContentLoaded', () => {
     const eventsGrid = document.getElementById('events-grid');
     const searchInput = document.getElementById('search-input');

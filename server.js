@@ -1,4 +1,3 @@
-// server.js (With Automation for All Scrapers)
 
 require('dotenv').config();
 const express = require('express');
