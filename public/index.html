@@ -98,6 +98,35 @@
     .wave-shape .shape-fill {
       fill: #FFFFFF;
     }
+
+    .stat-highlight {
+      position: relative;
+      display: inline-block;
+    }
+
+    .stat-highlight::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(90deg, rgba(77, 168, 218, 0.3) 0%, rgba(77, 168, 218, 0.1) 100%);
+      z-index: -1;
+      border-radius: 2px;
+    }
+
+    .source-link {
+      font-size: 0.7rem;
+      color: #6b7280;
+      margin-top: 0.5rem;
+      display: block;
+    }
+
+    .source-link a {
+      color: #4da8da;
+      text-decoration: underline;
+    }
   </style>
 </head>
 
@@ -128,7 +157,7 @@
         <span class="typed-text text-white" id="typed"></span>
       </h1>
       <p class="text-xl sm:text-2xl mb-8 max-w-2xl mx-auto leading-relaxed">Connecting students with meaningful civic
-        engagement opportunities across all 25 campuses.</p>
+        engagement opportunities across all <span class="stat-highlight">25 campuses</span>.</p>
       <div class="flex flex-wrap justify-center gap-4">
         <a href="events.html"
           class="bg-white text-[#003f7f] hover:bg-gray-100 px-8 py-4 rounded-full font-semibold transition-all shadow-lg hover:shadow-xl glow-on-hover">
@@ -179,13 +208,13 @@
               <div class="bg-[#003f7f]/10 p-3 rounded-full mr-3">
                 <i class="fas fa-hand-holding-heart text-[#003f7f]"></i>
               </div>
-              <span class="font-medium">100+ Partners</span>
+              <span class="font-medium">Growing Network</span>
             </div>
             <div class="flex items-center">
               <div class="bg-[#003f7f]/10 p-3 rounded-full mr-3">
                 <i class="fas fa-calendar-check text-[#003f7f]"></i>
               </div>
-              <span class="font-medium">500+ Events</span>
+              <span class="font-medium">Diverse Opportunities</span>
             </div>
           </div>
         </div>
@@ -233,12 +262,12 @@
         </a>
 
         <!-- Pre-Med Card -->
-        <a href="pre-med.html" class="bg-white p-8 rounded-2xl shadow-md card-hover group">
+        <a href="pre-health.html" class="bg-white p-8 rounded-2xl shadow-md card-hover group">
           <div
             class="w-16 h-16 bg-[#003f7f]/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#003f7f] group-hover:text-white transition-all">
             <i class="fas fa-user-md text-2xl text-[#003f7f] group-hover:text-white"></i>
           </div>
-          <h3 class="text-xl font-bold mb-3 text-gray-800 group-hover:text-[#003f7f] transition-colors">Pre-Med</h3>
+          <h3 class="text-xl font-bold mb-3 text-gray-800 group-hover:text-[#003f7f] transition-colors">Pre-Health</h3>
           <p class="text-gray-600">Resources for health-focused students seeking service hours in clinical or medical
             settings.</p>
           <div class="mt-4 text-[#003f7f] font-medium flex items-center">
@@ -291,31 +320,306 @@
     </div>
   </section>
 
-  <!-- Stats Section -->
+  <!-- Stats Section - Updated with verifiable information -->
   <section class="py-20 bg-[#003f7f] text-white fade-in">
     <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4">CUNY By The Numbers</h2>
+        <p class="text-blue-100 max-w-2xl mx-auto">Verified statistics about the CUNY system and its impact</p>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
         <div class="p-8">
-          <div class="text-5xl font-bold mb-2">25+</div>
-          <div class="text-xl font-medium">CUNY Campuses</div>
-          <div class="h-1 bg-white/30 w-20 mx-auto mt-4"></div>
+          <div class="text-5xl font-bold mb-2">25</div>
+          <div class="text-xl font-medium">Campuses</div>
+          <p class="text-blue-100 mt-2 text-sm">CUNY is the nation's largest urban public university system</p>
+          <span class="source-link">
+            Source: <a href="https://www.cuny.edu/about/" target="_blank">CUNY About Page</a>
+          </span>
         </div>
         <div class="p-8">
-          <div class="text-5xl font-bold mb-2">5,000+</div>
-          <div class="text-xl font-medium">Student Volunteers</div>
-          <div class="h-1 bg-white/30 w-20 mx-auto mt-4"></div>
+          <div class="text-5xl font-bold mb-2">243K+</div>
+          <div class="text-xl font-medium">Degree-seeking Students</div>
+          <p class="text-blue-100 mt-2 text-sm">Students pursuing degrees across all CUNY campuses</p>
+          <span class="source-link">
+            Source: <a href="https://www.cuny.edu/about/administration/offices/ira/ir/data-book/current/enrollment/"
+              target="_blank">CUNY Enrollment Data</a>
+          </span>
         </div>
         <div class="p-8">
-          <div class="text-5xl font-bold mb-2">100+</div>
-          <div class="text-xl font-medium">Community Partners</div>
-          <div class="h-1 bg-white/30 w-20 mx-auto mt-4"></div>
+          <div class="text-5xl font-bold mb-2">80%</div>
+          <div class="text-xl font-medium">Stay in NYC</div>
+          <p class="text-blue-100 mt-2 text-sm">Percentage of CUNY graduates who remain in New York City</p>
+          <span class="source-link">
+            Source: <a
+              href="https://www.cuny.edu/wp-content/uploads/sites/4/page-assets/about/administration/offices/economic-development/CUNY-2021-Economic-Impact-Report.pdf"
+              target="_blank">CUNY Economic Impact Report</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Impact Stories Section - Redesigned -->
+  <!-- <section class="py-20 bg-white fade-in">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4 gradient-text">CUNY's Community Impact</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">How CUNY students make a difference across New York City</p>
+      </div>
+  
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div>
+          <div class="bg-gray-50 p-8 rounded-2xl shadow-sm mb-6">
+            <div class="w-16 h-16 bg-[#003f7f] rounded-full flex items-center justify-center mb-4">
+              <i class="fas fa-hands-helping text-white text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-3 text-[#003f7f]">Direct Community Support</h3>
+            <p class="text-gray-700 mb-4">CUNY students provide thousands of hours of service each year to communities
+              across all five boroughs, supporting:</p>
+            <ul class="text-gray-700 space-y-2">
+              <li class="flex items-start">
+                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                <span>Local food banks and pantries</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                <span>Youth mentorship programs</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                <span>Environmental clean-up initiatives</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                <span>Senior citizen support services</span>
+              </li>
+            </ul>
+          </div>
+  
+          <div class="bg-gray-50 p-8 rounded-2xl shadow-sm">
+            <div class="w-16 h-16 bg-[#003f7f] rounded-full flex items-center justify-center mb-4">
+              <i class="fas fa-graduation-cap text-white text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-3 text-[#003f7f]">Skill-Based Volunteering</h3>
+            <p class="text-gray-700">Students apply their academic knowledge to real-world challenges through:</p>
+            <div class="grid grid-cols-2 gap-4 mt-4">
+              <div class="bg-white p-3 rounded-lg text-center">
+                <i class="fas fa-laptop-medical text-blue-500 text-2xl mb-2"></i>
+                <p class="text-sm font-medium">Tech support for nonprofits</p>
+              </div>
+              <div class="bg-white p-3 rounded-lg text-center">
+                <i class="fas fa-chart-line text-blue-500 text-2xl mb-2"></i>
+                <p class="text-sm font-medium">Business consulting</p>
+              </div>
+              <div class="bg-white p-3 rounded-lg text-center">
+                <i class="fas fa-stethoscope text-blue-500 text-2xl mb-2"></i>
+                <p class="text-sm font-medium">Health screenings</p>
+              </div>
+              <div class="bg-white p-3 rounded-lg text-center">
+                <i class="fas fa-book-open text-blue-500 text-2xl mb-2"></i>
+                <p class="text-sm font-medium">Tutoring services</p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div>
+          <div class="bg-[#003f7f] p-8 rounded-2xl text-white h-full">
+            <h3 class="text-2xl font-bold mb-6">Student Volunteer Experiences</h3>
+  
+            <div class="space-y-6">
+              <div class="bg-white/10 p-5 rounded-xl">
+                <div class="flex items-start">
+                  <div class="bg-white/20 p-2 rounded-full mr-4">
+                    <i class="fas fa-quote-left text-white/70"></i>
+                  </div>
+                  <div>
+                    <p class="italic">"Volunteering at the Brooklyn food bank through CUNYServe helped me develop
+                      leadership skills I now use in my career."</p>
+                    <div class="flex items-center mt-3">
+                      <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mr-2">
+                        <span class="text-xs font-bold">MJ</span>
+                      </div>
+                      <span class="text-sm text-white/80">Marketing Major, Brooklyn College</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="bg-white/10 p-5 rounded-xl">
+                <div class="flex items-start">
+                  <div class="bg-white/20 p-2 rounded-full mr-4">
+                    <i class="fas fa-quote-left text-white/70"></i>
+                  </div>
+                  <div>
+                    <p class="italic">"My pre-med volunteer hours at Jackson Heights Clinic were invaluable for both my
+                      medical school applications and personal growth."</p>
+                    <div class="flex items-center mt-3">
+                      <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mr-2">
+                        <span class="text-xs font-bold">AR</span>
+                      </div>
+                      <span class="text-sm text-white/80">Biology Major, Queens College</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="bg-white/10 p-5 rounded-xl">
+                <div class="flex items-start">
+                  <div class="bg-white/20 p-2 rounded-full mr-4">
+                    <i class="fas fa-quote-left text-white/70"></i>
+                  </div>
+                  <div>
+                    <p class="italic">"Through CUNYServe, I connected with a community organization that eventually hired
+                      me after graduation."</p>
+                    <div class="flex items-center mt-3">
+                      <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mr-2">
+                        <span class="text-xs font-bold">TS</span>
+                      </div>
+                      <span class="text-sm text-white/80">Social Work Major, Hunter College</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <a href="volunteer-projects.html"
+              class="inline-block mt-8 bg-white text-[#003f7f] hover:bg-blue-50 px-6 py-3 rounded-full font-semibold transition-all">
+              Share Your Story <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+  <!-- Impact Stories Section - Redesigned -->
+  <section class="py-20 bg-white fade-in">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4 gradient-text">Making a Difference Together</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">CUNY students contribute to NYC communities in meaningful ways</p>
+      </div>
+  
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div>
+          <div class="bg-gray-50 p-8 rounded-2xl shadow-sm mb-6">
+            <div class="w-16 h-16 bg-[#003f7f] rounded-full flex items-center justify-center mb-4">
+              <i class="fas fa-hands-helping text-white text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-3 text-[#003f7f]">Community Service Areas</h3>
+            <p class="text-gray-700 mb-4">CUNY students regularly participate in service activities including:</p>
+            <ul class="text-gray-700 space-y-2">
+              <li class="flex items-start">
+                <i class="fas fa-seedling text-green-500 mt-1 mr-2"></i>
+                <span>Park cleanups and urban gardening</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-utensils text-orange-500 mt-1 mr-2"></i>
+                <span>Food bank assistance and meal delivery</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-book-reader text-blue-500 mt-1 mr-2"></i>
+                <span>Tutoring and educational support</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-hand-holding-heart text-red-500 mt-1 mr-2"></i>
+                <span>Senior citizen companionship programs</span>
+              </li>
+            </ul>
+          </div>
+  
+          <div class="bg-gray-50 p-8 rounded-2xl shadow-sm">
+            <div class="w-16 h-16 bg-[#003f7f] rounded-full flex items-center justify-center mb-4">
+              <i class="fas fa-graduation-cap text-white text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-3 text-[#003f7f]">Skill Development</h3>
+            <p class="text-gray-700">Through volunteering, students develop valuable skills such as:</p>
+            <div class="grid grid-cols-2 gap-4 mt-4">
+              <div class="bg-white p-3 rounded-lg text-center">
+                <i class="fas fa-users text-blue-500 text-2xl mb-2"></i>
+                <p class="text-sm font-medium">Team Leadership</p>
+              </div>
+              <div class="bg-white p-3 rounded-lg text-center">
+                <i class="fas fa-comments text-blue-500 text-2xl mb-2"></i>
+                <p class="text-sm font-medium">Communication</p>
+              </div>
+              <div class="bg-white p-3 rounded-lg text-center">
+                <i class="fas fa-tasks text-blue-500 text-2xl mb-2"></i>
+                <p class="text-sm font-medium">Project Management</p>
+              </div>
+              <div class="bg-white p-3 rounded-lg text-center">
+                <i class="fas fa-lightbulb text-blue-500 text-2xl mb-2"></i>
+                <p class="text-sm font-medium">Problem Solving</p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div>
+          <div class="bg-[#003f7f] p-8 rounded-2xl text-white h-full">
+            <h3 class="text-2xl font-bold mb-6">Student Experiences</h3>
+            <p class="text-blue-100 mb-6">Examples of how volunteering impacts CUNY students:</p>
+  
+            <div class="space-y-6">
+              <div class="bg-white/10 p-5 rounded-xl">
+                <div class="flex items-start">
+                  <div class="bg-white/20 p-2 rounded-full mr-4">
+                    <i class="fas fa-user-graduate text-white/70"></i>
+                  </div>
+                  <div>
+                    <p class="italic">"Volunteering helped me apply classroom knowledge to real community needs and build
+                      professional connections."</p>
+                    <div class="border-t border-white/20 mt-3 pt-3">
+                      <span class="text-sm text-white/80">— Example of a common student experience</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="bg-white/10 p-5 rounded-xl">
+                <div class="flex items-start">
+                  <div class="bg-white/20 p-2 rounded-full mr-4">
+                    <i class="fas fa-briefcase-medical text-white/70"></i>
+                  </div>
+                  <div>
+                    <p class="italic">"The healthcare volunteering I found through this platform was essential for my
+                      medical school applications."</p>
+                    <div class="border-t border-white/20 mt-3 pt-3">
+                      <span class="text-sm text-white/80">— Pre-health student experience example</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="bg-white/10 p-5 rounded-xl">
+                <div class="flex items-start">
+                  <div class="bg-white/20 p-2 rounded-full mr-4">
+                    <i class="fas fa-handshake text-white/70"></i>
+                  </div>
+                  <div>
+                    <p class="italic">"I discovered career opportunities through volunteering that I never would have
+                      found otherwise."</p>
+                    <div class="border-t border-white/20 mt-3 pt-3">
+                      <span class="text-sm text-white/80">— Example of professional development</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <a href="share-story.html"
+              class="inline-block mt-8 bg-white text-[#003f7f] hover:bg-blue-50 px-6 py-3 rounded-full font-semibold transition-all">
+              Share Your Experience <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Newsletter Signup -->
-  <section class="py-20 bg-white fade-in">
+  <section class="py-20 bg-gray-50 fade-in">
     <div class="max-w-4xl mx-auto px-6 text-center">
       <div class="inline-block bg-[#003f7f]/10 px-6 py-3 rounded-full mb-6">
         <i class="fas fa-envelope text-[#003f7f] mr-2"></i>
@@ -356,7 +660,7 @@
           <ul class="space-y-2">
             <li><a href="events.html" class="hover:text-white transition">Events</a></li>
             <li><a href="volunteer-projects.html" class="hover:text-white transition">Get Involved</a></li>
-            <li><a href="pre-med.html" class="hover:text-white transition">Pre-Med Resources</a></li>
+            <li><a href="pre-health.html" class="hover:text-white transition">Pre-Health Resources</a></li>
             <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
           </ul>
         </div>

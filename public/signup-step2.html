@@ -3,52 +3,314 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Sign Up - Step 2 | CUNYServe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Profile | CUNYServe</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#00539B',
+                        secondary: '#FFD100',
+                        accent: '#00A3E0',
+                        dark: '#1E2A38',
+                        light: '#F5F7FA'
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .progress-bar {
+            height: 6px;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .input-field {
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            box-shadow: 0 0 0 3px rgba(0, 83, 155, 0.2);
+        }
+
+        .password-toggle {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: #00539B;
+        }
+
+        .campus-option {
+            transition: all 0.2s ease;
+        }
+
+        .campus-option:hover {
+            background-color: #F0F7FF;
+        }
+
+        .verification-success {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 
-<body class="bg-gray-100">
-    <div id="navbar-placeholder"></div>
-    <div class="flex justify-center items-center min-h-screen py-10">
-        <div class="bg-white p-8 rounded shadow-md w-full max-w-md mx-4">
-            <div id="loader" class="text-center">
-                <p>Verifying your link...</p>
-                <!-- Add a spinner icon here if you like -->
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center py-8 px-4">
+    <div class="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden">
+        <!-- Progress bar -->
+        <div class="h-2 bg-gray-200">
+            <div class="progress-bar bg-primary" style="width: 66%"></div>
+        </div>
+
+        <div class="p-8">
+            <!-- Loader section -->
+            <div id="loader" class="text-center py-8">
+                <div
+                    class="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4">
+                </div>
+                <p class="text-gray-600 font-medium">Verifying your link...</p>
             </div>
+
+            <!-- Main content section (initially hidden) -->
             <div id="main-content" class="hidden">
-                <h2 class="text-2xl font-bold mb-1 text-center text-[#00539B]">Email Verified!</h2>
-                <p class="text-center text-gray-600 mb-6">Now, let's create your profile.</p>
-                <div id="message-container" class="hidden mb-4"></div>
-                <form id="signup-form">
+                <!-- Success verification message -->
+                <div class="verification-success text-center mb-6">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-primary">Email Verified!</h2>
+                    <p class="text-gray-600 mt-2">Now, let's create your profile</p>
+                </div>
+
+                <!-- Form -->
+                <form id="signup-form" class="space-y-5">
                     <input type="hidden" id="signup-token">
-                    <div class="mb-4">
-                        <label class="block mb-1 font-medium">Email</label>
-                        <input type="email" id="email" class="w-full px-4 py-2 border rounded bg-gray-100" readonly>
+
+                    <!-- Email field -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <div class="relative">
+                            <input type="email" id="email"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg input-field bg-gray-100"
+                                readonly>
+                            <div class="absolute right-3 top-3.5 text-green-500">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-4">
-                        <label class="block mb-1 font-medium">Full Name</label>
-                        <input type="text" id="name" class="w-full px-4 py-2 border rounded" required>
+
+                    <!-- Name field -->
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                        <div class="relative">
+                            <input type="text" id="name"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg input-field" required
+                                placeholder="Enter your full name">
+                            <div class="absolute right-3 top-3.5 text-gray-400">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-4">
-                        <label class="block mb-1 font-medium">Password</label>
-                        <input type="password" id="password" class="w-full px-4 py-2 border rounded" required>
+
+                    <!-- Password field -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <div class="relative">
+                            <input type="password" id="password"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg input-field" required
+                                placeholder="Create a strong password">
+                            <div class="absolute right-3 top-3.5 password-toggle" onclick="togglePassword()">
+                                <i class="fas fa-eye-slash"></i>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Must be at least 8 characters with uppercase, lowercase,
+                            and number</p>
                     </div>
-                    <div class="mb-4">
-                        <label class="block mb-1 font-medium">Campus</label>
-                        <select id="campus" class="w-full px-4 py-2 border rounded" required>
-                            <option value="">Select your campus</option>
-                            <option>Baruch College</option>
-                            <!-- Add all other campus options -->
-                        </select>
+
+                    <!-- Campus selection -->
+                    <div>
+                        <label for="campus" class="block text-sm font-medium text-gray-700 mb-1">Campus</label>
+                        <div class="relative">
+                            <select id="campus"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg input-field appearance-none"
+                                required>
+                                <option value="">Select your campus</option>
+                                <option>Baruch College</option>
+                                <option>Brooklyn College</option>
+                                <option>Borough of Manhattan Community College (BMCC)</option>
+                                <option>Bronx Community College</option>
+                                <option>City College of New York (CCNY)</option>
+                                <option>College of Staten Island</option>
+                                <option>CUNY School of Law</option>
+                                <option>Guttman Community College</option>
+                                <option>Hostos Community College</option>
+                                <option>Hunter College</option>
+                                <option>John Jay College of Criminal Justice</option>
+                                <option>Kingsborough Community College</option>
+                                <option>LaGuardia Community College</option>
+                                <option>Lehman College</option>
+                                <option>Medgar Evers College</option>
+                                <option>New York City College of Technology</option>
+                                <option>Queens College</option>
+                                <option>Queensborough Community College</option>
+                                <option>York College</option>
+                                <option value="Other">Other (Please specify)</option>
+                            </select>
+                            <div class="absolute right-3 top-3.5 pointer-events-none">
+                                <i class="fas fa-chevron-down text-gray-400"></i>
+                            </div>
+                        </div>
                     </div>
-                    <button type="submit" class="w-full bg-[#00539B] text-white py-2 rounded hover:bg-blue-700">Create
-                        Account & Login</button>
+
+                    <!-- Other campus input (initially hidden) -->
+                    <div id="otherCampusDiv" class="hidden">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Please specify your campus</label>
+                        <input type="text" id="other-campus" placeholder="Your Campus Name"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg input-field">
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit"
+                        class="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 transform hover:scale-[1.02] flex items-center justify-center">
+                        <span>Complete Profile</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
                 </form>
+
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-gray-600">By creating an account, you agree to our
+                        <a href="c&d.html" class="text-primary hover:underline">Terms of Service</a> and
+                        <a href="c&d.html" class="text-primary hover:underline">Privacy Policy</a>
+                    </p>
+                </div>
             </div>
+
+            <!-- Message container for errors -->
+            <div id="message-container" class="hidden mt-4"></div>
         </div>
     </div>
-    <!-- Your standard script loader block -->
+
     <script src="/scripts/auth.js"></script>
+
+    <script>
+        // Function to toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.querySelector('.password-toggle i');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            }
+        }
+
+        // Function to handle campus selection
+        document.getElementById('campus').addEventListener('change', function () {
+            const otherCampusDiv = document.getElementById('otherCampusDiv');
+            if (this.value === 'Other') {
+                otherCampusDiv.classList.remove('hidden');
+                document.getElementById('other-campus').setAttribute('required', 'true');
+            } else {
+                otherCampusDiv.classList.add('hidden');
+                document.getElementById('other-campus').removeAttribute('required');
+            }
+        });
+
+        // Simulate email verification process
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get token from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+
+            if (!token) {
+                document.getElementById('loader').innerHTML =
+                    '<p class="text-red-500 p-4 bg-red-100 rounded-lg">Error: No verification token found. Please start over.</p>';
+                return;
+            }
+
+            // Simulate API verification call
+            setTimeout(function () {
+                // This would be replaced with your actual API call
+                // For demonstration, we'll simulate a successful verification
+                // document.getElementById('email').value = 'user@example.com';
+                // document.getElementById('signup-token').value = token;
+
+                // Hide loader and show main content
+                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('main-content').classList.remove('hidden');
+            }, 1500);
+
+            // Form submission
+            document.getElementById('signup-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Create message container if it doesn't exist
+                let messageContainer = document.getElementById('message-container');
+
+                // Validate password strength
+                const password = document.getElementById('password').value;
+                const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+                if (!passwordRegex.test(password)) {
+                    messageContainer.innerHTML = '<div class="bg-red-100 text-red-700 p-4 rounded-lg">Password must be at least 8 characters with uppercase, lowercase, and number</div>';
+                    messageContainer.classList.remove('hidden');
+                    return;
+                }
+
+                // If campus is "Other", validate the other campus field
+                const campus = document.getElementById('campus').value;
+                if (campus === 'Other') {
+                    const otherCampus = document.getElementById('other-campus').value;
+                    if (!otherCampus) {
+                        messageContainer.innerHTML = '<div class="bg-red-100 text-red-700 p-4 rounded-lg">Please specify your campus</div>';
+                        messageContainer.classList.remove('hidden');
+                        return;
+                    }
+                }
+
+                // If all validations pass, submit the form
+                messageContainer.innerHTML = '<div class="bg-green-100 text-green-700 p-4 rounded-lg">Account created successfully! Redirecting...</div>';
+                messageContainer.classList.remove('hidden');
+
+                // Here you would typically send the data to your server
+                setTimeout(function () {
+                    // Simulate successful signup and redirect
+                    window.location.href = '/onboarding-orientation.html';
+                }, 1000);
+            });
+        });
+    </script>
 </body>
 
 </html>

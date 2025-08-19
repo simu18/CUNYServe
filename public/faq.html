@@ -8,22 +8,56 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    .faq-item {
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --primary: #00539B;
+      --secondary: #0077CC;
+      --accent: #FF6B35;
+      --light: #F7F9FC;
+      --dark: #2D3748;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--dark);
+      background-color: var(--light);
+    }
+
+    .gradient-bg {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    }
+
+    .card-hover {
       transition: all 0.3s ease;
     }
 
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .faq-item {
+      transition: all 0.3s ease;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 16px;
+      background: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
     .faq-item:hover {
-      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     }
 
     .faq-answer {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.3s ease;
+      transition: max-height 0.5s ease;
     }
 
     .faq-item.active .faq-answer {
-      max-height: 500px;
+      max-height: 1000px;
     }
 
     .faq-item.active .faq-toggle i {
@@ -31,33 +65,80 @@
     }
 
     .search-highlight {
-      background-color: #FFEB3B;
+      background-color: rgba(255, 215, 0, 0.3);
       padding: 0 2px;
+      border-radius: 3px;
+    }
+
+    .category-btn {
+      transition: all 0.3s ease;
+    }
+
+    .category-btn.active,
+    .category-btn:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .sticky-categories {
+      position: sticky;
+      top: 80px;
+      z-index: 10;
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 83, 155, 0.3);
+      z-index: 1000;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      background: var(--secondary);
+      transform: translateY(-3px);
     }
   </style>
 </head>
 
-<body class="font-sans text-gray-800 bg-gray-50">
+<body class="bg-gray-50">
 
   <!-- Navbar Placeholder -->
   <div id="navbar-placeholder"></div>
 
   <!-- Hero Section -->
-  <section class="bg-gradient-to-r from-[#00539B] to-[#0077CC] text-white py-20 text-center relative overflow-hidden">
+  <section class="gradient-bg text-white py-20 text-center relative overflow-hidden">
     <div class="absolute inset-0 opacity-10">
       <div
-        class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==')]">
+        class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDIU1MCwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==')]">
       </div>
     </div>
     <div class="max-w-4xl mx-auto px-4 relative z-10">
-      <h1 class="text-4xl md:text-5xl font-bold mb-6">How Can We Help?</h1>
+      <h1 class="text-4xl md:text-5xl font-bold mb-6">Frequently Asked Questions</h1>
       <p class="text-xl max-w-2xl mx-auto mb-8">Find answers to common questions about volunteering through CUNYServe
       </p>
 
       <!-- Search Bar -->
       <div class="max-w-2xl mx-auto relative">
         <input type="text" id="faq-search" placeholder="Search FAQs..."
-          class="w-full px-6 py-4 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-[#00539B]">
+          class="w-full px-6 py-4 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-white text-gray-800">
         <button class="absolute right-3 top-3 bg-[#00539B] text-white p-2 rounded-full hover:bg-[#003366] transition">
           <i class="fas fa-search"></i>
         </button>
@@ -66,20 +147,48 @@
     <div class="absolute bottom-0 left-0 w-full h-12 bg-white transform skew-y-1 -mb-6"></div>
   </section>
 
+  <!-- Categories Navigation -->
+  <section class="bg-white py-6 shadow-sm sticky-categories">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="flex flex-wrap justify-center gap-3">
+        <button class="category-btn active px-4 py-2 rounded-full border border-gray-200 text-sm font-medium transition"
+          data-category="all">
+          All Questions
+        </button>
+        <button class="category-btn px-4 py-2 rounded-full border border-gray-200 text-sm font-medium transition"
+          data-category="general">
+          General
+        </button>
+        <button class="category-btn px-4 py-2 rounded-full border border-gray-200 text-sm font-medium transition"
+          data-category="volunteering">
+          Volunteering
+        </button>
+        <button class="category-btn px-4 py-2 rounded-full border border-gray-200 text-sm font-medium transition"
+          data-category="prehealth">
+          Pre-Health
+        </button>
+        <button class="category-btn px-4 py-2 rounded-full border border-gray-200 text-sm font-medium transition"
+          data-category="getting-involved">
+          Getting Involved
+        </button>
+      </div>
+    </div>
+  </section>
+
   <!-- FAQ Section -->
   <section class="max-w-4xl mx-auto py-16 px-4">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-      <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
+      <div class="bg-white p-6 rounded-xl shadow-md text-center card-hover">
         <div class="text-4xl text-[#00539B] mb-4"><i class="fas fa-question-circle"></i></div>
         <h3 class="text-xl font-bold mb-2">General Questions</h3>
         <p class="text-gray-600">About CUNYServe and how it works</p>
       </div>
-      <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
+      <div class="bg-white p-6 rounded-xl shadow-md text-center card-hover">
         <div class="text-4xl text-[#00539B] mb-4"><i class="fas fa-hands-helping"></i></div>
         <h3 class="text-xl font-bold mb-2">Volunteering</h3>
         <p class="text-gray-600">Finding and joining opportunities</p>
       </div>
-      <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition">
+      <div class="bg-white p-6 rounded-xl shadow-md text-center card-hover">
         <div class="text-4xl text-[#00539B] mb-4"><i class="fas fa-user-plus"></i></div>
         <h3 class="text-xl font-bold mb-2">Getting Involved</h3>
         <p class="text-gray-600">Leadership roles and submissions</p>
@@ -87,159 +196,292 @@
     </div>
 
     <div class="space-y-4" id="faq-container">
-      <!-- Q1 -->
-      <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden" x-data="{ open: false }"
-        :class="{ 'active': open }">
-        <button @click="open = !open" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
-          <h2 class="text-xl font-semibold text-[#00539B]">What is CUNYServe?</h2>
-          <span class="faq-toggle text-[#00539B]">
-            <i class="fas fa-chevron-down transition-transform"></i>
-          </span>
-        </button>
-        <div class="faq-answer px-6 pb-6">
-          <p class="text-gray-700">
-            CUNYServe is a student-powered civic engagement platform that connects students across all 25 CUNY campuses
-            with volunteer opportunities, projects, events, and leadership roles.
-          </p>
+      <!-- New Civic Engagement Questions -->
+      <div class="faq-item" data-categories="general">
+        <div x-data="{ open: false }" :class="{ 'active': open }">
+          <button @click="open = !open"
+            class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+            <h2 class="text-xl font-semibold text-[#00539B]">What is civic engagement and volunteerism?</h2>
+            <span class="faq-toggle text-[#00539B]">
+              <i class="fas fa-chevron-down transition-transform"></i>
+            </span>
+          </button>
+          <div class="faq-answer px-6 pb-6">
+            <p class="text-gray-700">
+              Civic engagement and volunteerism are closely related concepts that involve actively participating in the
+              improvement of communities and society. Civic engagement refers to the broader spectrum of activities
+              where individuals engage in public life, such as voting, participating in public discussions, advocacy, or
+              community organizing, to influence decision-making and promote the common good. Volunteering is the act of
+              offering one's time, skills, and efforts to help others without financial compensation. Both civic
+              engagement and volunteerism empower individuals to contribute to societal change, foster a sense of
+              responsibility, and enhance community well-being, creating a more connected and active society.
+            </p>
+          </div>
         </div>
       </div>
 
-      <!-- Q2 -->
-      <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden" x-data="{ open: false }"
-        :class="{ 'active': open }">
-        <button @click="open = !open" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
-          <h2 class="text-xl font-semibold text-[#00539B]">How do I find volunteering events?</h2>
-          <span class="faq-toggle text-[#00539B]">
-            <i class="fas fa-chevron-down transition-transform"></i>
-          </span>
-        </button>
-        <div class="faq-answer px-6 pb-6">
-          <p class="text-gray-700">
-            Visit our <a href="events.html" class="text-blue-600 underline hover:text-blue-800">Events</a> page to
-            explore upcoming one-time or dated volunteering events. You can filter by campus, format, and type to find
-            the best fit.
-          </p>
+      <div class="faq-item" data-categories="general">
+        <div x-data="{ open: false }" :class="{ 'active': open }">
+          <button @click="open = !open"
+            class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+            <h2 class="text-xl font-semibold text-[#00539B]">Why participate in civic engagement and volunteer?</h2>
+            <span class="faq-toggle text-[#00539B]">
+              <i class="fas fa-chevron-down transition-transform"></i>
+            </span>
+          </button>
+          <div class="faq-answer px-6 pb-6">
+            <p class="text-gray-700">
+              Civic engagement and volunteerism are powerful ways to make a positive impact on communities and
+              individuals. It allows people to contribute their time and skills to causes they are passionate about,
+              creating a sense of purpose and fulfillment. By volunteering, individuals can help address social issues,
+              support local organizations, and be a part of meaningful change. This active participation not only
+              benefits the community but also strengthens social bonds, creating a more connected and compassionate
+              society. Moreover, engaging in civic activities and volunteer work builds social connections, promotes
+              understanding across diverse groups, and creates a sense of belonging and purpose. Ultimately, these
+              contributions lead to a more informed, active, and compassionate society.
+            </p>
+          </div>
         </div>
       </div>
 
-      <!-- Q3 -->
-      <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden" x-data="{ open: false }"
-        :class="{ 'active': open }">
-        <button @click="open = !open" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
-          <h2 class="text-xl font-semibold text-[#00539B]">What's the difference between an event and a project?</h2>
-          <span class="faq-toggle text-[#00539B]">
-            <i class="fas fa-chevron-down transition-transform"></i>
-          </span>
-        </button>
-        <div class="faq-answer px-6 pb-6">
-          <p class="text-gray-700">
-            Events are one-time or scheduled activities. Projects are long-term or recurring opportunities listed on our
-            <a href="volunteer-projects.html" class="text-blue-600 underline hover:text-blue-800">Find a Volunteer
-              Project</a> page under Get Involved.
-          </p>
+      <div class="faq-item" data-categories="prehealth">
+        <div x-data="{ open: false }" :class="{ 'active': open }">
+          <button @click="open = !open"
+            class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+            <h2 class="text-xl font-semibold text-[#00539B]">Why is it important for pre-health students to participate
+              in civic engagement and volunteerism?</h2>
+            <span class="faq-toggle text-[#00539B]">
+              <i class="fas fa-chevron-down transition-transform"></i>
+            </span>
+          </button>
+          <div class="faq-answer px-6 pb-6">
+            <p class="text-gray-700">
+              Civic engagement and volunteerism are crucial for pre-health students as they develop essential skills
+              needed for healthcare careers while strengthening their applications. Through community service, whether
+              at free clinics, homeless shelters, or public health initiatives, students gain exposure to diverse
+              populations and healthcare settings while building empathy, cultural competency, and communication skills.
+              These hands-on experiences reinforces that healthcare is fundamentally a service profession and provides
+              compelling experiences that make applications stand out to admissions committees. Beyond resume building,
+              civic engagement demonstrates genuine commitment to community welfare and helps students cultivate
+              leadership abilities and an understanding of the health care industry, preparing them to become more
+              effective and compassionate healthcare professionals.
+            </p>
+          </div>
         </div>
       </div>
 
-      <!-- Q4 -->
-      <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden" x-data="{ open: false }"
-        :class="{ 'active': open }">
-        <button @click="open = !open" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
-          <h2 class="text-xl font-semibold text-[#00539B]">Where can pre-med or health students find service
-            opportunities?</h2>
-          <span class="faq-toggle text-[#00539B]">
-            <i class="fas fa-chevron-down transition-transform"></i>
-          </span>
-        </button>
-        <div class="faq-answer px-6 pb-6">
-          <p class="text-gray-700">
-            Our <a href="pre-med.html" class="text-blue-600 underline hover:text-blue-800">Pre-Med & Health Pathways</a>
-            page highlights clinical volunteering, hospital partners, and events tailored to students pursuing
-            healthcare careers.
-          </p>
+      <div class="faq-item" data-categories="prehealth">
+        <div x-data="{ open: false }" :class="{ 'active': open }">
+          <button @click="open = !open"
+            class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+            <h2 class="text-xl font-semibold text-[#00539B]">How many volunteer hours are needed for pre-health
+              students?</h2>
+            <span class="faq-toggle text-[#00539B]">
+              <i class="fas fa-chevron-down transition-transform"></i>
+            </span>
+          </button>
+          <div class="faq-answer px-6 pb-6">
+            <p class="text-gray-700">
+              While there isn't a specific required number of volunteer hours for pre-health students when applying to
+              graduate school, successful applicants typically have about 300+ volunteer hours. Pre-veterinary students
+              typically need more volunteer hours than other pre-health students, particularly in animal-related
+              settings. Most successful veterinary school applicants have 500+ volunteer hours. Admissions committees
+              value quality over quantity—meaningful, long-term commitments to specific organizations or causes are more
+              impressive than accumulating hours across multiple short-term activities.
+            </p>
+          </div>
         </div>
       </div>
 
-      <!-- Q5 -->
-      <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden" x-data="{ open: false }"
-        :class="{ 'active': open }">
-        <button @click="open = !open" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
-          <h2 class="text-xl font-semibold text-[#00539B]">Can I submit my own volunteer opportunity?</h2>
-          <span class="faq-toggle text-[#00539B]">
-            <i class="fas fa-chevron-down transition-transform"></i>
-          </span>
-        </button>
-        <div class="faq-answer px-6 pb-6">
-          <p class="text-gray-700">
-            Absolutely! Reach out to us via the <a href="contact.html"
-              class="text-blue-600 underline hover:text-blue-800">Contact</a> page and tell us about your opportunity.
-            We'll review it and add it to the site if it fits our mission.
-          </p>
+      <!-- Original Questions -->
+      <div class="faq-item" data-categories="general">
+        <div x-data="{ open: false }" :class="{ 'active': open }">
+          <button @click="open = !open"
+            class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+            <h2 class="text-xl font-semibold text-[#00539B]">What is CUNYServe?</h2>
+            <span class="faq-toggle text-[#00539B]">
+              <i class="fas fa-chevron-down transition-transform"></i>
+            </span>
+          </button>
+          <div class="faq-answer px-6 pb-6">
+            <p class="text-gray-700">
+              CUNYServe is a student-powered civic engagement platform that connects students across all 25 CUNY
+              campuses
+              with volunteer opportunities, projects, events, and leadership roles.
+            </p>
+          </div>
         </div>
       </div>
 
-      <!-- Q6 -->
-      <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden" x-data="{ open: false }"
-        :class="{ 'active': open }">
-        <button @click="open = !open" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
-          <h2 class="text-xl font-semibold text-[#00539B]">How can I become a team leader?</h2>
-          <span class="faq-toggle text-[#00539B]">
-            <i class="fas fa-chevron-down transition-transform"></i>
-          </span>
-        </button>
-        <div class="faq-answer px-6 pb-6">
-          <p class="text-gray-700">
-            Check the <a href="team-leader.html" class="text-blue-600 underline hover:text-blue-800">Become a Team
-              Leader</a> section under Get Involved for more info about what team leaders do and how to sign up.
-          </p>
+      <div class="faq-item" data-categories="volunteering">
+        <div x-data="{ open: false }" :class="{ 'active': open }">
+          <button @click="open = !open"
+            class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+            <h2 class="text-xl font-semibold text-[#00539B]">How do I find volunteering events?</h2>
+            <span class="faq-toggle text-[#00539B]">
+              <i class="fas fa-chevron-down transition-transform"></i>
+            </span>
+          </button>
+          <div class="faq-answer px-6 pb-6">
+            <p class="text-gray-700">
+              Visit our <a href="events.html" class="text-blue-600 underline hover:text-blue-800">Events</a> page to
+              explore upcoming one-time or dated volunteering events. You can filter by campus, format, and type to find
+              the best fit.
+            </p>
+          </div>
         </div>
       </div>
 
-      <!-- Q7 -->
-      <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden" x-data="{ open: false }"
-        :class="{ 'active': open }">
-        <button @click="open = !open" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
-          <h2 class="text-xl font-semibold text-[#00539B]">How can I support this initiative?</h2>
-          <span class="faq-toggle text-[#00539B]">
-            <i class="fas fa-chevron-down transition-transform"></i>
-          </span>
-        </button>
-        <div class="faq-answer px-6 pb-6">
-          <p class="text-gray-700">
-            You can help by spreading the word, becoming a team leader, or donating to trusted organizations via our <a
-              href="donate.html" class="text-blue-600 underline hover:text-blue-800">Donate Now</a> page.
-          </p>
+      <div class="faq-item" data-categories="volunteering">
+        <div x-data="{ open: false }" :class="{ 'active': open }">
+          <button @click="open = !open"
+            class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+            <h2 class="text-xl font-semibold text-[#00539B]">What's the difference between an event and a project?</h2>
+            <span class="faq-toggle text-[#00539B]">
+              <i class="fas fa-chevron-down transition-transform"></i>
+            </span>
+          </button>
+          <div class="faq-answer px-6 pb-6">
+            <p class="text-gray-700">
+              Events are one-time or scheduled activities. Projects are long-term or recurring opportunities listed on
+              our
+              <a href="volunteer-projects.html" class="text-blue-600 underline hover:text-blue-800">Find a Volunteer
+                Project</a> page under Get Involved.
+            </p>
+          </div>
         </div>
       </div>
 
-      <!-- Q8 -->
-      <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden" x-data="{ open: false }"
-        :class="{ 'active': open }">
-        <button @click="open = !open" class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
-          <h2 class="text-xl font-semibold text-[#00539B]">Where can I read student stories or submit my own?</h2>
-          <span class="faq-toggle text-[#00539B]">
-            <i class="fas fa-chevron-down transition-transform"></i>
-          </span>
-        </button>
-        <div class="faq-answer px-6 pb-6">
-          <p class="text-gray-700">
-            Head to the bottom of this page or our <a href="faq.html"
-              class="text-blue-600 underline hover:text-blue-800">FAQ</a> page to submit your civic story. Sharing your
-            experience helps inspire others to get involved.
-          </p>
+      <div class="faq-item" data-categories="prehealth">
+        <div x-data="{ open: false }" :class="{ 'active': open }">
+          <button @click="open = !open"
+            class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+            <h2 class="text-xl font-semibold text-[#00539B]">Where can pre-med or health students find service
+              opportunities?</h2>
+            <span class="faq-toggle text-[#00539B]">
+              <i class="fas fa-chevron-down transition-transform"></i>
+            </span>
+          </button>
+          <div class="faq-answer px-6 pb-6">
+            <p class="text-gray-700">
+              Our <a href="pre-med.html" class="text-blue-600 underline hover:text-blue-800">Pre-Med & Health
+                Pathways</a>
+              page highlights clinical volunteering, hospital partners, and events tailored to students pursuing
+              healthcare careers.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item" data-categories="getting-involved">
+        <div x-data="{ open: false }" :class="{ 'active': open }">
+          <button @click="open = !open"
+            class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+            <h2 class="text-xl font-semibold text-[#00539B]">Can I submit my own volunteer opportunity?</h2>
+            <span class="faq-toggle text-[#00539B]">
+              <i class="fas fa-chevron-down transition-transform"></i>
+            </span>
+          </button>
+          <div class="faq-answer px-6 pb-6">
+            <p class="text-gray-700">
+              Absolutely! Reach out to us via the <a href="contact.html"
+                class="text-blue-600 underline hover:text-blue-800">Contact</a> page and tell us about your opportunity.
+              We'll review it and add it to the site if it fits our mission.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item" data-categories="getting-involved">
+        <div x-data="{ open: false }" :class="{ 'active': open }">
+          <button @click="open = !open"
+            class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+            <h2 class="text-xl font-semibold text-[#00539B]">How can I become a team leader?</h2>
+            <span class="faq-toggle text-[#00539B]">
+              <i class="fas fa-chevron-down transition-transform"></i>
+            </span>
+          </button>
+          <div class="faq-answer px-6 pb-6">
+            <p class="text-gray-700">
+              Check the <a href="team-leader.html" class="text-blue-600 underline hover:text-blue-800">Become a Team
+                Leader</a> section under Get Involved for more info about what team leaders do and how to sign up.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item" data-categories="getting-involved">
+        <div x-data="{ open: false }" :class="{ 'active': open }">
+          <button @click="open = !open"
+            class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+            <h2 class="text-xl font-semibold text-[#00539B]">How can I support this initiative?</h2>
+            <span class="faq-toggle text-[#00539B]">
+              <i class="fas fa-chevron-down transition-transform"></i>
+            </span>
+          </button>
+          <div class="faq-answer px-6 pb-6">
+            <p class="text-gray-700">
+              You can help by spreading the word, becoming a team leader, or donating to trusted organizations via our
+              <a href="donate.html" class="text-blue-600 underline hover:text-blue-800">Donate Now</a> page.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item" data-categories="general">
+        <div x-data="{ open: false }" :class="{ 'active': open }">
+          <button @click="open = !open"
+            class="w-full text-left p-6 flex justify-between items-center focus:outline-none">
+            <h2 class="text-xl font-semibold text-[#00539B]">Where can I read student stories or submit my own?</h2>
+            <span class="faq-toggle text-[#00539B]">
+              <i class="fas fa-chevron-down transition-transform"></i>
+            </span>
+          </button>
+          <div class="faq-answer px-6 pb-6">
+            <p class="text-gray-700">
+              Head to the bottom of this page or our <a href="faq.html"
+                class="text-blue-600 underline hover:text-blue-800">FAQ</a> page to submit your civic story. Sharing
+              your
+              experience helps inspire others to get involved.
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Contact CTA -->
+  <!-- Stats Section
   <section class="bg-gray-100 py-16">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div class="bg-white p-6 rounded-xl shadow-md">
+          <div class="text-3xl font-bold text-[#00539B]">25+</div>
+          <div class="text-gray-600">CUNY Campuses</div>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md">
+          <div class="text-3xl font-bold text-[#00539B]">500+</div>
+          <div class="text-gray-600">Opportunities</div>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md">
+          <div class="text-3xl font-bold text-[#00539B]">10K+</div>
+          <div class="text-gray-600">Students Served</div>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md">
+          <div class="text-3xl font-bold text-[#00539B]">200+</div>
+          <div class="text-gray-600">Partners</div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
+  <!-- Contact CTA -->
+  <section class="bg-white py-16">
     <div class="max-w-4xl mx-auto px-4 text-center">
-      <div class="bg-white p-8 md:p-12 rounded-xl shadow-lg">
-        <h2 class="text-3xl font-bold text-[#00539B] mb-4">Still have questions?</h2>
-        <p class="text-xl text-gray-700 mb-8">We're here to help! Contact our team and we'll get back to you as soon as
-          possible.</p>
+      <div class="gradient-bg p-8 md:p-12 rounded-xl shadow-lg text-white">
+        <h2 class="text-3xl font-bold mb-4">Still have questions?</h2>
+        <p class="text-xl mb-8">We're here to help! Contact our team and we'll get back to you as soon as possible.</p>
         <a href="contact.html"
-          class="inline-block bg-[#00539B] text-white px-8 py-3 rounded-full font-bold hover:bg-[#003366] transition duration-300">
+          class="inline-block bg-white text-[#00539B] px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition duration-300">
           Contact Us <i class="fas fa-arrow-right ml-2"></i>
         </a>
       </div>
@@ -304,6 +546,11 @@
     </div>
   </footer>
 
+  <!-- Back to Top Button -->
+  <div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+
   <!-- Alpine.js for dropdowns and other UI interactivity -->
   <script src="//unpkg.com/alpinejs" defer></script>
 
@@ -325,23 +572,64 @@
     loadNavbar();
   </script>
 
-  <!-- FAQ Search Functionality -->
+  <!-- Enhanced FAQ Functionality -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const searchInput = document.getElementById('faq-search');
       const faqItems = document.querySelectorAll('.faq-item');
+      const categoryButtons = document.querySelectorAll('.category-btn');
+      const backToTopButton = document.getElementById('backToTop');
 
+      // Search functionality
       searchInput.addEventListener('input', function () {
         const searchTerm = this.value.toLowerCase();
+        filterFAQs(searchTerm, 'all');
+      });
 
+      // Category filtering
+      categoryButtons.forEach(button => {
+        button.addEventListener('click', function () {
+          const category = this.getAttribute('data-category');
+
+          // Update active button
+          categoryButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+
+          filterFAQs('', category);
+        });
+      });
+
+      // Back to top functionality
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          backToTopButton.classList.add('visible');
+        } else {
+          backToTopButton.classList.remove('visible');
+        }
+      });
+
+      backToTopButton.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // Filter FAQs based on search term and category
+      function filterFAQs(searchTerm, category) {
         faqItems.forEach(item => {
           const question = item.querySelector('h2').textContent.toLowerCase();
           const answer = item.querySelector('p').textContent.toLowerCase();
+          const itemCategories = item.getAttribute('data-categories');
 
-          if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+          const matchesSearch = searchTerm === '' ||
+            question.includes(searchTerm) ||
+            answer.includes(searchTerm);
+
+          const matchesCategory = category === 'all' ||
+            itemCategories.includes(category);
+
+          if (matchesSearch && matchesCategory) {
             item.style.display = 'block';
 
-            // Highlight matching text
+            // Highlight matching text if searching
             if (searchTerm.length > 2) {
               const regex = new RegExp(searchTerm, 'gi');
               const questionEl = item.querySelector('h2');
@@ -356,7 +644,15 @@
             item.style.display = 'none';
           }
         });
-      });
+      }
+
+      // Open FAQ if it contains search term on page load
+      const urlParams = new URLSearchParams(window.location.search);
+      const searchParam = urlParams.get('search');
+      if (searchParam) {
+        searchInput.value = searchParam;
+        filterFAQs(searchParam.toLowerCase(), 'all');
+      }
     });
   </script>
 </body>

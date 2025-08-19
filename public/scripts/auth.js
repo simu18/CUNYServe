@@ -37,88 +37,150 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  // ====== SIGNUP FORM (STEP 2) ======
-  const signupForm = document.getElementById('signup-form');
-  if (signupForm) {
-      const initializeStep2 = async () => {
-          const urlParams = new URLSearchParams(window.location.search);
-          const token = urlParams.get('token');
-          const loader = document.getElementById('loader');
-          const mainContent = document.getElementById('main-content');
-          const messageContainer = document.getElementById('message-container');
+//   
 
-          if (!token) {
-              if (loader) loader.innerHTML = '<p class="text-red-500">Error: No verification token found. Please start over.</p>';
-              return;
-          }
+// ====== SIGNUP FORM (STEP 2) ======
+const signupForm = document.getElementById('signup-form');
+if (signupForm) {
+    const initializeStep2 = async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        
+        // Get references to the new UI elements
+        const loader = document.querySelector('.text-center'); // Updated reference
+        const mainContent = document.querySelector('#signup-form').parentElement;
+        const messageContainer = document.createElement('div'); // We'll create a message container
 
-          try {
-              const res = await fetch('/api/auth/verify-signup-token', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ token })
-              });
-              const data = await res.json();
+        if (!token) {
+            if (loader) {
+                loader.innerHTML = '<p class="text-red-500 p-4 bg-red-100 rounded-lg">Error: No verification token found. Please start over.</p>';
+            }
+            return;
+        }
 
-              if (!res.ok) {
-                  if (loader) loader.innerHTML = `<p class="text-red-500">Error: ${data.msg}</p>`;
-                  return;
-              }
+        try {
+            const res = await fetch('/api/auth/verify-signup-token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token })
+            });
+            const data = await res.json();
 
-              // Prefill form
-              const emailField = document.getElementById('email');
-              const tokenField = document.getElementById('signup-token');
-              if (emailField) emailField.value = data.email;
-              if (tokenField) tokenField.value = token;
-              if (loader) loader.classList.add('hidden');
-              if (mainContent) mainContent.classList.remove('hidden');
-          } catch (err) {
-              if (loader) loader.innerHTML = '<p class="text-red-500">An error occurred. Please refresh and try again.</p>';
-          }
-      };
+            if (!res.ok) {
+                if (loader) {
+                    loader.innerHTML = `<p class="text-red-500 p-4 bg-red-100 rounded-lg">Error: ${data.msg}</p>`;
+                }
+                return;
+            }
 
-      signupForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const messageContainer = document.getElementById('message-container');
+            // Prefill form
+            const emailField = document.getElementById('email');
+            const tokenField = document.getElementById('signup-token');
+            if (emailField) emailField.value = data.email;
+            if (tokenField) tokenField.value = token;
+            
+            // Hide loader and show form
+            if (loader) loader.classList.add('hidden');
+            if (mainContent) mainContent.classList.remove('hidden');
+        } catch (err) {
+            if (loader) {
+                loader.innerHTML = '<p class="text-red-500 p-4 bg-red-100 rounded-lg">An error occurred. Please refresh and try again.</p>';
+            }
+        }
+    };
 
-          const formData = {
-              name: document.getElementById('name')?.value,
-              password: document.getElementById('password')?.value,
-              campus: document.getElementById('campus')?.value,
-              email: document.getElementById('email')?.value,
-              token: document.getElementById('signup-token')?.value
-          };
+    signupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Create message container if it doesn't exist
+        let messageContainer = document.getElementById('message-container');
+        if (!messageContainer) {
+            messageContainer = document.createElement('div');
+            messageContainer.id = 'message-container';
+            signupForm.parentNode.insertBefore(messageContainer, signupForm);
+        }
 
-          try {
-              const res = await fetch('/api/auth/signup', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify(formData)
-              });
-              const data = await res.json();
+        // Get campus value - handle "Other" option
+        let campusValue = document.getElementById('campus').value;
+        if (campusValue === 'Other') {
+            campusValue = document.getElementById('other-campus').value;
+        }
 
-              if (res.ok) {
-                  window.location.href = '/onboarding-orientation.html';
-              } else {
-                  if (messageContainer) {
-                      messageContainer.innerHTML = `<div class="bg-red-100 text-red-700 p-4 rounded">${data.msg}</div>`;
-                      messageContainer.classList.remove('hidden');
-                  } else {
-                      alert(data.msg);
-                  }
-              }
-          } catch (err) {
-              if (messageContainer) {
-                  messageContainer.innerHTML = `<div class="bg-red-100 text-red-700 p-4 rounded">An error occurred. Please try again.</div>`;
-                  messageContainer.classList.remove('hidden');
-              } else {
-                  alert('An error occurred. Please try again.');
-              }
-          }
-      });
+        const formData = {
+            name: document.getElementById('name')?.value,
+            password: document.getElementById('password')?.value,
+            campus: campusValue,
+            email: document.getElementById('email')?.value,
+            token: document.getElementById('signup-token')?.value
+        };
 
-      initializeStep2();
-  }
+        try {
+            const res = await fetch('/api/auth/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                window.location.href = '/onboarding-orientation.html';
+            } else {
+                if (messageContainer) {
+                    messageContainer.innerHTML = `<div class="bg-red-100 text-red-700 p-4 rounded-lg mb-4">${data.msg}</div>`;
+                    messageContainer.classList.remove('hidden');
+                    
+                    // Scroll to message
+                    messageContainer.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    alert(data.msg);
+                }
+            }
+        } catch (err) {
+            if (messageContainer) {
+                messageContainer.innerHTML = `<div class="bg-red-100 text-red-700 p-4 rounded-lg mb-4">An error occurred. Please try again.</div>`;
+                messageContainer.classList.remove('hidden');
+            } else {
+                alert('An error occurred. Please try again.');
+            }
+        }
+    });
+
+    // Add event listener for campus selection change
+    document.getElementById('campus').addEventListener('change', function() {
+        const otherCampusDiv = document.getElementById('otherCampusDiv');
+        if (this.value === 'Other') {
+            otherCampusDiv.classList.remove('hidden');
+            document.getElementById('other-campus').setAttribute('required', 'true');
+        } else {
+            otherCampusDiv.classList.add('hidden');
+            document.getElementById('other-campus').removeAttribute('required');
+        }
+    });
+
+    // Password toggle functionality
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.querySelector('.password-toggle i');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        }
+    }
+    
+    // Attach the toggle function to the eye icon
+    const passwordToggle = document.querySelector('.password-toggle');
+    if (passwordToggle) {
+        passwordToggle.addEventListener('click', togglePassword);
+    }
+
+    initializeStep2();
+}
 
   // ====== LOGIN FORM ======
   const loginForm = document.getElementById('login-form');

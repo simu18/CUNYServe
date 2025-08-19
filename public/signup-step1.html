@@ -3,32 +3,161 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - Step 1 | CUNYServe</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#00539B',
+                        secondary: '#FFD100',
+                        accent: '#00A3E0',
+                        dark: '#1E2A38',
+                        light: '#F5F7FA'
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .input-field {
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            box-shadow: 0 0 0 3px rgba(0, 83, 155, 0.2);
+        }
+
+        .btn-primary {
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 83, 155, 0.2);
+        }
+
+        .cuny-logo {
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+    </style>
 </head>
 
-<body class="bg-gray-100">
-    <div id="navbar-placeholder"></div>
-    <div class="flex justify-center items-center min-h-screen">
-        <div class="bg-white p-8 rounded shadow-md w-full max-w-md mx-4">
-            <h2 class="text-2xl font-bold mb-4 text-center text-[#00539B]">Create Your Account</h2>
-            <p class="text-center text-gray-600 mb-6">Let's start by verifying your CUNY email address.</p>
-            <div id="message-container" class="hidden mb-4"></div>
-            <form id="request-signup-form">
-                <div class="mb-4">
-                    <label for="email" class="block mb-1 font-medium">CUNY Email</label>
-                    <input type="email" id="email" placeholder="you@cuny.edu" class="w-full px-4 py-2 border rounded"
-                        required>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center py-8 px-4">
+    <div class="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden">
+        <!-- Progress bar -->
+        <div class="h-2 bg-gray-200">
+            <div class="h-full bg-primary" style="width: 33%"></div>
+        </div>
+
+        <div class="p-8">
+            <!-- Header with logo -->
+            <div class="text-center mb-6">
+                <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-4 cuny-logo">
+                    <i class="fas fa-graduation-cap text-white text-3xl"></i>
                 </div>
-                <button type="submit" class="w-full bg-[#00539B] text-white py-2 rounded hover:bg-blue-700">Send
-                    Verification Link</button>
+                <h2 class="text-2xl font-bold text-primary">Create Your Account</h2>
+                <p class="text-gray-600 mt-2">Let's start by verifying your email address</p>
+            </div>
+
+            <!-- Message container -->
+            <div id="message-container" class="hidden mb-4 rounded-lg p-4"></div>
+
+            <!-- Form -->
+            <form id="request-signup-form" class="space-y-5">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <div class="relative">
+                        <input type="email" id="email" placeholder="name@example.com"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg input-field" required>
+                        <div class="absolute right-3 top-3.5 text-gray-400">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                    </div>
+                    <!-- <p class="text-xs text-gray-500 mt-1">Must be a valid CUNY email address</p> -->
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg btn-primary flex items-center justify-center">
+                    <span>Send Verification Link</span>
+                    <i class="fas fa-paper-plane ml-2"></i>
+                </button>
             </form>
-            <p class="text-sm mt-4 text-center">Already have an account? <a href="/login.html"
-                    class="text-[#00539B] hover:underline">Log in</a></p>
+
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">Already have an account?
+                    <a href="/login.html" class="text-primary font-semibold hover:underline">Log in</a>
+                </p>
+            </div>
+
+            <!-- CUNY Campus Grid -->
+            <!-- <div class="mt-8 pt-6 border-t border-gray-200">
+                <p class="text-xs text-gray-500 text-center mb-3">Serving all CUNY campuses including:</p>
+                <div class="grid grid-cols-3 gap-2 text-xs text-gray-600">
+                    <span class="truncate">Baruch College</span>
+                    <span class="truncate">Hunter College</span>
+                    <span class="truncate">Brooklyn College</span>
+                    <span class="truncate">City College</span>
+                    <span class="truncate">Queens College</span>
+                    <span class="truncate">John Jay College</span>
+                </div>
+            </div> -->
         </div>
     </div>
-    <!-- Your standard script loader block -->
+
     <script src="/scripts/auth.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('request-signup-form');
+            const messageContainer = document.getElementById('message-container');
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const email = document.getElementById('email').value;
+
+                // Basic email validation
+                // if (!email.endsWith('.cuny.edu') && !email.includes('@cuny.')) {
+                //     messageContainer.innerHTML = '<div class="bg-red-100 text-red-700 p-3 rounded-lg">Please use a valid CUNY email address</div>';
+                //     messageContainer.classList.remove('hidden');
+                //     return;
+                // }
+
+                // Show loading state
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                submitBtn.disabled = true;
+
+                // Simulate API call (replace with your actual API call)
+                setTimeout(function () {
+                    // This would be replaced with your actual fetch call
+                    // For demonstration, we'll simulate success
+                    // messageContainer.innerHTML = '<div class="bg-green-100 text-green-700 p-3 rounded-lg">Verification link sent! Please check your email.</div>';
+                    // messageContainer.classList.remove('hidden');
+
+                    // Reset button
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+
+                    // In a real scenario, you would redirect or show a success message
+                }, 1500);
+            });
+        });
+    </script>
 </body>
 
 </html>
