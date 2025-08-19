@@ -22,6 +22,11 @@
       {
         "src": "/(.*)",
         "dest": "/public/$1"
+      },
+      {
+        "src": "uploads/**",
+        "use": "@vercel/static"
       }
+
     ]
   }
