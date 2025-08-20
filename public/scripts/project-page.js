@@ -680,40 +680,54 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // --- Filter function ---
-    function filterProjects() {
-        if (!keywordInput || !campusFilter || !typeFilter || !durationFilter) return;
+    // Update the filterProjects function to fix the Non-CUNY tag filtering
+function filterProjects() {
+    if (!keywordInput || !campusFilter || !typeFilter || !durationFilter) return;
+    
+    const keyword = keywordInput.value.toLowerCase();
+    const campus = campusFilter.value;
+    const type = typeFilter.value;
+    const duration = durationFilter.value;
+    const sortBy = sortFilter ? sortFilter.value : "relevance";
+    
+    let filtered = allProjectsData.filter(project => {
+        const text = `${project.title} ${project.description} ${project.org || ''} ${(project.tags || []).join(' ')}`.toLowerCase();
+        const matchesKeyword = !keyword || text.includes(keyword);
+        const projectCampus = project.campus || "Non-CUNY";
+        const matchesCampus = !campus || projectCampus === campus;
+        const projectType = project.format || "In-person";
+        const matchesType = !type || projectType === type;
+        const projectDuration = project.duration || "short-term";
+        const matchesDuration = !duration || projectDuration === duration;
         
-        const keyword = keywordInput.value.toLowerCase();
-        const campus = campusFilter.value;
-        const type = typeFilter.value;
-        const duration = durationFilter.value;
-        const sortBy = sortFilter ? sortFilter.value : "relevance";
+        // Fix for Non-CUNY tag filtering
+        const matchesTags = activeTagFiltersList.length === 0 || 
+            activeTagFiltersList.some(tag => {
+                // Special handling for Non-CUNY tag
+                if (tag === "Non-CUNY") {
+                    return projectCampus === "Non-CUNY";
+                }
+                // Special handling for CUNY tag
+                if (tag === "cuny") {
+                    return projectCampus !== "Non-CUNY";
+                }
+                // Regular tag matching
+                return (project.tags || []).includes(tag);
+            });
         
-        let filtered = allProjectsData.filter(project => {
-            const text = `${project.title} ${project.description} ${project.org || ''} ${(project.tags || []).join(' ')}`.toLowerCase();
-            const matchesKeyword = !keyword || text.includes(keyword);
-            const projectCampus = project.campus || "Non-CUNY";
-            const matchesCampus = !campus || projectCampus === campus;
-            const projectType = project.format || "In-person";
-            const matchesType = !type || projectType === type;
-            const projectDuration = project.duration || "short-term";
-            const matchesDuration = !duration || projectDuration === duration;
-            const matchesTags = activeTagFiltersList.length === 0 || 
-                activeTagFiltersList.some(tag => (project.tags || []).includes(tag));
-            
-            return matchesKeyword && matchesCampus && matchesType && matchesDuration && matchesTags;
-        });
-        
-        // Sort results
-        if (sortBy === 'title') {
-            filtered.sort((a, b) => a.title.localeCompare(b.title));
-        } else if (sortBy === 'date' && filtered[0] && filtered[0].start) {
-            filtered.sort((a, b) => new Date(a.start || 0) - new Date(b.start || 0));
-        }
-        
-        visibleProjectsCount = 6;
-        renderProjects(filtered);
+        return matchesKeyword && matchesCampus && matchesType && matchesDuration && matchesTags;
+    });
+    
+    // Sort results
+    if (sortBy === 'title') {
+        filtered.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sortBy === 'date' && filtered[0] && filtered[0].start) {
+        filtered.sort((a, b) => new Date(a.start || 0) - new Date(b.start || 0));
     }
+    
+    visibleProjectsCount = 6;
+    renderProjects(filtered);
+}
 
     // --- Open modal for selected project ---
     window.openModalFromDB = (projectId) => {
