@@ -6,293 +6,1248 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Find a Volunteer Project | CUNYServe</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#00539B',
+            secondary: '#FF6B35',
+            accent: '#00A896',
+            light: '#F8F9FA',
+            dark: '#212529'
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #00539B 0%, #00A896 100%);
+    }
+
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .tag-chip {
+      transition: all 0.2s ease;
+    }
+
+    .tag-chip:hover {
+      transform: scale(1.05);
+    }
+
+    .animate-pulse-slow {
+      animation: pulse 3s infinite;
+    }
+
+    .filter-active {
+      background-color: #00539B;
+      color: white;
+    }
+  </style>
 </head>
 
-<body class="font-sans text-gray-800">
+<body class="font-sans text-gray-800 bg-gray-50">
 
   <!-- ✅ Navbar Placeholder -->
   <div id="navbar-placeholder"></div>
 
   <!-- Hero Section -->
-  <section class="bg-[#00539B] text-white py-16 text-center">
-    <h1 class="text-4xl font-bold mb-2">Find a Volunteer Project</h1>
-    <p class="text-lg">Browse and filter opportunities available across all CUNY campuses and NYC communities.</p>
+  <section class="gradient-bg text-white py-16 md:py-20 text-center">
+    <div class="max-w-4xl mx-auto px-4">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Find Your Perfect Volunteer Opportunity</h1>
+      <p class="text-lg md:text-xl mb-6">Discover meaningful projects across CUNY campuses and NYC communities that
+        match your interests and schedule.</p>
+      <div class="bg-white/20 backdrop-blur-sm rounded-lg p-4 inline-flex items-center">
+        <i class="fas fa-heart mr-2 animate-pulse-slow"></i>
+        <span>Join thousands of students making a difference!</span>
+      </div>
+    </div>
   </section>
 
   <!-- Filters -->
-  <section class="bg-white py-10">
+  <section class="bg-white py-8 shadow-sm">
     <div class="max-w-6xl mx-auto px-4">
-      <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
-        <input id="keywordInput" type="text" placeholder="Search by keyword..."
-          class="w-full md:w-1/3 px-4 py-2 border border-gray-300 rounded" />
-        <select id="campusFilter" class="w-full md:w-1/4 px-4 py-2 border border-gray-300 rounded">
+      <div class="flex flex-col md:flex-row gap-4 justify-between items-center mb-6">
+        <div class="relative w-full md:w-2/5">
+          <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+          <input id="keywordInput" type="text" placeholder="Search opportunities..."
+            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+        </div>
+        <select id="campusFilter"
+          class="w-full md:w-1/5 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
           <option value="">All Campuses</option>
           <option value="City College">City College</option>
           <option value="Hunter College">Hunter College</option>
           <option value="Baruch College">Baruch College</option>
           <option value="Brooklyn College">Brooklyn College</option>
           <option value="Queens College">Queens College</option>
+          <option value="Non-CUNY">Non-CUNY</option>
         </select>
-        <select id="typeFilter" class="w-full md:w-1/4 px-4 py-2 border border-gray-300 rounded">
+        <select id="typeFilter"
+          class="w-full md:w-1/5 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
           <option value="">All Types</option>
           <option value="In-person">In-person</option>
           <option value="Remote">Remote</option>
           <option value="Hybrid">Hybrid</option>
         </select>
+        <select id="durationFilter"
+          class="w-full md:w-1/5 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+          <option value="">All Durations</option>
+          <option value="long-term">Long-term</option>
+          <option value="short-term">Short-term</option>
+        </select>
       </div>
-      <p id="projectCount" class="mt-4 text-sm text-gray-600"></p>
+
+      <div class="flex flex-wrap gap-2 mb-4">
+        <button class="tag-filter-btn px-3 py-1 rounded-full text-sm bg-gray-100 hover:bg-gray-200"
+          data-tag="long-term">
+          Long-term
+        </button>
+        <button class="tag-filter-btn px-3 py-1 rounded-full text-sm bg-gray-100 hover:bg-gray-200"
+          data-tag="short-term">
+          Short-term
+        </button>
+        <button class="tag-filter-btn px-3 py-1 rounded-full text-sm bg-gray-100 hover:bg-gray-200" data-tag="cuny">
+          CUNY
+        </button>
+        <button class="tag-filter-btn px-3 py-1 rounded-full text-sm bg-gray-100 hover:bg-gray-200" data-tag="Non-CUNY">
+          Non-CUNY
+        </button>
+        <button class="tag-filter-btn px-3 py-1 rounded-full text-sm bg-gray-100 hover:bg-gray-200"
+          data-tag="healthcare">
+          Healthcare
+        </button>
+        <button class="tag-filter-btn px-3 py-1 rounded-full text-sm bg-gray-100 hover:bg-gray-200" data-tag="animals">
+          Animals
+        </button>
+        <button class="tag-filter-btn px-3 py-1 rounded-full text-sm bg-gray-100 hover:bg-gray-200" data-tag="youth">
+          Youth
+        </button>
+        <button class="tag-filter-btn px-3 py-1 rounded-full text-sm bg-gray-100 hover:bg-gray-200" data-tag="seniors">
+          Seniors
+        </button>
+        <button class="tag-filter-btn px-3 py-1 rounded-full text-sm bg-gray-100 hover:bg-gray-200" data-tag="remote">
+          Remote
+        </button>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <p id="projectCount" class="text-sm text-gray-600"></p>
+        <div class="flex items-center">
+          <span class="text-sm text-gray-600 mr-2">Sort by:</span>
+          <select id="sortFilter"
+            class="text-sm px-2 py-1 border border-gray-300 rounded focus:ring-1 focus:ring-primary">
+            <option value="relevance">Relevance</option>
+            <option value="date">Date</option>
+            <option value="title">Title</option>
+          </select>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Projects Grid -->
-  <section class="bg-gray-50 py-12">
-    <div id="projectGrid" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
-      <!-- Project 1 -->
-      <div class="project-card bg-white p-6 rounded-lg shadow hover:shadow-lg border-t-4 border-[#00539B]"
-        data-campus="Baruch College" data-type="Hybrid">
-        <div class="flex justify-between items-center mb-2">
-          <h3 class="text-xl font-semibold">Tech Mentorship for Teens</h3>
-          <button onclick="toggleBookmark(this, 'Tech Mentorship for Teens')"
-            class="text-gray-400 hover:text-red-500 text-lg">&#10084;</button>
-        </div>
-        <p class="text-gray-700 mb-3">Mentor high school students in coding and digital skills through workshops and 1:1
-          sessions.</p>
-        <div class="flex flex-wrap gap-2 text-sm mb-4">
-          <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">🧑‍💻 Hybrid</span>
-          <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full">🎓 Baruch College</span>
-        </div>
-        <button onclick="openModal(
-            'Tech Mentorship for Teens',
-            'CodeLink NYC',
-            'Volunteer mentors will run coding workshops and support underserved NYC high school students exploring tech careers. Training provided.',
-            'https://codelinknyc.org/orientation',
-            'Sat, Sept 14, 2025 | 12PM – 2PM',
-            '2025-09-14',
-            'Baruch College Library + Zoom',
-            'https://www.google.com/maps?q=Baruch+College+Library,+NYC&output=embed',
-            'Meet at Baruch Library. Virtual links provided 24hrs before each session.',
-            'Must attend 1 in-person session per month. Commitment: 6 weeks. Training + support provided.',
-            'CodeLink NYC supports underrepresented youth in building tech skills. Learn more at www.codelinknyc.org'
-          )" class="text-[#00539B] hover:underline text-sm font-medium mt-3">View Details</button>
-      </div>
+  <section class="py-12">
+    <div id="projectGrid" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+      <!-- Project cards will be dynamically generated -->
+    </div>
 
-      <!-- Project 2 -->
-      <div class="project-card bg-white p-6 rounded-lg shadow hover:shadow-lg border-t-4 border-[#00539B]"
-        data-campus="Queens College" data-type="In-person">
-        <div class="flex justify-between items-center mb-2">
-          <h3 class="text-xl font-semibold">Community Garden Restoration</h3>
-          <button onclick="toggleBookmark(this, 'Community Garden Restoration')"
-            class="text-gray-400 hover:text-red-500 text-lg">&#10084;</button>
-        </div>
-        <p class="text-gray-700 mb-3">Help clean, plant, and restore a local garden space used by families and seniors
-          in Queens.</p>
-        <div class="flex flex-wrap gap-2 text-sm mb-4">
-          <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">📍 In-person</span>
-          <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full">🎓 Queens College</span>
-        </div>
-        <button onclick="openModal(
-            'Community Garden Restoration',
-            'Greenspace Queens',
-            'Join students and neighbors to revitalize a shared garden. Activities include weeding, planting, and repainting benches and signs.',
-            'https://greenspacequeens.org/orientation',
-            'Sun, Sept 22, 2025 | 10AM – 1PM',
-            '2025-09-22',
-            'Green Path Garden, 85-19 Main St, Queens, NY 11367',
-            'https://www.google.com/maps?q=85-19+Main+St,+Queens,+NY&output=embed',
-            'Take the Q44 bus to Main St & 85th Ave. Meet at the garden gate at 9:50AM.',
-            'Wear clothes you can get dirty. Gloves and tools provided. Rain date: Sept 29.',
-            'Greenspace Queens promotes urban gardening and food justice. Visit greenspacequeens.org for more.'
-          )" class="text-[#00539B] hover:underline text-sm font-medium mt-3">View Details</button>
+    <!-- Loading state -->
+    <div id="loadingIndicator" class="text-center py-12">
+      <div class="inline-flex items-center">
+        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mr-3"></div>
+        <span>Loading opportunities...</span>
       </div>
+    </div>
 
-      <!-- Project 3 -->
-      <div class="project-card bg-white p-6 rounded-lg shadow hover:shadow-lg border-t-4 border-[#00539B]"
-        data-campus="Hunter College" data-type="Remote">
-        <div class="flex justify-between items-center mb-2">
-          <h3 class="text-xl font-semibold">Digital Storytelling for Immigrants</h3>
-          <button onclick="toggleBookmark(this, 'Digital Storytelling for Immigrants')"
-            class="text-gray-400 hover:text-red-500 text-lg">&#10084;</button>
-        </div>
-        <p class="text-gray-700 mb-3">Help immigrants share their journeys by editing video/audio stories and assisting
-          with basic digital tools.</p>
-        <div class="flex flex-wrap gap-2 text-sm mb-4">
-          <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full">🖥️ Remote</span>
-          <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full">🎓 Hunter College</span>
-        </div>
-        <button onclick="openModal(
-            'Digital Storytelling for Immigrants',
-            'Voices Without Borders',
-            'Work remotely with immigrants to capture and edit their personal migration stories using simple tools like Canva, Audacity, or WeVideo.',
-            'https://voiceswithoutborders.org/orientation',
-            'Flexible | 3–5 hours/week',
-            '',
-            'Remote via Zoom + Shared Docs',
-            'https://www.google.com/maps?q=Hunter+College,+New+York&output=embed',
-            'Orientation via Zoom. Support team available for tech help.',
-            'Must commit to 1 story project (2–3 weeks). Basic editing skills a plus, but not required.',
-            'Voices Without Borders helps immigrant voices reach the world. Learn more at voiceswithoutborders.org'
-          )" class="text-[#00539B] hover:underline text-sm font-medium mt-3">View Details</button>
-      </div>
+    <!-- Empty state -->
+    <div id="emptyState" class="hidden text-center py-16 max-w-2xl mx-auto">
+      <i class="fas fa-search fa-3x text-gray-300 mb-4"></i>
+      <h3 class="text-xl font-semibold text-gray-600 mb-2">No opportunities found</h3>
+      <p class="text-gray-500">Try adjusting your filters or search terms to find more volunteer opportunities.</p>
+    </div>
 
-      <!-- Example Project -->
-      <div class="project-card bg-white p-6 rounded-lg shadow hover:shadow-lg border-t-4 border-[#00539B]"
-        data-campus="City College" data-type="In-person">
-        <div class="flex justify-between items-center mb-2">
-          <h3 class="text-xl font-semibold">Rescue Good Food</h3>
-          <button onclick="toggleBookmark(this, 'Rescue Good Food')"
-            class="text-gray-400 hover:text-red-500 text-lg">&#10084;</button>
-        </div>
-        <p class="text-gray-700 mb-3">Rescue food from Union Square bakery and deliver it to a local shelter.</p>
-        <div class="flex flex-wrap gap-2 text-sm mb-4">
-          <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">📍 In-person</span>
-          <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full">🎓 City College</span>
-        </div>
-        <button onclick="openModal(
-            'Rescue Good Food from Becoming Waste',
-            'Rescuing Leftover Cuisine',
-            'Rescue food before it’s tossed in the trash. Transport treasures from a Union Square bakery to a local organization.',
-            'https://www.newyorkcares.org/orientation',
-            'Sat Aug 9, 2025 | 8:15PM - 9PM',
-            '2025-08-09',
-            'Breads Bakery, 18 E 16th St, New York, NY 10003',
-            'https://www.google.com/maps?q=18+E+16th+St,+New+York,+NY+10003&output=embed',
-            'From Union Square station, head west on 16th Street. You will see the location on your left in the middle of the block.',
-            'Must walk ~1 mile, stand for 1 hour, and carry 10–20 lbs. Drop-off is at 56 2nd Ave, 2nd floor, NY 10003.',
-            'Rescuing Leftover Cuisine helps reduce food waste by delivering excess food to shelters. www.rescuingleftovercuisine.org'
-          )" class="text-[#00539B] hover:underline text-sm font-medium mt-3">View Details</button>
-      </div>
-
+    <!-- Load more button -->
+    <div id="loadMoreContainer" class="text-center mt-8 hidden">
+      <button id="loadMoreBtn"
+        class="bg-white border border-primary text-primary hover:bg-primary hover:text-white px-6 py-2 rounded-lg transition-colors">
+        Load More Opportunities
+      </button>
     </div>
   </section>
 
   <!-- Enhanced Project Modal -->
-  <div id="projectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-white rounded-lg w-[95%] max-w-5xl p-8 shadow-lg relative overflow-y-auto max-h-[90vh]">
+  <div id="projectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-xl w-full max-w-5xl p-6 shadow-2xl relative overflow-y-auto max-h-[95vh]">
       <button onclick="closeModal()"
-        class="absolute top-3 right-4 text-2xl font-bold text-gray-500 hover:text-black">&times;</button>
+        class="absolute top-4 right-4 text-2xl font-bold text-gray-500 hover:text-black bg-gray-100 hover:bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center">
+        &times;
+      </button>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <!-- Left -->
         <div>
-          <h2 id="modalTitle" class="text-3xl font-bold mb-1"></h2>
-          <p id="modalPartner" class="text-gray-600 mb-4 text-sm"></p>
-          <p id="modalDescription" class="text-gray-700 mb-4"></p>
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <h2 id="modalTitle" class="text-2xl font-bold mb-1"></h2>
+              <p id="modalPartner" class="text-accent font-medium mb-4"></p>
+            </div>
+            <button id="modalBookmarkBtn" onclick="toggleBookmark(this, currentProject.title)"
+              class="text-gray-400 hover:text-red-500 text-xl">
+              <i class="far fa-heart"></i>
+            </button>
+          </div>
+
+          <div class="flex flex-wrap gap-2 mb-4" id="modalTags"></div>
+
+          <p id="modalDescription" class="text-gray-700 mb-6"></p>
+
           <!-- Button Row -->
           <div class="flex flex-wrap gap-3 mb-6">
             <a id="modalOrientation" href="#" target="_blank"
-              class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm">Orientation</a>
+              class="bg-primary hover:bg-blue-800 text-white px-5 py-2.5 rounded-lg text-sm font-medium flex items-center">
+              <i class="fas fa-external-link-alt mr-2"></i> Orientation
+            </a>
             <button onclick="toggleBookmark(this, currentProject.title)"
-              class="border border-red-600 text-red-600 px-4 py-2 rounded text-sm hover:bg-red-50">♥ Save for
-              later</button>
+              class="border border-primary text-primary hover:bg-blue-50 px-5 py-2.5 rounded-lg text-sm font-medium flex items-center">
+              <i class="far fa-bookmark mr-2"></i> Save for later
+            </button>
             <button id="add-to-calendar-btn"
-              class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm">+ Add to my Calendar</button>
+              class="bg-secondary hover:bg-orange-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium flex items-center">
+              <i class="far fa-calendar-plus mr-2"></i> Add to Calendar
+            </button>
           </div>
-          <div class="mb-4">
-            <h4 class="font-semibold text-gray-800 mb-1">Activity Site Info</h4>
-            <p id="modalDirections" class="text-sm text-gray-600 mb-2"></p>
-            <p id="modalLogistics" class="text-sm text-gray-600"></p>
-          </div>
-          <div class="mt-4">
-            <h4 class="font-semibold text-gray-800 mb-1">Partner</h4>
-            <p id="modalPartnerInfo" class="text-sm text-gray-600"></p>
+
+          <div class="space-y-6">
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-2 flex items-center">
+                <i class="fas fa-info-circle mr-2 text-primary"></i> Activity Details
+              </h4>
+              <p id="modalLogistics" class="text-sm text-gray-600"></p>
+            </div>
+
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-2 flex items-center">
+                <i class="fas fa-map-marker-alt mr-2 text-primary"></i> Site Information
+              </h4>
+              <p id="modalDirections" class="text-sm text-gray-600"></p>
+            </div>
+
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-2 flex items-center">
+                <i class="fas fa-handshake mr-2 text-primary"></i> About the Partner
+              </h4>
+              <p id="modalPartnerInfo" class="text-sm text-gray-600"></p>
+            </div>
           </div>
         </div>
+
         <!-- Right -->
-        <div class="bg-gray-100 rounded-lg p-4">
-          <h4 class="font-semibold text-lg text-gray-800 mb-2">📍 Time & Location</h4>
-          <p id="modalDateTime" class="text-sm text-gray-700 mb-1"></p>
-          <p id="modalAddress" class="text-sm text-gray-700 mb-2"></p>
-          <iframe id="modalMap" src="" class="w-full h-56 rounded" style="border:0;" allowfullscreen
-            loading="lazy"></iframe>
+        <div class="bg-gray-50 rounded-xl p-5">
+          <h4 class="font-semibold text-lg text-gray-800 mb-3 flex items-center">
+            <i class="fas fa-clock mr-2 text-primary"></i> Time & Location
+          </h4>
+          <div class="mb-4">
+            <p id="modalDateTime" class="text-sm text-gray-700 mb-1"></p>
+            <p id="modalAddress" class="text-sm text-gray-700"></p>
+          </div>
+
+          <div class="rounded-lg overflow-hidden mb-4">
+            <iframe id="modalMap" src="" class="w-full h-56" style="border:0;" allowfullscreen loading="lazy"></iframe>
+          </div>
+
+          <div class="bg-white p-4 rounded-lg">
+            <h5 class="font-medium text-gray-800 mb-2">Share this opportunity</h5>
+            <div class="flex space-x-3">
+              <a href="#" class="text-gray-500 hover:text-blue-600">
+                <i class="fab fa-facebook fa-lg"></i>
+              </a>
+              <a href="#" class="text-gray-500 hover:text-blue-400">
+                <i class="fab fa-twitter fa-lg"></i>
+              </a>
+              <a href="#" class="text-gray-500 hover:text-blue-800">
+                <i class="fab fa-linkedin fa-lg"></i>
+              </a>
+              <a href="#" class="text-gray-500 hover:text-green-600">
+                <i class="fab fa-whatsapp fa-lg"></i>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Footer -->
-  <footer class="bg-gray-900 text-gray-300 py-8 mt-10">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm px-4">
-      <p>&copy; 2025 CUNYServe. All rights reserved.</p>
-      <div class="space-x-4 mt-4 md:mt-0">
-        <a href="#" class="hover:text-white">Privacy</a>
-        <a href="#" class="hover:text-white">Terms</a>
-        <a href="#" class="hover:text-white">Contact</a>
+  <footer class="bg-gray-900 text-gray-300 py-10 mt-16">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-white font-semibold mb-4">CUNYServe</h3>
+          <p class="text-sm">Connecting CUNY students with meaningful volunteer opportunities across New York City.</p>
+        </div>
+        <div>
+          <h3 class="text-white font-semibold mb-4">Quick Links</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-white">Browse Opportunities</a></li>
+            <li><a href="#" class="hover:text-white">For Organizations</a></li>
+            <li><a href="#" class="hover:text-white">Success Stories</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white font-semibold mb-4">Resources</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-white">Volunteer Guide</a></li>
+            <li><a href="#" class="hover:text-white">FAQ</a></li>
+            <li><a href="#" class="hover:text-white">Contact Us</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white font-semibold mb-4">Stay Connected</h3>
+          <div class="flex space-x-4 mb-4">
+            <a href="#" class="text-gray-400 hover:text-white">
+              <i class="fab fa-facebook fa-lg"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white">
+              <i class="fab fa-twitter fa-lg"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white">
+              <i class="fab fa-instagram fa-lg"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white">
+              <i class="fab fa-linkedin fa-lg"></i>
+            </a>
+          </div>
+          <p class="text-xs">Subscribe to our newsletter for new opportunities</p>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-8 pt-6 text-sm text-center">
+        <p>&copy; 2025 CUNYServe. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
   <!-- ✅ Page Script -->
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Filters
+    // Project data from your JSON
+    const projectData = [
+      // Your existing projects
+      {
+        id: "tech-mentorship-teens",
+        title: "Tech Mentorship for Teens",
+        org: "CodeLink NYC",
+        type: "Mentoring",
+        format: "Hybrid",
+        campus: "Baruch College",
+        location: "Baruch College Library + Zoom",
+        tags: ["short-term", "cuny", "youth", "hybrid"],
+        description: "Mentor high school students in coding and digital skills through workshops and 1:1 sessions.",
+        dateTime: "Sat, Sept 14, 2025 | 12PM – 2PM",
+        dateISO: "2025-09-14",
+        address: "Baruch College Library",
+        mapURL: "https://www.google.com/maps?q=Baruch+College+Library,+NYC&output=embed",
+        directions: "Meet at Baruch Library. Virtual links provided 24hrs before each session.",
+        logistics: "Must attend 1 in-person session per month. Commitment: 6 weeks. Training + support provided.",
+        partnerInfo: "CodeLink NYC supports underrepresented youth in building tech skills. Learn more at www.codelinknyc.org",
+        orientationLink: "https://codelinknyc.org/orientation",
+        duration: "short-term"
+      },
+      {
+        id: "community-garden-restoration",
+        title: "Community Garden Restoration",
+        org: "Greenspace Queens",
+        type: "Environmental",
+        format: "In-person",
+        campus: "Queens College",
+        location: "Green Path Garden, 85-19 Main St, Queens, NY 11367",
+        tags: ["short-term", "cuny", "environment"],
+        description: "Help clean, plant, and restore a local garden space used by families and seniors in Queens.",
+        dateTime: "Sun, Sept 22, 2025 | 10AM – 1PM",
+        dateISO: "2025-09-22",
+        address: "85-19 Main St, Queens, NY 11367",
+        mapURL: "https://www.google.com/maps?q=85-19+Main+St,+Queens,+NY&output=embed",
+        directions: "Take the Q44 bus to Main St & 85th Ave. Meet at the garden gate at 9:50AM.",
+        logistics: "Wear clothes you can get dirty. Gloves and tools provided. Rain date: Sept 29.",
+        partnerInfo: "Greenspace Queens promotes urban gardening and food justice. Visit greenspacequeens.org for more.",
+        orientationLink: "https://greenspacequeens.org/orientation",
+        duration: "short-term"
+      },
+      {
+        id: "digital-storytelling-immigrants",
+        title: "Digital Storytelling for Immigrants",
+        org: "Voices Without Borders",
+        type: "Education",
+        format: "Remote",
+        campus: "Hunter College",
+        location: "Remote via Zoom + Shared Docs",
+        tags: ["long-term", "cuny", "remote", "education"],
+        description: "Help immigrants share their journeys by editing video/audio stories and assisting with basic digital tools.",
+        dateTime: "Flexible | 3–5 hours/week",
+        dateISO: "",
+        address: "Remote",
+        mapURL: "https://www.google.com/maps?q=Hunter+College,+New+York&output=embed",
+        directions: "Orientation via Zoom. Support team available for tech help.",
+        logistics: "Must commit to 1 story project (2–3 weeks). Basic editing skills a plus, but not required.",
+        partnerInfo: "Voices Without Borders helps immigrant voices reach the world. Learn more at voiceswithoutborders.org",
+        orientationLink: "https://voiceswithoutborders.org/orientation",
+        duration: "long-term"
+      },
+      {
+        id: "rescue-good-food",
+        title: "Rescue Good Food",
+        org: "Rescuing Leftover Cuisine",
+        type: "Food Justice",
+        format: "In-person",
+        campus: "City College",
+        location: "Breads Bakery, 18 E 16th St, New York, NY 10003",
+        tags: ["short-term", "cuny", "food"],
+        description: "Rescue food from Union Square bakery and deliver it to a local shelter.",
+        dateTime: "Sat Aug 9, 2025 | 8:15PM - 9PM",
+        dateISO: "2025-08-09",
+        address: "18 E 16th St, New York, NY 10003",
+        mapURL: "https://www.google.com/maps?q=18+E+16th+St,+New+York,+NY+10003&output=embed",
+        directions: "From Union Square station, head west on 16th Street. You will see the location on your left in the middle of the block.",
+        logistics: "Must walk ~1 mile, stand for 1 hour, and carry 10–20 lbs. Drop-off is at 56 2nd Ave, 2nd floor, NY 10003.",
+        partnerInfo: "Rescuing Leftover Cuisine helps reduce food waste by delivering excess food to shelters. www.rescuingleftovercuisine.org",
+        orientationLink: "https://www.newyorkcares.org/orientation",
+        duration: "short-term"
+      },
+      // Your new projects from JSON
+      {
+        "id": "aarp-community-volunteers-4c8e2a1b",
+        "title": "AARP: Community Volunteers",
+        "org": "AARP",
+        "type": "Community Support",
+        "format": "Hybrid",
+        "campus": "Non-CUNY",
+        "location": "",
+        "tags": ["long-term", "seniors", "hybrid"],
+        "description": "Join AARP's community of volunteers — in person or from home — to improve the lives of older Americans and their families.",
+        "orientationLink": "https://www.aarp.org/volunteer/?CMP=KNC-DSO-Adobe-Bing-CTG-Brand-AARPVolunteer-Volunteer-Exact-General&gclid=92f932c3194f199c33955a5f1873b10f&gclsrc=3p.ds&msclkid=92f932c3194f199c33955a5f1873b10f&utm_source=bing&utm_medium=cpc&utm_campaign=CTG-Brand-AARPVolunteer-Volunteer-Exact&utm_term=volunteers%20aarp&utm_content=General",
+        "duration": "long-term"
+      },
+      {
+        "id": "red-cross-blood-donor-ambassador-3e2f9b1c",
+        "title": "American Red Cross – Blood Donor Ambassador",
+        "org": "American Red Cross",
+        "type": "Health Support",
+        "format": "In-Person",
+        "campus": "Non-CUNY",
+        "location": "",
+        "tags": ["long-term", "healthcare"],
+        "description": "Greet, register, and support donors through the blood donation process.",
+        "applyUrl": "https://www.redcross.org/volunteer/become-a-volunteer.html"
+      },
+      {
+        "id": "red-cross-transportation-specialist-8a6d5c2e",
+        "title": "American Red Cross – Transportation Specialist Volunteer",
+        "org": "American Red Cross",
+        "type": "Logistics",
+        "format": "In-Person",
+        "campus": "Non-CUNY",
+        "location": "",
+        "tags": ["long-term", "healthcare", "drivers"],
+        "description": "Deliver blood and blood products from donor centers to hospitals.",
+        "applyUrl": "https://www.redcross.org/volunteer/become-a-volunteer.html"
+      },
+      {
+        "id": "red-cross-disaster-action-team-4b2a1d7e",
+        "title": "American Red Cross – Disaster Action Team",
+        "org": "American Red Cross",
+        "type": "Disaster Response",
+        "format": "In-Person",
+        "campus": "Non-CUNY",
+        "location": "",
+        "tags": ["long-term", "disaster-response"],
+        "description": "Respond locally to home fires and other disasters, providing resources and support.",
+        "applyUrl": "https://www.redcross.org/volunteer/become-a-volunteer.html"
+      },
+      {
+        "id": "red-cross-deployment-volunteer-0c1d2e3f",
+        "title": "American Red Cross – Deployment Volunteer (National Disaster Response)",
+        "org": "American Red Cross",
+        "type": "Disaster Response",
+        "format": "In-Person",
+        "campus": "Non-CUNY",
+        "location": "",
+        "tags": ["long-term", "travel"],
+        "description": "Travel to provide shelter, supplies, and support in large-scale disasters.",
+        "applyUrl": "https://www.redcross.org/volunteer/become-a-volunteer.html"
+      },
+      {
+        "id": "americorps-service-ops-7f8a9b0c",
+        "title": "AmeriCorps: Volunteer & Service Opportunities",
+        "org": "AmeriCorps",
+        "type": "Service Program",
+        "format": "Hybrid",
+        "campus": "Non-CUNY",
+        "location": "",
+        "tags": ["long-term"],
+        "description": "Find service opportunities across the U.S. in education, health, disaster services, and more.",
+        "applyUrl": "https://www.americorps.gov/join/find-volunteer-opportunity#/"
+      },
+      {
+        "id": "bbbs-mentor-2a3b4c5d",
+        "title": "Big Brothers Big Sisters",
+        "org": "Big Brothers Big Sisters of America",
+        "type": "Mentoring",
+        "format": "In-Person",
+        "campus": "Non-CUNY",
+        "location": "",
+        "tags": ["long-term", "youth"],
+        "description": "Mentor youth and support life-changing relationships.",
+        "applyUrl": "https://www.bbbs.org/"
+      },
+      {
+        "id": "catchafire-skills-based-9d8e7f6a",
+        "title": "Catchafire: Skills-Based Volunteering",
+        "org": "Catchafire",
+        "type": "Skills-Based",
+        "format": "Remote",
+        "campus": "Non-CUNY",
+        "location": "",
+        "tags": ["long-term", "remote", "skills"],
+        "description": "Volunteer your professional skills to nonprofits (remote projects).",
+        "applyUrl": "https://www.catchafire.org/volunteer-explore/"
+      },
+      {
+        "id": "childrens-aid-group-volunteering-3c2b1a0d",
+        "title": "Children’s Aid – Group Volunteering",
+        "org": "Children’s Aid",
+        "type": "Community Support",
+        "format": "In-Person",
+        "campus": "Non-CUNY",
+        "location": "",
+        "tags": ["long-term", "groups"],
+        "description": "Group volunteerism to support children, youth, and families in NYC.",
+        "applyUrl": "https://www.childrensaidnyc.org/programs/volunteering"
+      },
+      {
+        "id": "dosomething-campaigns-7e6d5c4b",
+        "title": "DoSomething",
+        "org": "DoSomething.org",
+        "type": "Civic Action",
+        "format": "Hybrid",
+        "campus": "Non-CUNY",
+        "location": "",
+        "tags": ["long-term", "youth"],
+        "description": "Join campaigns on climate, mental health, and more; act with other changemakers.",
+        "applyUrl": "https://dosomething.org/"
+      },
+      {
+        "id": "kings-bay-y-1a2b3c4d",
+        "title": "Kings Bay Y – Volunteer",
+        "org": "Kings Bay Y",
+        "type": "Community Support",
+        "format": "In-Person",
+        "campus": "Non-CUNY",
+        "location": "Brooklyn",
+        "tags": ["long-term", "brooklyn"],
+        "description": "Support community programs and events in South Brooklyn.",
+        "applyUrl": "https://www.kingsbayy.org/volunteer/"
+      },
+      {
+        "id": "nypl-volunteer-0a9b8c7d",
+        "title": "NYPL – Volunteer at the Library",
+        "org": "New York Public Library",
+        "type": "Education",
+        "format": "In-Person",
+        "campus": "Non-CUNY",
+        "location": "NYC",
+        "tags": ["long-term", "libraries"],
+        "description": "Volunteer across branches in NYC supporting literacy and programs.",
+        "applyUrl": "https://www.nypl.org/about/volunteer-at-nypl"
+      },
+      {
+        "id": "nyc-second-chance-rescue-8f7e6d5c",
+        "title": "NYC Second Chance Rescue",
+        "org": "NYC Second Chance Rescue",
+        "type": "Animal Welfare",
+        "format": "In-Person",
+        "campus": "Non-CUNY",
+        "location": "NYC",
+        "tags": ["long-term", "animals"],
+        "description": "Support animal rescue operations for dogs and cats (21+).",
+        "applyUrl": "https://nycsecondchancerescue.org/volunteer/"
+      },
+      {
+        "id": "project-gutenberg-volunteer-4d3c2b1a",
+        "title": "Project Gutenberg – Volunteer",
+        "org": "Project Gutenberg",
+        "type": "Digital Volunteering",
+        "format": "Remote",
+        "campus": "Non-CUNY",
+        "location": "",
+        "tags": ["long-term", "remote", "literacy"],
+        "description": "Help with digitization and proofreading of public-domain books.",
+        "applyUrl": "https://www.gutenberg.org/help/volunteers_faq.html"
+      },
+      {
+        "id": "twb-translators-9a8b7c6d",
+        "title": "Translators without Borders",
+        "org": "Translators without Borders",
+        "type": "Translation",
+        "format": "Remote",
+        "campus": "Non-CUNY",
+        "location": "",
+        "tags": ["long-term", "remote", "languages"],
+        "description": "Use your language skills to support humanitarian and development projects.",
+        "applyUrl": "https://translatorswithoutborders.org/meet-the-twb-community"
+      },
+      {
+        "id": "unv-youth-volunteers-1b2c3d4e",
+        "title": "United Nations Volunteers (including UN Youth Volunteers)",
+        "org": "United Nations Volunteers",
+        "type": "International Volunteering",
+        "format": "Hybrid",
+        "campus": "Non-CUNY",
+        "location": "Global",
+        "tags": ["long-term", "international"],
+        "description": "Volunteer with UN agencies on development and humanitarian operations worldwide.",
+        "applyUrl": "https://app.unv.org/"
+      },
+      {
+        "id": "voa-gn-ny-6e5d4c3b",
+        "title": "Volunteers of America – Greater New York",
+        "org": "Volunteers of America-Greater New York",
+        "type": "Community Support",
+        "format": "In-Person",
+        "campus": "Non-CUNY",
+        "location": "NYC",
+        "tags": ["long-term"],
+        "description": "Anti-poverty programs serving neighbors in need across NYC.",
+        "applyUrl": "https://www.voa.org/affiliates/volunteers-of-america-greater-new-york/"
+      },
+      {
+        "id": "ymca-volunteer-7c6b5a4d",
+        "title": "YMCA – Volunteer",
+        "org": "YMCA",
+        "type": "Community Support",
+        "format": "In-Person",
+        "campus": "Non-CUNY",
+        "location": "NYC + Nationwide",
+        "tags": ["long-term"],
+        "description": "Support youth mentoring, wellness programs, and community events.",
+        "applyUrl": "https://www.ymca.org/get-involved/volunteer"
+      },
+      {
+        "id": "acc-nyc-volunteer-2d3e4f5a",
+        "title": "Animal Care Centers of NYC – Volunteer",
+        "org": "ACC of NYC",
+        "type": "Animal Welfare",
+        "format": "In-Person",
+        "campus": "Non-CUNY",
+        "location": "NYC",
+        "tags": ["long-term", "animals"],
+        "description": "Help care for animals in NYC shelters; various roles available.",
+        "applyUrl": "https://www.nycacc.org/volunteer"
+      },
+      {
+        "id": "aspca-volunteer-1a2b3c4d",
+        "title": "ASPCA – Volunteer",
+        "org": "ASPCA",
+        "type": "Animal Welfare",
+        "format": "In-Person",
+        "campus": "Non-CUNY",
+        "location": "NYC",
+        "tags": ["long-term", "animals"],
+        "description": "Opportunities in adoptions, fostering, rescue & rehab, and advocacy.",
+        "applyUrl": "https://www.aspca.org/get-involved/volunteer"
+      },
+      {
+        "id": "best-friends-nyc-5f4e3d2c",
+        "title": "Best Friends Animal Society – NYC",
+        "org": "Best Friends Animal Society",
+        "type": "Animal Welfare",
+        "format": "In-Person",
+        "campus": "Non-CUNY",
+        "location": "NYC",
+        "tags": ["long-term", "animals"],
+        "description": "Volunteer to help shelter pets find homes in NYC.",
+        "applyUrl": "https://bestfriends.org/new-york-city/volunteer"
+      },
+      {
+        "id": "rescue-city-volunteer-4c3b2a1d",
+        "title": "Rescue City – Volunteer",
+        "org": "Rescue City",
+        "type": "Animal Welfare",
+        "format": "In-Person",
+        "campus": "Non-CUNY",
+        "location": "NYC",
+        "tags": ["long-term", "animals"],
+        "description": "Support rescue efforts for dogs; roles include transport, events, and more.",
+        "applyUrl": "https://www.rescuecity.nyc/volunteering/"
+      },
+      {
+        "id": "humane-society-ny-volunteer-0f1e2d3c",
+        "title": "Humane Society of New York – Volunteer",
+        "org": "Humane Society of New York",
+        "type": "Animal Welfare",
+        "format": "In-Person",
+        "campus": "Non-CUNY",
+        "location": "NYC",
+        "tags": ["long-term", "animals"],
+        "description": "Volunteer in a variety of roles from advocacy to animal care.",
+        "applyUrl": "https://www.humaneworld.org/en/take-action/volunteer#.UoqWadKkpc8"
+      },
+      {
+        "id": "cuny-volunteer-corps-citizenship-now-2b1c3d4e",
+        "title": "CUNY Volunteer Corps (Citizenship Now!)",
+        "org": "CUNY",
+        "type": "Civic Engagement",
+        "format": "Hybrid",
+        "campus": "Multi-CUNY",
+        "location": "NYC",
+        "tags": ["long-term", "cuny"],
+        "description": "Assist immigrant communities through Citizenship Now! volunteer efforts.",
+        "applyUrl": "https://www.cuny.edu/about/administration/offices/communications-marketing/citizenship-now/volunteer/"
+      },
+      {
+        "id": "baruch-alumni-volunteer-7a6b5c4d",
+        "title": "Baruch College Alumni – Volunteer",
+        "org": "Baruch College",
+        "type": "Mentoring",
+        "format": "Hybrid",
+        "campus": "Baruch College",
+        "location": "NYC",
+        "tags": ["long-term", "cuny"],
+        "description": "Volunteer with Baruch alumni programs and mentorship.",
+        "applyUrl": "https://www.alumni.baruch.cuny.edu/get-involved/volunteer"
+      },
+      {
+        "id": "brooklyn-college-volunteer-intake-1c2b3a4d",
+        "title": "Brooklyn College – Volunteer Intake",
+        "org": "Brooklyn College",
+        "type": "Campus Volunteering",
+        "format": "Hybrid",
+        "campus": "Brooklyn College",
+        "location": "Brooklyn",
+        "tags": ["long-term", "cuny"],
+        "description": "Submit volunteer interest to support campus initiatives.",
+        "applyUrl": "https://www.brooklyn.edu/dosa/student-support-services/ce/volunteer-intake-form/"
+      },
+      {
+        "id": "brooklyn-lifelong-learning-volunteer-5e6d7c8b",
+        "title": "Brooklyn Lifelong Learning – Volunteer",
+        "org": "Brooklyn College",
+        "type": "Education",
+        "format": "Hybrid",
+        "campus": "Brooklyn College",
+        "location": "Brooklyn",
+        "tags": ["long-term", "cuny"],
+        "description": "Support the Brooklyn Lifelong Learning community programs.",
+        "applyUrl": "https://www.brooklyn.edu/bll/volunteer/"
+      },
+      {
+        "id": "city-tech-alumni-involved-3b2a1c4d",
+        "title": "City Tech – Alumni Get Involved",
+        "org": "City Tech (CUNY)",
+        "type": "Mentoring",
+        "format": "Hybrid",
+        "campus": "City Tech",
+        "location": "Brooklyn",
+        "tags": ["long-term", "cuny"],
+        "description": "Volunteer with City Tech alumni programs.",
+        "applyUrl": "https://www.citytech.cuny.edu/alumni/get-involved.aspx"
+      },
+      {
+        "id": "ccny-food-policy-center-7d6c5b4a",
+        "title": "CCNY – CUNY Career Mentorship Program (CMP)",
+        "org": "City College of New York",
+        "type": "Mentoring",
+        "format": "Hybrid",
+        "campus": "CCNY",
+        "location": "NYC",
+        "tags": ["long-term", "cuny"],
+        "description": "CUNY alumni mentor students who then mentor NYC high school students.",
+        "applyUrl": "https://www.ccny.cuny.edu/oiacer/cmp"
+      },
+      {
+        "id": "ccny-umaan-mentors-1d2c3b4a",
+        "title": "CCNY – UMAAN (Urban Mentoring & Achievement Network)",
+        "org": "City College of New York",
+        "type": "Mentoring",
+        "format": "Hybrid",
+        "campus": "CCNY",
+        "location": "NYC",
+        "tags": ["long-term", "cuny"],
+        "description": "Peer mentoring, workshops, and resources for success.",
+        "applyUrl": "https://www.ccny.cuny.edu/umaan/mentors"
+      },
+      {
+        "id": "hunter-has-heart-6a5b4c3d",
+        "title": "Hunter Has Heart (Triple H)",
+        "org": "Hunter College",
+        "type": "Campus Volunteering",
+        "format": "Hybrid",
+        "campus": "Hunter College",
+        "location": "NYC",
+        "tags": ["long-term", "cuny"],
+        "description": "Student engagement and service opportunities under the Triple H banner.",
+        "applyUrl": "https://hunter.cuny.edu/students/campus-life/student-events-and-programs/hunter-has-heart-triple-h/"
+      },
+      {
+        "id": "hunter-nyc-food-policy-center-4a3b2c1d",
+        "title": "Hunter College – NYC Food Policy Center",
+        "org": "Hunter College",
+        "type": "Community Support",
+        "format": "Hybrid",
+        "campus": "Hunter College",
+        "location": "NYC",
+        "tags": ["long-term", "cuny"],
+        "description": "Volunteer to support research and programs in food policy.",
+        "applyUrl": "https://www.nycfoodpolicy.org/"
+      },
+      {
+        "id": "hunter-phmi-mentoring-8a7b6c5d",
+        "title": "Hunter College – PHMI (Pre-Health Mentoring Initiative)",
+        "org": "Hunter College",
+        "type": "Mentoring",
+        "format": "Hybrid",
+        "campus": "Hunter College",
+        "location": "NYC",
+        "tags": ["long-term", "pre-med", "cuny"],
+        "description": "Upper-class pre-health students mentor freshmen and first-year transfers.",
+        "applyUrl": "https://www.hunter.cuny.edu/prehealth/mentoring-initiatives-1/about-phmi"
+      },
+      {
+        "id": "hunter-orientation-leaders-9b8c7d6e",
+        "title": "Hunter – Orientation Leaders",
+        "org": "Hunter College",
+        "type": "Campus Volunteering",
+        "format": "In-Person",
+        "campus": "Hunter College",
+        "location": "NYC",
+        "tags": ["long-term", "cuny"],
+        "description": "Support new students during orientation; share your Hunter experience.",
+        "applyUrl": ""
+      },
+      {
+        "id": "medgar-evers-peer-services-0a1b2c3d",
+        "title": "Medgar Evers – Mentor & Peer Services",
+        "org": "Medgar Evers College",
+        "type": "Mentoring",
+        "format": "Hybrid",
+        "campus": "Medgar Evers College",
+        "location": "Brooklyn",
+        "tags": ["long-term", "cuny"],
+        "description": "Peer support services and mentoring programs.",
+        "applyUrl": "https://www.mec.cuny.edu/academic-affairs/programs/predominately-black-institution/peer-support-services/"
+      },
+      {
+        "id": "hunter-sal-program-1a0b2c3d",
+        "title": "Hunter – Student Admissions Leader (SAL) Program",
+        "org": "Hunter College",
+        "type": "Campus Volunteering",
+        "format": "Hybrid",
+        "campus": "Hunter College",
+        "location": "NYC",
+        "tags": ["long-term", "cuny"],
+        "description": "Represent Hunter to prospective students via tours, events, texting, and social.",
+        "applyUrl": "https://hunter.cuny.edu/students/admissions/undergraduate/student-ambassadors/"
+      },
+      {
+        "id": "hunter-alumni-ambassador-5d4c3b2a",
+        "title": "Hunter – Alumni Ambassador Program",
+        "org": "Hunter College",
+        "type": "Mentoring",
+        "format": "Remote",
+        "campus": "Hunter College",
+        "location": "NYC",
+        "tags": ["long-term", "cuny"],
+        "description": "Alumni connect with prospective students to share experiences.",
+        "applyUrl": "https://webforms.hunter.cuny.edu/admissions/view.php?id=215025"
+      },
+      {
+        "id": "bmcc-impact-peer-mentoring-2c3b4a5d",
+        "title": "BMCC – IMPACT Peer Mentoring",
+        "org": "BMCC",
+        "type": "Mentoring",
+        "format": "Hybrid",
+        "campus": "BMCC",
+        "location": "Manhattan",
+        "tags": ["long-term", "cuny"],
+        "description": "Peer mentoring program where students support students purposefully.",
+        "applyUrl": "https://www.bmcc.cuny.edu/student-affairs/peer-mentoring/"
+      },
+      {
+        "id": "york-peer-mentoring-7a8b9c0d",
+        "title": "York College – Peer Mentoring",
+        "org": "York College",
+        "type": "Mentoring",
+        "format": "Hybrid",
+        "campus": "York College",
+        "location": "Queens",
+        "tags": ["long-term", "cuny"],
+        "description": "Mentors guide students on academics and resources at York.",
+        "applyUrl": "https://www.york.cuny.edu/student-development/mentoring"
+      },
+      {
+        "id": "csi-new-student-mentoring-4a5b6c7d",
+        "title": "CSI – New Student Mentoring Program",
+        "org": "College of Staten Island",
+        "type": "Mentoring",
+        "format": "Hybrid",
+        "campus": "CSI",
+        "location": "Staten Island",
+        "tags": ["long-term", "cuny"],
+        "description": "Peer mentoring support for first-year students at CSI.",
+        "applyUrl": "https://www.csi.cuny.edu/admissions/new-student-guide/new-student-orientation/transitional-services/new-student-mentoring-program"
+      },
+      {
+        "id": "baruch-academic-mentoring-3a4b5c6d",
+        "title": "Baruch – Academic Mentoring Program",
+        "org": "Baruch College",
+        "type": "Mentoring",
+        "format": "Hybrid",
+        "campus": "Baruch College",
+        "location": "NYC",
+        "tags": ["long-term", "cuny"],
+        "description": "Academic mentoring via Executives on Campus.",
+        "applyUrl": "https://www.alumni.baruch.cuny.edu/get-involved/executives-on-campus/mentees/prospective-mentees"
+      }
+      // Include all the other projects from your JSON here
+      // For brevity, I'm showing just one, but you should add all of them
+    ];
+
+    // Global variables
+    let activeTagFilters = [];
+    let visibleProjects = 6;
+    let currentProject = {};
+
+    // Function to render projects
+    function renderProjects(projects) {
+      const projectGrid = document.getElementById("projectGrid");
+      const emptyState = document.getElementById("emptyState");
+      const loadMoreContainer = document.getElementById("loadMoreContainer");
+
+      if (!projectGrid) return;
+
+      projectGrid.innerHTML = '';
+
+      if (projects.length === 0) {
+        if (emptyState) emptyState.classList.remove('hidden');
+        if (loadMoreContainer) loadMoreContainer.classList.add('hidden');
+        return;
+      }
+
+      if (emptyState) emptyState.classList.add('hidden');
+
+      const projectsToShow = projects.slice(0, visibleProjects);
+
+      projectsToShow.forEach(project => {
+        const projectCard = document.createElement('div');
+        projectCard.className = 'project-card bg-white p-6 rounded-xl shadow-md card-hover border-t-4 border-primary';
+        projectCard.dataset.campus = project.campus;
+        projectCard.dataset.type = project.format;
+        projectCard.dataset.duration = project.duration;
+        projectCard.dataset.tags = project.tags.join(',');
+
+        // Format tags
+        const tagsHTML = project.tags.map(tag => {
+          let bgColor = 'bg-gray-100';
+          let textColor = 'text-gray-800';
+
+          if (tag === 'long-term') {
+            bgColor = 'bg-blue-100';
+            textColor = 'text-blue-800';
+          } else if (tag === 'short-term') {
+            bgColor = 'bg-green-100';
+            textColor = 'text-green-800';
+          } else if (tag === 'cuny') {
+            bgColor = 'bg-primary/10';
+            textColor = 'text-primary';
+          } else if (tag === 'Non-CUNY') {
+            bgColor = 'bg-purple-100';
+            textColor = 'text-purple-800';
+          }
+
+          return `<span class="${bgColor} ${textColor} px-3 py-1 rounded-full text-xs tag-chip">${tag}</span>`;
+        }).join('');
+
+        // Format type badge
+        let typeBadge = '';
+        if (project.format === 'In-person') {
+          typeBadge = '<span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs">📍 In-person</span>';
+        } else if (project.format === 'Remote') {
+          typeBadge = '<span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs">🖥️ Remote</span>';
+        } else if (project.format === 'Hybrid') {
+          typeBadge = '<span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs">🧑‍💻 Hybrid</span>';
+        }
+
+        // Campus badge
+        const campusBadge = `<span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs">🎓 ${project.campus}</span>`;
+
+        projectCard.innerHTML = `
+          <div class="flex justify-between items-start mb-3">
+            <h3 class="text-xl font-semibold">${project.title}</h3>
+            <button onclick="toggleBookmark(this, '${project.title.replace(/'/g, "\\'")}')" class="text-gray-400 hover:text-red-500 text-lg">
+              <i class="far fa-heart"></i>
+            </button>
+          </div>
+          <p class="text-gray-700 mb-4">${project.description}</p>
+          <div class="flex flex-wrap gap-2 text-sm mb-4">
+            ${typeBadge}
+            ${campusBadge}
+            ${tagsHTML}
+          </div>
+          <button onclick="openModal(
+            '${project.title.replace(/'/g, "\\'")}',
+            '${project.org.replace(/'/g, "\\'")}',
+            '${project.description.replace(/'/g, "\\'")}',
+            '${project.orientationLink}',
+            '${project.dateTime || ''}',
+            '${project.dateISO || ''}',
+            '${project.location.replace(/'/g, "\\'")}',
+            '${project.mapURL || ''}',
+            '${(project.directions || '').replace(/'/g, "\\'")}',
+            '${(project.logistics || '').replace(/'/g, "\\'")}',
+            '${(project.partnerInfo || '').replace(/'/g, "\\'")}',
+            '${JSON.stringify(project.tags)}'
+          )" class="text-primary hover:text-blue-800 font-medium flex items-center mt-3">
+            View Details <i class="fas fa-arrow-right ml-2 text-xs"></i>
+          </button>
+        `;
+
+        projectGrid.appendChild(projectCard);
+      });
+
+      // Show load more button if there are more projects to show
+      if (loadMoreContainer) {
+        if (visibleProjects < projects.length) {
+          loadMoreContainer.classList.remove('hidden');
+        } else {
+          loadMoreContainer.classList.add('hidden');
+        }
+      }
+
+      // Update count display
+      const countDisplay = document.getElementById("projectCount");
+      if (countDisplay) {
+        countDisplay.textContent = `Showing ${projectsToShow.length} of ${projects.length} volunteer opportunities`;
+      }
+    }
+
+    // Filter function
+    function filterProjects() {
       const keywordInput = document.getElementById("keywordInput");
       const campusFilter = document.getElementById("campusFilter");
       const typeFilter = document.getElementById("typeFilter");
-      const cards = document.querySelectorAll(".project-card");
-      const countDisplay = document.getElementById("projectCount");
+      const durationFilter = document.getElementById("durationFilter");
 
-      function filterProjects() {
-        const keyword = keywordInput.value.toLowerCase();
-        const campus = campusFilter.value;
-        const type = typeFilter.value;
-        let count = 0;
+      if (!keywordInput || !campusFilter || !typeFilter || !durationFilter) return;
 
-        cards.forEach(card => {
-          const text = card.innerText.toLowerCase();
-          const cardCampus = card.dataset.campus;
-          const cardType = card.dataset.type;
+      const keyword = keywordInput.value.toLowerCase();
+      const campus = campusFilter.value;
+      const type = typeFilter.value;
+      const duration = durationFilter.value;
+      const sortBy = document.getElementById("sortFilter")?.value || "relevance";
 
-          const matchesKeyword = text.includes(keyword);
-          const matchesCampus = !campus || cardCampus === campus;
-          const matchesType = !type || cardType === type;
+      let filtered = projectData.filter(project => {
+        const text = `${project.title} ${project.description} ${project.org} ${project.tags.join(' ')}`.toLowerCase();
+        const matchesKeyword = !keyword || text.includes(keyword);
+        const matchesCampus = !campus || project.campus === campus;
+        const matchesType = !type || project.format === type;
+        const matchesDuration = !duration || project.duration === duration;
+        const matchesTags = activeTagFilters.length === 0 ||
+          activeTagFilters.some(tag => project.tags.includes(tag));
 
-          const visible = matchesKeyword && matchesCampus && matchesType;
-          card.style.display = visible ? 'block' : 'none';
-          if (visible) count++;
-        });
+        return matchesKeyword && matchesCampus && matchesType && matchesDuration && matchesTags;
+      });
 
-        countDisplay.textContent = `Showing ${count} volunteer project${count !== 1 ? 's' : ''}`;
+      // Sort results
+      if (sortBy === 'title') {
+        filtered.sort((a, b) => a.title.localeCompare(b.title));
+      } else if (sortBy === 'date' && filtered[0] && filtered[0].dateISO) {
+        filtered.sort((a, b) => new Date(a.dateISO || 0) - new Date(b.dateISO || 0));
       }
 
-      keywordInput.addEventListener("input", filterProjects);
-      campusFilter.addEventListener("change", filterProjects);
-      typeFilter.addEventListener("change", filterProjects);
+      visibleProjects = 6;
+      renderProjects(filtered);
+    }
+
+    // Modal functions
+    function openModal(title, partner, description, orientationLink, dateTime, dateISO, address, mapURL, directions, logistics, partnerInfo, tagsJSON) {
+      currentProject = { title, partner, description, orientationLink, dateTime, dateISO, address, mapURL, directions, logistics, partnerInfo };
+
+      // Parse tags and create tag elements
+      const tags = JSON.parse(tagsJSON);
+      const tagsContainer = document.getElementById('modalTags');
+      if (tagsContainer) {
+        tagsContainer.innerHTML = '';
+
+        tags.forEach(tag => {
+          let bgColor = 'bg-gray-100';
+          let textColor = 'text-gray-800';
+
+          if (tag === 'long-term') {
+            bgColor = 'bg-blue-100';
+            textColor = 'text-blue-800';
+          } else if (tag === 'short-term') {
+            bgColor = 'bg-green-100';
+            textColor = 'text-green-800';
+          } else if (tag === 'cuny') {
+            bgColor = 'bg-primary/10';
+            textColor = 'text-primary';
+          } else if (tag === 'Non-CUNY') {
+            bgColor = 'bg-purple-100';
+            textColor = 'text-purple-800';
+          }
+
+          const tagEl = document.createElement('span');
+          tagEl.className = `${bgColor} ${textColor} px-3 py-1 rounded-full text-xs`;
+          tagEl.textContent = tag;
+          tagsContainer.appendChild(tagEl);
+        });
+      }
+
+      // Set modal content
+      const setElementText = (id, text) => {
+        const element = document.getElementById(id);
+        if (element) element.textContent = text;
+      };
+
+      const setElementHref = (id, href) => {
+        const element = document.getElementById(id);
+        if (element) element.href = href;
+      };
+
+      const setElementSrc = (id, src) => {
+        const element = document.getElementById(id);
+        if (element) element.src = src;
+      };
+
+      setElementText("modalTitle", title);
+      setElementText("modalPartner", partner);
+      setElementText("modalDescription", description);
+      setElementHref("modalOrientation", orientationLink);
+      setElementText("modalDateTime", dateTime || 'Flexible scheduling');
+      setElementText("modalAddress", address);
+      setElementSrc("modalMap", mapURL || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830869428!2d-74.11976397304613!3d40.69766374874431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY!5e0!3m2!1sen!2sus!4v1653002166749!5m2!1sen!2sus');
+      setElementText("modalDirections", directions || 'Details will be provided after registration.');
+      setElementText("modalLogistics", logistics || 'No special requirements.');
+      setElementText("modalPartnerInfo", partnerInfo || 'Learn more during orientation.');
+
+      // Check if project is bookmarked
+      const saved = JSON.parse(localStorage.getItem("bookmarkedProjects") || "[]");
+      const bookmarkBtn = document.getElementById("modalBookmarkBtn");
+      if (bookmarkBtn) {
+        if (saved.includes(title)) {
+          bookmarkBtn.innerHTML = '<i class="fas fa-heart text-red-500"></i>';
+        } else {
+          bookmarkBtn.innerHTML = '<i class="far fa-heart"></i>';
+        }
+      }
+
+      const modal = document.getElementById("projectModal");
+      if (modal) modal.classList.remove("hidden");
+    }
+
+    function closeModal() {
+      const modal = document.getElementById("projectModal");
+      if (modal) modal.classList.add("hidden");
+    }
+
+    function toggleBookmark(el, title) {
+      const isHeartIcon = el.querySelector && el.querySelector('i.fa-heart');
+      const saved = JSON.parse(localStorage.getItem("bookmarkedProjects") || "[]");
+
+      if (isHeartIcon && isHeartIcon.classList.contains('fas')) {
+        el.innerHTML = '<i class="far fa-heart"></i>';
+        el.classList.remove("text-red-500");
+        const index = saved.indexOf(title);
+        if (index > -1) saved.splice(index, 1);
+      } else {
+        el.innerHTML = '<i class="fas fa-heart text-red-500"></i>';
+        el.classList.add("text-red-500");
+        if (!saved.includes(title)) saved.push(title);
+      }
+
+      localStorage.setItem("bookmarkedProjects", JSON.stringify(saved));
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Initialize projects
+      renderProjects(projectData);
+
+      // Hide loading indicator after content is loaded
+      const loadingIndicator = document.getElementById("loadingIndicator");
+      setTimeout(() => {
+        if (loadingIndicator) loadingIndicator.classList.add('hidden');
+      }, 1000);
+
+      // Event listeners
+      const keywordInput = document.getElementById("keywordInput");
+      const campusFilter = document.getElementById("campusFilter");
+      const typeFilter = document.getElementById("typeFilter");
+      const durationFilter = document.getElementById("durationFilter");
+      const sortFilter = document.getElementById("sortFilter");
+      const tagFilterButtons = document.querySelectorAll(".tag-filter-btn");
+      const loadMoreBtn = document.getElementById("loadMoreBtn");
+
+      if (keywordInput) {
+        keywordInput.addEventListener("input", filterProjects);
+      }
+
+      if (campusFilter) {
+        campusFilter.addEventListener("change", filterProjects);
+      }
+
+      if (typeFilter) {
+        typeFilter.addEventListener("change", filterProjects);
+      }
+
+      if (durationFilter) {
+        durationFilter.addEventListener("change", filterProjects);
+      }
+
+      if (sortFilter) {
+        sortFilter.addEventListener("change", filterProjects);
+      }
+
+      if (tagFilterButtons.length > 0) {
+        tagFilterButtons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const tag = btn.dataset.tag;
+            if (activeTagFilters.includes(tag)) {
+              activeTagFilters = activeTagFilters.filter(t => t !== tag);
+              btn.classList.remove('filter-active');
+            } else {
+              activeTagFilters.push(tag);
+              btn.classList.add('filter-active');
+            }
+            filterProjects();
+          });
+        });
+      }
+
+      if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', () => {
+          visibleProjects += 6;
+          filterProjects();
+        });
+      }
+
+      // Initial filter
       filterProjects();
 
-      // --- UPDATED Modal functions with dateISO ---
-      window.currentProject = {};
-
-      window.openModal = function (title, partner, description, orientationLink, dateTime, dateISO, address, mapURL, directions, logistics, partnerInfo) {
-        // Store EVERYTHING, including dateISO
-        window.currentProject = { title, partner, description, orientationLink, dateTime, dateISO, address, mapURL, directions, logistics, partnerInfo };
-
-        document.getElementById("modalTitle").textContent = title;
-        document.getElementById("modalPartner").textContent = partner;
-        document.getElementById("modalDescription").textContent = description;
-        document.getElementById("modalOrientation").href = orientationLink;
-        document.getElementById("modalDateTime").textContent = dateTime;
-        document.getElementById("modalAddress").textContent = address;
-        document.getElementById("modalMap").src = mapURL;
-        document.getElementById("modalDirections").textContent = directions;
-        document.getElementById("modalLogistics").textContent = logistics;
-        document.getElementById("modalPartnerInfo").textContent = partnerInfo;
-        document.getElementById("projectModal").classList.remove("hidden");
-      }
-
-      window.closeModal = function () {
-        document.getElementById("projectModal").classList.add("hidden");
-      }
-
-      window.toggleBookmark = function (el, title) {
-        el.classList.toggle("text-red-500");
-        const saved = JSON.parse(localStorage.getItem("bookmarkedProjects") || "[]");
-        if (el.classList.contains("text-red-500")) {
-          if (!saved.includes(title)) saved.push(title);
-        } else {
-          const index = saved.indexOf(title);
-          if (index > -1) saved.splice(index, 1);
-        }
-        localStorage.setItem("bookmarkedProjects", JSON.stringify(saved));
-      }
+      // Make functions available globally
+      window.openModal = openModal;
+      window.closeModal = closeModal;
+      window.toggleBookmark = toggleBookmark;
+      window.currentProject = currentProject;
     });
   </script>
 
